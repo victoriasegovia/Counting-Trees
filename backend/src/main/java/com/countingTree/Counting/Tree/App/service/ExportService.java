@@ -12,8 +12,6 @@ public interface ExportService {
 
     Export exportDataToCSV();
 
-    Export getExportId(Long id);
-
     Export getExportById(Long exportId);
 
     void addExport(Export newExport);
