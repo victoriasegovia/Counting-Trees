@@ -39,6 +39,6 @@ public class HealthStatusController {
 
     @GetMapping
     public ResponseEntity<List<HealthStatus>> getAllHealthStatuses() {
-        return ResponseEntity.ok(healthStatusService.getAllHealthStatuses());
+        return ResponseEntity.ok(healthStatusService.getAllHealthStatus());
     }
 }

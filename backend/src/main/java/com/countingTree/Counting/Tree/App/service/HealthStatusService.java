@@ -6,7 +6,7 @@ import com.countingTree.Counting.Tree.App.model.HealthStatus;
 
 public interface HealthStatusService {
     
-    HealthStatus getHealthStatus(Long healthStatusId);
+    HealthStatus getHealthStatusById(Long healthStatusId);
 
     void updateHealthStatus(Long healthStatusId, HealthStatus healthStatus);
 
@@ -14,6 +14,6 @@ public interface HealthStatusService {
 
     void addHealthStatus(HealthStatus newHealthStatus);
 
-    List<HealthStatus> getAllHealthStatus ();
+    List<HealthStatus> getAllHealthStatus();
 
 }

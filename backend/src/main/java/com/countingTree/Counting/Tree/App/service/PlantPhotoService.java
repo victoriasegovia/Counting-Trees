@@ -6,13 +6,15 @@ import com.countingTree.Counting.Tree.App.model.PlantPhoto;
 
 public interface PlantPhotoService {
 
-    PlantPhoto getPhotoForPlant(Long plantId);
+    PlantPhoto getPlantPhotoById(Long plantId);
 
-    List<PlantPhoto> getAllPhotosForPlant(Long plantId);
+    List<PlantPhoto> getAllPlantPhotosForPlant(Long plantId);
 
-    void updatePhotoForPlant(Long plantId, PlantPhoto newPhoto);
+    List<PlantPhoto> getAllPlantPhotos();
 
-    void deletePhotoForPlant(Long plantId);
+    void updatePlantPhoto(Long photoId);
 
-    void addPhotoForPlant(Long plantId, PlantPhoto photo);
+    void deletePlantPhoto(Long photoId);
+
+    void addPlantPhoto(Long plantId, PlantPhoto photo);
 }

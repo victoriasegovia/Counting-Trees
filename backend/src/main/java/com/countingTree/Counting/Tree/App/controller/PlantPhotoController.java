@@ -27,7 +27,7 @@ public class PlantPhotoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updatePlantPhoto(@PathVariable Long id, @RequestBody PlantPhoto plantPhoto) {
-        plantPhotoService.updatePlantPhoto(id, plantPhoto);
+        plantPhotoService.updatePlantPhoto(id);
         return ResponseEntity.ok().build();
     }
 

@@ -48,9 +48,12 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public List<Log> getAllLogsByUserId(Long userId) {
-        return logRepository.findAll().stream()
-                .filter(log -> log.getPerformedBy() != null && log.getPerformedBy().getUserId().equals(userId))
-                .toList();
+        return logRepository.findAllLogsByUserId(userId);
+    }
+
+    @Override
+    public List<Log> getAllLogs() {
+        return logRepository.findAll();
     }
 
     // EXTRA METHODS

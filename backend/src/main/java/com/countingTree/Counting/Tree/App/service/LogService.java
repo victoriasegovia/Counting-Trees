@@ -15,4 +15,6 @@ public interface LogService {
     void deleteLog(Long logId);
 
     List<Log> getAllLogsByUserId(Long userId);
+
+    List<Log> getAllLogs();
 }

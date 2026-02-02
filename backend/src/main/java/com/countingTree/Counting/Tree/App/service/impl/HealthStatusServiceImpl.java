@@ -27,10 +27,9 @@ public class HealthStatusServiceImpl implements HealthStatusService {
 	}
 
 	@Override
-	public HealthStatus getHealthStatus(Long healthStatusId) {
-        HealthStatus healthStatusSearched = healthStatusRepository.findById(healthStatusId)
+	public HealthStatus getHealthStatusById(Long healthStatusId) {
+        return healthStatusRepository.findById(healthStatusId)
                 .orElseThrow(() -> new EntityNotFoundException("Health Status with ID " + healthStatusId + " not found."));
-		return healthStatusSearched;
 	}
 
 	@Override

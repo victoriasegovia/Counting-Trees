@@ -41,4 +41,9 @@ public class LogController {
     public ResponseEntity<List<Log>> getAllLogs() {
         return ResponseEntity.ok(logService.getAllLogs());
     }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<Log>> getAllLogsByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(logService.getAllLogsByUserId(userId));
+    }
 }

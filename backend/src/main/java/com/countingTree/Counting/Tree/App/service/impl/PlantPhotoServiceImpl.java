@@ -14,23 +14,27 @@ public class PlantPhotoServiceImpl implements PlantPhotoService {
     private PlantPhotoRepository plantPhotoRepository;
 
     @Override
-    public PlantPhoto getPhotoForPlant(Long plantId) {
+    public PlantPhoto getPlantPhotoById(Long plantId) {
         PlantPhoto photoSearched = plantPhotoRepository.findById(plantId)
                 .orElseThrow(() -> new IllegalArgumentException("Photo for Plant with ID " + plantId + " not found."));
         return photoSearched;
     }
 
     @Override
-    public List<PlantPhoto> getAllPhotosForPlant(Long plantId) {
+    public List<PlantPhoto> getAllPlantPhotos() {
+        return plantPhotoRepository.findAll();
+    }
+
+        public List<PlantPhoto> getAllPlantPhotosForPlant(Long plantId) {
         return plantPhotoRepository.findAll().stream()
                 .filter(photo -> photo.getPlant() != null && photo.getPlant().getPlantId().equals(plantId))
                 .toList();
     }
 
     @Override
-    public void updatePhotoForPlant(Long plantId, PlantPhoto newPhoto) {
-        PlantPhoto existingPhoto = plantPhotoRepository.findById(plantId)
-                .orElseThrow(() -> new IllegalArgumentException("Photo for Plant with ID " + plantId + " not found."));
+    public void updatePlantPhoto(Long photoId, PlantPhoto newPhoto) {
+        PlantPhoto existingPhoto = plantPhotoRepository.findById(photoId)
+                .orElseThrow(() -> new IllegalArgumentException("Photo for Plant with ID " + photoId + " not found."));
 
         existingPhoto.setUrl(newPhoto.getUrl());
         existingPhoto.setDateTaken(newPhoto.getDateTaken());
@@ -39,12 +43,12 @@ public class PlantPhotoServiceImpl implements PlantPhotoService {
     }
 
     @Override
-    public void deletePhotoForPlant(Long plantId) {
-        plantPhotoRepository.deleteById(plantId);
+    public void deletePlantPhoto(Long photoId) {
+        plantPhotoRepository.deleteById(photoId);
     }
 
     @Override
-    public void addPhotoForPlant(Long plantId, PlantPhoto photo) {
+    public void addPlantPhoto(Long plantId, PlantPhoto photo) {
         validatePhoto(photo);
         plantPhotoRepository.save(photo);
     }
@@ -61,5 +65,5 @@ public class PlantPhotoServiceImpl implements PlantPhotoService {
             throw new IllegalArgumentException("Photo must be associated with a plant");
         }
     }
-       
+
 }
