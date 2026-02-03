@@ -9,7 +9,7 @@ import com.countingTree.Counting.Tree.App.repository.PlantPhotoRepository;
 import com.countingTree.Counting.Tree.App.service.PlantPhotoService;
 
 public class PlantPhotoServiceImpl implements PlantPhotoService {
-    
+
     @Autowired
     private PlantPhotoRepository plantPhotoRepository;
 
@@ -25,7 +25,8 @@ public class PlantPhotoServiceImpl implements PlantPhotoService {
         return plantPhotoRepository.findAll();
     }
 
-        public List<PlantPhoto> getAllPlantPhotosForPlant(Long plantId) {
+    @Override
+    public List<PlantPhoto> getAllPlantPhotosForPlant(Long plantId) {
         return plantPhotoRepository.findAll().stream()
                 .filter(photo -> photo.getPlant() != null && photo.getPlant().getPlantId().equals(plantId))
                 .toList();

@@ -12,7 +12,7 @@ public interface PlantPhotoService {
 
     List<PlantPhoto> getAllPlantPhotos();
 
-    void updatePlantPhoto(Long photoId);
+    void updatePlantPhoto(Long photoId, PlantPhoto photo);
 
     void deletePlantPhoto(Long photoId);
 

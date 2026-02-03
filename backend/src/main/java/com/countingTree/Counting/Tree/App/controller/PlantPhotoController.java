@@ -20,14 +20,14 @@ public class PlantPhotoController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addPlantPhoto(@RequestBody PlantPhoto plantPhoto) {
-        plantPhotoService.addPlantPhoto(plantPhoto);
+    public ResponseEntity<Void> addPlantPhoto(@PathVariable Long plantId, @RequestBody PlantPhoto plantPhoto) {
+        plantPhotoService.addPlantPhoto(plantId, plantPhoto);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePlantPhoto(@PathVariable Long id, @RequestBody PlantPhoto plantPhoto) {
-        plantPhotoService.updatePlantPhoto(id);
+    public ResponseEntity<Void> updatePlantPhoto(@PathVariable Long photoId, @RequestBody PlantPhoto plantPhoto) {
+        plantPhotoService.updatePlantPhoto(photoId, plantPhoto);
         return ResponseEntity.ok().build();
     }
 
