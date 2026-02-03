@@ -3,11 +3,13 @@ package com.countingTree.Counting.Tree.App.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.countingTree.Counting.Tree.App.model.Log;
 import com.countingTree.Counting.Tree.App.repository.LogRepository;
 import com.countingTree.Counting.Tree.App.service.LogService;
 
+@Service
 public class LogServiceImpl implements LogService {
 
     @Autowired
@@ -48,7 +50,7 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public List<Log> getAllLogsByUserId(Long userId) {
-        return logRepository.findAllLogsByUserId(userId);
+        return logRepository.findAllByPerformedByUserId(userId);
     }
 
     @Override

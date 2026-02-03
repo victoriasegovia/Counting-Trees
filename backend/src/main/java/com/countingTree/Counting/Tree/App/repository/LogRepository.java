@@ -6,5 +6,5 @@ import com.countingTree.Counting.Tree.App.model.Log;
 import java.util.List;
 
 public interface LogRepository extends JpaRepository<Log, Long> {
-    List<Log> findAllLogsByUserId(Long userId);
-}
+    List<Log> findAllByPerformedByUserId(Long userId);
+} 

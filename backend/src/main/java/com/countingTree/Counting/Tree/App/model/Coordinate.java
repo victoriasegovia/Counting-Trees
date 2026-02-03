@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 @Embeddable
 public class Coordinate {
     
+    @Column(name = "latitude", nullable = false)
     private double latitude;
+
+    @Column(name = "longitude", nullable = false)
     private double longitude;
 
     // -------------------------------------------------------- CONSTRUCTORS, GETTERS AND SETTERS

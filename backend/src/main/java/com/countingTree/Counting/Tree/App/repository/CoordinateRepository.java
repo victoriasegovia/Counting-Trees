@@ -1,8 +1,8 @@
 package com.countingTree.Counting.Tree.App.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import com.countingTree.Counting.Tree.App.model.Coordinate;
+// Coordinate is an @Embeddable and therefore should not have a JpaRepository.
+// If you need a repository for coordinates, consider making Coordinate an @Entity.
 
-public interface CoordinateRepository extends JpaRepository<Coordinate, Long> {
-    
+public interface CoordinateRepository {
+    // intentionally left blank to avoid Spring creating a repository bean for an embeddable
 }
