@@ -44,10 +44,12 @@ public class Plant {
 
     @ManyToOne
     @JoinColumn(name = "species_id", nullable = false)
+    @JsonBackReference("specie-plants")
     private Specie species;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
+    @JsonBackReference("user-plants")
     private User owner;
 
     @Enumerated(EnumType.STRING)
@@ -56,19 +58,19 @@ public class Plant {
 
     @ManyToOne
     @JoinColumn(name = "health_status_id")
-    @JsonBackReference
+    @JsonBackReference("plant-health")
     private HealthStatus healthStatus;
 
     @OneToMany(mappedBy = "plant", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("plant-photos")
     private Set<PlantPhoto> photos = new HashSet<>();
 
     @OneToMany(mappedBy = "plant", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("plant-comments")
     private Set<Comment> comments = new HashSet<>();
 
     @ManyToMany(mappedBy = "plants")
-    @JsonBackReference
+    @JsonBackReference("plant-alerts")
     private Set<Alert> alerts = new HashSet<>();
 
     @ManyToOne

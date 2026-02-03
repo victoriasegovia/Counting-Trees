@@ -23,7 +23,7 @@ public class HealthStatus {
     // -------------------------------------------------------- RELATIONS
 
     @OneToMany(mappedBy = "healthStatus", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("plant-health")
     private Set<Plant> plants = new HashSet<>();
     
     // -------------------------------------------------------- CONSTRUCTORS, GETTERS AND SETTERS

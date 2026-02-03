@@ -23,7 +23,7 @@ public class PlantPhoto {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plant_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("plant-photos")
     private Plant plant;
 
     // -------------------------------------------------------- CONSTRUCTORS, GETTERS AND SETTERS

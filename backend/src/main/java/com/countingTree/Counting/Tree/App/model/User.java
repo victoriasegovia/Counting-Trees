@@ -45,19 +45,19 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("role-users")
     private Role role;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("user-plants")
     private Set<Plant> plantsRegistered;
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("user-alerts-created")
     private Set<Alert> alertsCreated;
 
     @OneToMany(mappedBy = "resolver", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("user-alerts-resolved")
     private Set<Alert> alertsResolved;
 
     // Commented out to avoid cyclic dependency issues

@@ -22,7 +22,7 @@ public class Role {
     // ------------------------------------------------------------ RELATIONS
 
     @OneToMany(mappedBy = "role")
-    @JsonManagedReference
+    @JsonManagedReference("role-users")
     private Set<User> users = new HashSet<>();
 
     // ------------------------------------ CONSTRUCTORS, GETTERS AND SETTERS

@@ -11,7 +11,9 @@ This is a app to help track reforestation activities in cities and surrounings
 - debuggin completed, app compiles!
 
 ## Next Steps
+- DTO creation necessary to avoid 415 error!
 - Manual tests in postman
+
 - Errores controlados
 - Validaciones
 - Seguridad

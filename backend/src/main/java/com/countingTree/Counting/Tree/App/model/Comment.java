@@ -24,7 +24,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plant_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("plant-comments")
     private Plant plant;
 
     

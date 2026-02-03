@@ -25,7 +25,7 @@ public class Specie {
     // ------------------------------------------------------------ RELATIONS
 
     @OneToMany(mappedBy = "species")
-    @JsonManagedReference
+    @JsonManagedReference("specie-plants")
     private Set<Plant> plants = new HashSet<>();
 
     // ------------------------------------ CONSTRUCTORS, GETTERS AND SETTERS

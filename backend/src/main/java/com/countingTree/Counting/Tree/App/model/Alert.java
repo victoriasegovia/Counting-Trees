@@ -34,17 +34,17 @@ public class Alert {
         joinColumns = @JoinColumn(name = "alert_id"),
         inverseJoinColumns = @JoinColumn(name = "plant_id")
     )
-    @JsonManagedReference
+    @JsonManagedReference("plant-alerts")
     private Set<Plant> plants = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("user-alerts-created")
     private User creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resolved_by")
-    @JsonBackReference
+    @JsonBackReference("user-alerts-resolved")
     private User resolver;
 
     
