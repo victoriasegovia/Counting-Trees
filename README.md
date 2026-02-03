@@ -8,3 +8,4 @@ This is a app to help track reforestation activities in cities and surrounings
 - Errors on exiting code solved.
 - Changing properties with info -> it was completly empty LOL
 - Initial DB created
+- debuggin completed, app compiles!
