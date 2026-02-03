@@ -9,3 +9,12 @@ This is a app to help track reforestation activities in cities and surrounings
 - Changing properties with info -> it was completly empty LOL
 - Initial DB created
 - debuggin completed, app compiles!
+
+## Next Steps
+- Manual tests in postman
+- Errores controlados
+- Validaciones
+- Seguridad
+- Docs
+- Tests automáticos
+- Swagger
