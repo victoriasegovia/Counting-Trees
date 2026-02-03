@@ -6,7 +6,7 @@ import com.countingTree.Counting.Tree.App.model.PlantPhoto;
 
 public interface PlantPhotoService {
 
-    PlantPhoto getPlantPhotoById(Long plantId);
+    PlantPhoto getPlantPhotoById(Long photoId);
 
     List<PlantPhoto> getAllPlantPhotosForPlant(Long plantId);
 
