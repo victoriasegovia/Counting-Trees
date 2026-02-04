@@ -1,7 +1,6 @@
 package com.countingTree.Counting.Tree.App.controller;
 
 import com.countingTree.Counting.Tree.App.model.Plant;
-import com.countingTree.Counting.Tree.App.model.Coordinate;
 import com.countingTree.Counting.Tree.App.service.PlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,20 +42,4 @@ public class PlantController {
         return ResponseEntity.ok(plantService.getAllPlants());
     }
 
-    @PostMapping("/{id}/coordinate")
-    public ResponseEntity<Void> addCoordinate(@PathVariable Long id, @RequestBody Coordinate coordinate) {
-        plantService.addCoordinateForPlant(id, coordinate);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{id}/coordinate")
-    public ResponseEntity<Coordinate> getCoordinate(@PathVariable Long id) {
-        return ResponseEntity.ok(plantService.getCoordinateForPlant(id));
-    }
-
-    @PutMapping("/{id}/coordinate")
-    public ResponseEntity<Void> updateCoordinate(@PathVariable Long id, @RequestBody Coordinate coordinate) {
-        plantService.updateCoordinateForPlant(id, coordinate);
-        return ResponseEntity.ok().build();
-    }
 }

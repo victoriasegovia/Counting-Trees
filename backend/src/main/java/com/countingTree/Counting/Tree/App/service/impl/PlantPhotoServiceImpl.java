@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.countingTree.Counting.Tree.App.model.Plant;
-import com.countingTree.Counting.Tree.App.model.PlantPhoto;
+import com.countingTree.Counting.Tree.App.model.Photo;
 import com.countingTree.Counting.Tree.App.repository.PlantPhotoRepository;
 import com.countingTree.Counting.Tree.App.repository.PlantRepository;
 import com.countingTree.Counting.Tree.App.service.PlantPhotoService;
@@ -23,27 +23,27 @@ public class PlantPhotoServiceImpl implements PlantPhotoService {
     private PlantRepository plantRepository;
 
     @Override
-    public PlantPhoto getPlantPhotoById(Long photoId) {
-        PlantPhoto photoSearched = plantPhotoRepository.findById(photoId)
+    public Photo getPlantPhotoById(Long photoId) {
+        Photo photoSearched = plantPhotoRepository.findById(photoId)
                 .orElseThrow(() -> new IllegalArgumentException("Photo with ID " + photoId + " not found."));
         return photoSearched;
     }
 
     @Override
-    public List<PlantPhoto> getAllPlantPhotos() {
+    public List<Photo> getAllPlantPhotos() {
         return plantPhotoRepository.findAll();
     }
 
     @Override
-    public List<PlantPhoto> getAllPlantPhotosForPlant(Long plantId) {
+    public List<Photo> getAllPlantPhotosForPlant(Long plantId) {
         return plantPhotoRepository.findAll().stream()
                 .filter(photo -> photo.getPlant() != null && photo.getPlant().getPlantId().equals(plantId))
                 .toList();
     }
 
     @Override
-    public void updatePlantPhoto(Long photoId, PlantPhoto newPhoto) {
-        PlantPhoto existingPhoto = plantPhotoRepository.findById(photoId)
+    public void updatePlantPhoto(Long photoId, Photo newPhoto) {
+        Photo existingPhoto = plantPhotoRepository.findById(photoId)
                 .orElseThrow(() -> new IllegalArgumentException("Photo with ID " + photoId + " not found."));
 
         existingPhoto.setUrl(newPhoto.getUrl());
@@ -58,7 +58,7 @@ public class PlantPhotoServiceImpl implements PlantPhotoService {
     }
 
     @Override
-    public void addPlantPhoto(Long plantId, PlantPhoto photo) {
+    public void addPlantPhoto(Long plantId, Photo photo) {
         validatePhoto(photo);
         Plant plant = plantRepository.findById(plantId)
                 .orElseThrow(() -> new IllegalArgumentException("Plant with ID " + plantId + " not found."));
@@ -67,7 +67,7 @@ public class PlantPhotoServiceImpl implements PlantPhotoService {
     }
 
     // EXTRA METHODS
-    private void validatePhoto(PlantPhoto newPhoto) {
+    private void validatePhoto(Photo newPhoto) {
         if (newPhoto.getUrl() == null || newPhoto.getUrl().trim().isEmpty()) {
             throw new IllegalArgumentException("Photo URL cannot be null or empty");
         }

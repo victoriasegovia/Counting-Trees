@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.countingTree.Counting.Tree.App.model.PlantPhoto;
+import com.countingTree.Counting.Tree.App.model.Photo;
 import com.countingTree.Counting.Tree.App.service.PlantPhotoService;
 
 @RestController
@@ -24,18 +24,18 @@ public class PlantPhotoController {
     private PlantPhotoService plantPhotoService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PlantPhoto> getPlantPhotoById(@PathVariable("id") Long photoId) {
+    public ResponseEntity<Photo> getPlantPhotoById(@PathVariable("id") Long photoId) {
         return ResponseEntity.ok(plantPhotoService.getPlantPhotoById(photoId));
     }
 
     @PostMapping("/{plantId}")
-    public ResponseEntity<Void> addPlantPhoto(@PathVariable("plantId") Long plantId, @RequestBody PlantPhoto plantPhoto) {
+    public ResponseEntity<Void> addPlantPhoto(@PathVariable("plantId") Long plantId, @RequestBody Photo plantPhoto) {
         plantPhotoService.addPlantPhoto(plantId, plantPhoto);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePlantPhoto(@PathVariable("id") Long photoId, @RequestBody PlantPhoto plantPhoto) {
+    public ResponseEntity<Void> updatePlantPhoto(@PathVariable("id") Long photoId, @RequestBody Photo plantPhoto) {
         plantPhotoService.updatePlantPhoto(photoId, plantPhoto);
         return ResponseEntity.ok().build();
     }
@@ -47,12 +47,12 @@ public class PlantPhotoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PlantPhoto>> getAllPlantPhotos() {
+    public ResponseEntity<List<Photo>> getAllPlantPhotos() {
         return ResponseEntity.ok(plantPhotoService.getAllPlantPhotos());
     }
 
     @GetMapping("/plant/{plantId}")
-    public ResponseEntity<List<PlantPhoto>> getPhotosForPlant(@PathVariable("plantId") Long plantId) {
+    public ResponseEntity<List<Photo>> getPhotosForPlant(@PathVariable("plantId") Long plantId) {
         return ResponseEntity.ok(plantPhotoService.getAllPlantPhotosForPlant(plantId));
     }
 }

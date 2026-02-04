@@ -5,38 +5,42 @@ import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.*;
 
 @Entity
-@Table(name = "plant_photos")
-public class PlantPhoto {
-    
+@Table(name = "photos")
+public class Photo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long photoId;
 
-    @Column(name = "url", nullable = false)
-    private String url;
+    @Lob
+    @Column(name = "image_data", nullable = false)
+    private byte[] imageData;
 
     @Column(name = "date_taken", nullable = false)
-    private LocalDateTime dateTaken;
-
+    private LocalDateTime uploadedAt;
 
     // -------------------------------------------------------- RELATIONS
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plant_id", nullable = false)
-    @JsonBackReference("plant-photos")
+    @JsonIgnore
     private Plant plant;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
     // -------------------------------------------------------- CONSTRUCTORS, GETTERS AND SETTERS
 
-    public PlantPhoto(Long photoId, String url, LocalDateTime dateTaken, Plant plant) {
+    public Photo(Long photoId, byte[] imageData, LocalDateTime uploadedAt, Plant plant, User user) {
         this.photoId = photoId;
-        this.url = url;
-        this.dateTaken = dateTaken;
+        this.imageData = imageData;
+        this.uploadedAt = uploadedAt;
         this.plant = plant;
+        this.user = user;
     }
 
-    public PlantPhoto() {
-    }
+    public Photo() {}
 
     public Long getPhotoId() {
         return photoId;
@@ -46,20 +50,20 @@ public class PlantPhoto {
         this.photoId = photoId;
     }
 
-    public String getUrl() {
-        return url;
+    public byte[] getImageData() {
+        return imageData;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 
-    public LocalDateTime getDateTaken() {
-        return dateTaken;
+    public LocalDateTime getUploadedAt() {
+        return uploadedAt;
     }
 
-    public void setDateTaken(LocalDateTime dateTaken) {
-        this.dateTaken = dateTaken;
+    public void setUploadedAt(LocalDateTime uploadedAt) {
+        this.uploadedAt = uploadedAt;
     }
 
     public Plant getPlant() {
@@ -70,5 +74,12 @@ public class PlantPhoto {
         this.plant = plant;
     }
 
-    
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }

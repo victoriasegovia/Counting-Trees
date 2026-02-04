@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.countingTree.Counting.Tree.App.dto.CommentDTO;
-import com.countingTree.Counting.Tree.App.model.Comment;
+import com.countingTree.Counting.Tree.App.model.Note;
 import com.countingTree.Counting.Tree.App.model.Plant;
 import com.countingTree.Counting.Tree.App.model.User;
 import com.countingTree.Counting.Tree.App.repository.CommentRepository;
@@ -28,14 +28,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void addComment(CommentDTO commentDTO) {
-        Comment comment = toEntity(commentDTO);
+        Note comment = toEntity(commentDTO);
         validateComment(comment);
         commentRepository.save(comment);
     }
 
     @Override
     public void updateComment(Long commentId, CommentDTO commentDTO) {
-        Comment existingComment = commentRepository.findById(commentId)
+        Note existingComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException("Comment with ID " + commentId + " not found"));
         existingComment.setText(commentDTO.getText());
         if (commentDTO.getUserId() != null) {
@@ -59,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDTO getCommentDTOById(Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
+        Note comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException("Comment with ID " + commentId + " not found"));
         return toDTO(comment);
     }
@@ -71,7 +71,7 @@ public class CommentServiceImpl implements CommentService {
 
     // --------------------------------------------------------- EXTRA METHODS
 
-    private CommentDTO toDTO(Comment comment) {
+    private CommentDTO toDTO(Note comment) {
         return new CommentDTO(
             comment.getCommentId(),
             comment.getText(),
@@ -80,12 +80,12 @@ public class CommentServiceImpl implements CommentService {
         );
     }
 
-    private Comment toEntity(CommentDTO dto) {
+    private Note toEntity(CommentDTO dto) {
         User user = userRepository.findById(dto.getUserId())
             .orElseThrow(() -> new EntityNotFoundException("User not found"));
         Plant plant = plantRepository.findById(dto.getPlantId())
             .orElseThrow(() -> new EntityNotFoundException("Plant not found"));
-        Comment comment = new Comment();
+        Note comment = new Note();
         comment.setCommentId(dto.getCommentId());
         comment.setText(dto.getText());
         comment.setUser(user);
@@ -93,7 +93,7 @@ public class CommentServiceImpl implements CommentService {
         return comment;
     }
 
-    private void validateComment(Comment comment) {
+    private void validateComment(Note comment) {
         if (comment.getText() == null || comment.getText().trim().isEmpty()) {
             throw new IllegalArgumentException("Comment text cannot be null or empty");
         }

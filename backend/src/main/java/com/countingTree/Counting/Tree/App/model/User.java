@@ -1,21 +1,9 @@
 package com.countingTree.Counting.Tree.App.model;
 
+import java.util.HashSet;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -38,37 +26,29 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @Column(name = "photo")
-    private String photo;
-
     // -------------------------------------------------------- RELATIONS
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    @JsonBackReference("role-users")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "photo_id", nullable = true)
+    private Photo photo;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user-plants")
-    private Set<Plant> plantsRegistered;
+    private Set<Plant> plantsRegistered = new HashSet<>();
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user-alerts-created")
-    private Set<Alert> alertsCreated;
+    private Set<Alert> alertsCreated = new HashSet<>();
 
     @OneToMany(mappedBy = "resolver", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user-alerts-resolved")
-    private Set<Alert> alertsResolved;
-
-    // Commented out to avoid cyclic dependency issues
-    // private Set<Comment> commentsMade;
-    // private Set<Log> logsPerformed;
-    // private Set<PlantPhoto> plantPhotosUploaded;
-    // private Set<Export> exportsMade;
+    private Set<Alert> alertsResolved = new HashSet<>();
 
     // -------------------------------------------------------- CONSTRUCTORS, GETTERS AND SETTERS
-
-    public User(Long userId, String firstName, String lastName, String email, String password, String photo, Role role, Set<Plant> plantsRegistered, Set<Alert> alertsCreated, Set<Alert> alertsResolved) {
+    public User(Long userId, String firstName, String lastName, String email, String password, Photo photo, Role role, Set<Plant> plantsRegistered, Set<Alert> alertsCreated, Set<Alert> alertsResolved) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -124,11 +104,11 @@ public class User {
         this.password = password;
     }
 
-    public String getPhoto() {
+    public Photo getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(Photo photo) {
         this.photo = photo;
     }
 
@@ -163,5 +143,7 @@ public class User {
     public void setAlertsResolved(Set<Alert> alertsResolved) {
         this.alertsResolved = alertsResolved;
     }
+
+    
 
 }

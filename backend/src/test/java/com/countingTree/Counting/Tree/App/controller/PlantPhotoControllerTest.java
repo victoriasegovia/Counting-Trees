@@ -1,6 +1,6 @@
 package com.countingTree.Counting.Tree.App.controller;
 
-import com.countingTree.Counting.Tree.App.model.PlantPhoto;
+import com.countingTree.Counting.Tree.App.model.Photo;
 import com.countingTree.Counting.Tree.App.model.Plant;
 import com.countingTree.Counting.Tree.App.service.PlantPhotoService;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class PlantPhotoControllerTest {
 
     @Test
     void postAddPlantPhoto_callsService() throws Exception {
-        PlantPhoto photo = new PlantPhoto();
+        Photo photo = new Photo();
         photo.setUrl("http://example.com/photo.jpg");
         photo.setDateTaken(LocalDateTime.now());
 
@@ -38,12 +38,12 @@ public class PlantPhotoControllerTest {
                 .content(objectMapper.writeValueAsString(photo)))
             .andExpect(status().isOk());
 
-        verify(plantPhotoService, times(1)).addPlantPhoto(eq(5L), any(PlantPhoto.class));
+        verify(plantPhotoService, times(1)).addPlantPhoto(eq(5L), any(Photo.class));
     }
 
     @Test
     void getPlantPhotoById_returnsPhoto() throws Exception {
-        PlantPhoto photo = new PlantPhoto();
+        Photo photo = new Photo();
         photo.setPhotoId(1L);
         photo.setUrl("http://example.com/1.jpg");
         photo.setDateTaken(LocalDateTime.now());

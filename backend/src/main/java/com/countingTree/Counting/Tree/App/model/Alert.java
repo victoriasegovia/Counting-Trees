@@ -8,57 +8,45 @@ import com.fasterxml.jackson.annotation.*;
 @Entity
 @Table(name = "alerts")
 public class Alert {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long alertId;
 
     @Column(name = "type", nullable = false)
-    private String type;
-    
-    @Column(name = "message")
-    private String message;
+    private AlertType alertType;
 
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
 
-    
     // -------------------------------------------------------- RELATIONS
-
     @Enumerated(EnumType.STRING)
     private AlertStatus status = AlertStatus.PENDING;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "plant_alert",
-        joinColumns = @JoinColumn(name = "alert_id"),
-        inverseJoinColumns = @JoinColumn(name = "plant_id")
-    )
-    @JsonManagedReference("plant-alerts")
-    private Set<Plant> plants = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plant_id", nullable = false)
+    @JsonBackReference("plant-alerts")
+    private Plant plant;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
     @JsonBackReference("user-alerts-created")
-    private User creator;
+    private User createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resolved_by")
     @JsonBackReference("user-alerts-resolved")
-    private User resolver;
+    private User resolvedBy;
 
-    
     // -------------------------------------------------------- CONSTRUCTORS, GETTERS AND SETTERS
-
-    public Alert(Long alertId, String type, String message, LocalDateTime creationDate, AlertStatus status, Set<Plant> plants, User creator, User resolver) {
+    public Alert(Long alertId, AlertType alertType, LocalDateTime creationDate, AlertStatus status, Plant plant, User createdBy, User resolvedBy) {
         this.alertId = alertId;
-        this.type = type;
-        this.message = message;
+        this.alertType = alertType;
         this.creationDate = creationDate;
         this.status = status;
-        this.plants = plants;
-        this.creator = creator;
-        this.resolver = resolver;
+        this.plant = plant;
+        this.createdBy = createdBy;
+        this.resolvedBy = resolvedBy;
     }
 
     public Alert() {
@@ -72,20 +60,12 @@ public class Alert {
         this.alertId = alertId;
     }
 
-    public String getType() {
-        return type;
+    public AlertType getAlertType() {
+        return alertType;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setAlertType(AlertType alertType) {
+        this.alertType = alertType;
     }
 
     public LocalDateTime getCreationDate() {
@@ -104,28 +84,30 @@ public class Alert {
         this.status = status;
     }
 
-    public Set<Plant> getPlants() {
-        return plants;
+    public Plant getPlant() {
+        return plant;
     }
 
-    public void setPlants(Set<Plant> plants) {
-        this.plants = plants;
+    public void setPlant(Plant plant) {
+        this.plant = plant;
     }
 
     public User getCreator() {
-        return creator;
+        return createdBy;
     }
 
-    public void setCreator(User creator) {
-        this.creator = creator;
+    public void setCreator(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     public User getResolver() {
-        return resolver;
+        return resolvedBy;
     }
 
-    public void setResolver(User resolver) {
-        this.resolver = resolver;
+    public void setResolver(User resolvedBy) {
+        this.resolvedBy = resolvedBy;
     }
+
+    
 
 }

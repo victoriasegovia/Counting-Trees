@@ -1,8 +1,6 @@
 package com.countingTree.Counting.Tree.App.service;
 
 import java.util.List;
-
-import com.countingTree.Counting.Tree.App.model.Coordinate;
 import com.countingTree.Counting.Tree.App.model.Plant;
 
 public interface PlantService {
@@ -16,13 +14,5 @@ public interface PlantService {
     Plant getPlant(Long plantId);
 
     List<Plant> getAllPlants();
-
-    void addCoordinateForPlant(Long plantId, Coordinate coordinates);
-
-    // void deleteCoordinateForPlant(Long plantId);
-
-    Coordinate getCoordinateForPlant(Long plantId);
-
-    void updateCoordinateForPlant(Long plantId, Coordinate newCoordinates);
     
 }

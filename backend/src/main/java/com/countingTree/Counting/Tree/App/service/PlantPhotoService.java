@@ -2,19 +2,19 @@ package com.countingTree.Counting.Tree.App.service;
 
 import java.util.List;
 
-import com.countingTree.Counting.Tree.App.model.PlantPhoto;
+import com.countingTree.Counting.Tree.App.model.Photo;
 
 public interface PlantPhotoService {
 
-    PlantPhoto getPlantPhotoById(Long photoId);
+    Photo getPlantPhotoById(Long photoId);
 
-    List<PlantPhoto> getAllPlantPhotosForPlant(Long plantId);
+    List<Photo> getAllPlantPhotosForPlant(Long plantId);
 
-    List<PlantPhoto> getAllPlantPhotos();
+    List<Photo> getAllPlantPhotos();
 
-    void updatePlantPhoto(Long photoId, PlantPhoto photo);
+    void updatePlantPhoto(Long photoId, Photo photo);
 
     void deletePlantPhoto(Long photoId);
 
-    void addPlantPhoto(Long plantId, PlantPhoto photo);
+    void addPlantPhoto(Long plantId, Photo photo);
 }
