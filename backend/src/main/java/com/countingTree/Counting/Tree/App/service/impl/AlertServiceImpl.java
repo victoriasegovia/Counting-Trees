@@ -1,12 +1,14 @@
 package com.countingTree.Counting.Tree.App.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.countingTree.Counting.Tree.App.dto.AlertDTO;
 import com.countingTree.Counting.Tree.App.model.Alert;
 import com.countingTree.Counting.Tree.App.repository.AlertRepository;
 import com.countingTree.Counting.Tree.App.service.AlertService;
@@ -41,7 +43,7 @@ public class AlertServiceImpl implements AlertService {
     public void deleteAlert(Long id) {
         Alert alertSearched = alertRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Alert with ID " + id + " not found"));
-        if (!alertSearched.getPlants().isEmpty()){
+        if (!alertSearched.getPlants().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Alert has associated plants and cannot be erased.");
         }
         alertRepository.deleteById(id);
@@ -64,8 +66,7 @@ public class AlertServiceImpl implements AlertService {
     }
 
     // EXTRA METHODS
-
-    public void validateNewAlert (Alert alert) {
+    public void validateNewAlert(Alert alert) {
 
         if (alert.getAlertId() != null) {
             throw new IllegalArgumentException("New alert cannot have an ID");
@@ -86,6 +87,38 @@ public class AlertServiceImpl implements AlertService {
             throw new IllegalArgumentException("Alert creator cannot be null");
         }
 
+    }
+
+    private AlertDTO mapToDTO(Alert alert) {
+        AlertDTO dto = new AlertDTO();
+
+        dto.setAlertTypeName(alert.getAlertType().getName());
+        dto.setAlertTypeDescription(alert.getAlertType().getDescription());
+        dto.setCreationDate(alert.getCreationDate());
+        dto.setStatus(alert.getStatus());
+        dto.setCreatedById(alert.getCreator().getUserId());
+        dto.setCreatedByName(alert.getCreator().getFirstName());
+
+        if (alert.getResolver() != null) {
+            dto.setResolvedById(alert.getResolver().getUserId());
+            dto.setResolvedByName(alert.getResolver().getFirstName());
+        }
+
+        dto.setPlantId(alert.getPlant().getPlantId());
+
+        return dto;
+    }
+
+    private Alert mapToEntity(AlertDTO dto) {
+        Alert alert = new Alert();
+        alert.setType(dto.getType());
+        alert.setMessage(dto.getMessage());
+        alert.setCreationDate(dto.getCreationDate());
+        // Status puede ser null, por defecto PENDING
+        alert.setStatus(dto.getStatus() != null ? Enum.valueOf(Alert.AlertStatus.class, dto.getStatus()) : Alert.AlertStatus.PENDING);
+
+        // Relacion creator/resolver se asignaría en el service que conozca los Users
+        return alert;
     }
 
 }

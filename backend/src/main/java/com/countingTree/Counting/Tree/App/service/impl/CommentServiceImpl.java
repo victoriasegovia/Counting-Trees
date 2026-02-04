@@ -12,12 +12,12 @@ import com.countingTree.Counting.Tree.App.model.User;
 import com.countingTree.Counting.Tree.App.repository.CommentRepository;
 import com.countingTree.Counting.Tree.App.repository.PlantRepository;
 import com.countingTree.Counting.Tree.App.repository.UserRepository;
-import com.countingTree.Counting.Tree.App.service.CommentService;
+import com.countingTree.Counting.Tree.App.service.NoteService;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class CommentServiceImpl implements CommentService {
+public class CommentServiceImpl implements NoteService {
 
     @Autowired
     private CommentRepository commentRepository;

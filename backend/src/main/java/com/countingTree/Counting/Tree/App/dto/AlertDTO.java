@@ -16,7 +16,8 @@ public class AlertDTO {
     private String resolvedByName;
     private Long plantId;
 
-    public AlertDTO() {}
+    public AlertDTO() {
+    }
 
     public AlertDTO(String alertTypeName, String alertTypeDescription, LocalDateTime creationDate, AlertStatus status,
             Long createdById, String createdByName, Long resolvedById, String resolvedByName, Long plantId) {

@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.countingTree.Counting.Tree.App.model.Photo;
-import com.countingTree.Counting.Tree.App.service.PlantPhotoService;
+import com.countingTree.Counting.Tree.App.service.PhotoService;
 
 @RestController
 @RequestMapping("/api/v1/plant-photos")
 public class PlantPhotoController {
 
     @Autowired
-    private PlantPhotoService plantPhotoService;
+    private PhotoService plantPhotoService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Photo> getPlantPhotoById(@PathVariable("id") Long photoId) {

@@ -2,18 +2,18 @@ package com.countingTree.Counting.Tree.App.service;
 
 import java.util.List;
 
-import com.countingTree.Counting.Tree.App.model.Alert;
+import com.countingTree.Counting.Tree.App.dto.AlertDTO;
 
 public interface AlertService {
 
-    void addAlert(Alert newAlert);
+    AlertDTO getAlertById(Long id);
 
-    Alert getAlertById(Long id);
+    List<AlertDTO> getAllAlerts();
 
-    List<Alert> getAllAlerts();
+    void addAlert(AlertDTO newAlert);
+
+    AlertDTO updateAlert(Long id, AlertDTO alert);
 
     void deleteAlert(Long id);
-
-    Alert updateAlert(Long id, Alert alert);
 
 }

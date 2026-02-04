@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.countingTree.Counting.Tree.App.model.Photo;
 
-public interface PlantPhotoService {
+public interface PhotoService {
 
     Photo getPlantPhotoById(Long photoId);
 

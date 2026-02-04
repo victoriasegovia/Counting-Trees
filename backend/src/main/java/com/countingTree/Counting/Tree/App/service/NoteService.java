@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.countingTree.Counting.Tree.App.dto.CommentDTO;
 
-public interface CommentService {
+public interface NoteService {
 
     void addComment(CommentDTO commentDTO);
     void updateComment(Long commentId, CommentDTO commentDTO);

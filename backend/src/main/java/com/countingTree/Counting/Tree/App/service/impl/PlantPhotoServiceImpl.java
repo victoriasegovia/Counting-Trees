@@ -10,11 +10,11 @@ import com.countingTree.Counting.Tree.App.model.Plant;
 import com.countingTree.Counting.Tree.App.model.Photo;
 import com.countingTree.Counting.Tree.App.repository.PhotoRepository;
 import com.countingTree.Counting.Tree.App.repository.PlantRepository;
-import com.countingTree.Counting.Tree.App.service.PlantPhotoService;
+import com.countingTree.Counting.Tree.App.service.PhotoService;
 
 @Service
 @Transactional
-public class PlantPhotoServiceImpl implements PlantPhotoService {
+public class PlantPhotoServiceImpl implements PhotoService {
 
     @Autowired
     private PhotoRepository plantPhotoRepository;
