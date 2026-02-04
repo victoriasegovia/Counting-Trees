@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.countingTree.Counting.Tree.App.model.Plant;
 import com.countingTree.Counting.Tree.App.model.Photo;
-import com.countingTree.Counting.Tree.App.repository.PlantPhotoRepository;
+import com.countingTree.Counting.Tree.App.repository.PhotoRepository;
 import com.countingTree.Counting.Tree.App.repository.PlantRepository;
 import com.countingTree.Counting.Tree.App.service.PlantPhotoService;
 
@@ -17,7 +17,7 @@ import com.countingTree.Counting.Tree.App.service.PlantPhotoService;
 public class PlantPhotoServiceImpl implements PlantPhotoService {
 
     @Autowired
-    private PlantPhotoRepository plantPhotoRepository;
+    private PhotoRepository plantPhotoRepository;
 
     @Autowired
     private PlantRepository plantRepository;
