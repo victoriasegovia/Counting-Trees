@@ -53,6 +53,92 @@ public class Plant {
 
     // -------------------------------------------------------- CONSTRUCTORS, GETTERS AND SETTERS
 
+        public Plant(Long plantId, LocalDateTime datePlanted, Specie specie, User plantedBy,
+            PlantVerificationStatus plantVerificationStatus, HealthStatus healthStatus, Set<Photo> photos,
+            Set<Note> notes, Set<Alert> alerts) {
+        this.plantId = plantId;
+        this.datePlanted = datePlanted;
+        this.specie = specie;
+        this.plantedBy = plantedBy;
+        this.plantVerificationStatus = plantVerificationStatus;
+        this.healthStatus = healthStatus;
+        this.photos = photos;
+        this.notes = notes;
+        this.alerts = alerts;
+    }
 
+    public Plant() {}
+
+    public Long getPlantId() {
+        return plantId;
+    }
+
+    public void setPlantId(Long plantId) {
+        this.plantId = plantId;
+    }
+
+    public LocalDateTime getDatePlanted() {
+        return datePlanted;
+    }
+
+    public void setDatePlanted(LocalDateTime datePlanted) {
+        this.datePlanted = datePlanted;
+    }
+
+    public Specie getSpecie() {
+        return specie;
+    }
+
+    public void setSpecie(Specie specie) {
+        this.specie = specie;
+    }
+
+    public User getPlantedBy() {
+        return plantedBy;
+    }
+
+    public void setPlantedBy(User plantedBy) {
+        this.plantedBy = plantedBy;
+    }
+
+    public PlantVerificationStatus getPlantVerificationStatus() {
+        return plantVerificationStatus;
+    }
+
+    public void setPlantVerificationStatus(PlantVerificationStatus plantVerificationStatus) {
+        this.plantVerificationStatus = plantVerificationStatus;
+    }
+
+    public HealthStatus getHealthStatus() {
+        return healthStatus;
+    }
+
+    public void setHealthStatus(HealthStatus healthStatus) {
+        this.healthStatus = healthStatus;
+    }
+
+    public Set<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
+    }
+
+    public Set<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(Set<Note> notes) {
+        this.notes = notes;
+    }
+
+    public Set<Alert> getAlerts() {
+        return alerts;
+    }
+
+    public void setAlerts(Set<Alert> alerts) {
+        this.alerts = alerts;
+    }
 
 }
