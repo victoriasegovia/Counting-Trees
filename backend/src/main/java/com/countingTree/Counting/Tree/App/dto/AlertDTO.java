@@ -6,6 +6,7 @@ import com.countingTree.Counting.Tree.App.model.AlertStatus;
 
 public class AlertDTO {
 
+    private Long alertId;
     private String alertTypeName;
     private String alertTypeDescription;
     private LocalDateTime creationDate;
@@ -19,8 +20,10 @@ public class AlertDTO {
     public AlertDTO() {
     }
 
-    public AlertDTO(String alertTypeName, String alertTypeDescription, LocalDateTime creationDate, AlertStatus status,
+    public AlertDTO(Long alertId, String alertTypeName, String alertTypeDescription, LocalDateTime creationDate, AlertStatus status,
             Long createdById, String createdByName, Long resolvedById, String resolvedByName, Long plantId) {
+        
+        this.alertId = alertId;
         this.alertTypeName = alertTypeName;
         this.alertTypeDescription = alertTypeDescription;
         this.creationDate = creationDate;
@@ -32,6 +35,10 @@ public class AlertDTO {
         this.plantId = plantId;
     }
 
+    public Long getAlertId() {
+        return alertId;
+    }
+    
     public String getAlertTypeName() {
         return alertTypeName;
     }

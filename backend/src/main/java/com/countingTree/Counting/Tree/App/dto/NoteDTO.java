@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 public class NoteDTO {
+    
     private Long noteId;
     private String text;
     private LocalDateTime dateCreated;

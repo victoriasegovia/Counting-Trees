@@ -13,15 +13,17 @@ public class Alert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long alertId;
 
-    @Column(name = "type", nullable = false)
-    private AlertType alertType;
-
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
 
     // -------------------------------------------------------- RELATIONS
     @Enumerated(EnumType.STRING)
     private AlertStatus status = AlertStatus.PENDING;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "alert_type_id", nullable = false)
+    @JsonBackReference("type-alerts")
+    private AlertType alertType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plant_id", nullable = false)
@@ -107,7 +109,5 @@ public class Alert {
     public void setResolver(User resolvedBy) {
         this.resolvedBy = resolvedBy;
     }
-
-    
 
 }

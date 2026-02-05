@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.countingTree.Counting.Tree.App.dto.AlertDTO;
-import com.countingTree.Counting.Tree.App.model.Alert;
+import com.countingTree.Counting.Tree.App.dto.*;
+import com.countingTree.Counting.Tree.App.model.*;
 import com.countingTree.Counting.Tree.App.repository.AlertRepository;
 import com.countingTree.Counting.Tree.App.service.AlertService;
 
@@ -22,60 +22,57 @@ public class AlertServiceImpl implements AlertService {
     private AlertRepository alertRepository;
 
     @Override
+    public AlertDTO getAlertById(Long id) {
+        Alert alertSearched = alertRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Alert with ID " + id + " not found"));
+
+        return mapToDTO(alertSearched);
+    }
+
+    @Override
+    public List<AlertDTO> getAllAlerts() {
+        return alertRepository.findAll()
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+
+    @Override
     public void addAlert(Alert newAlert) {
         validateNewAlert(newAlert);
         alertRepository.save(newAlert);
     }
 
     @Override
-    public Alert getAlertById(Long id) {
-        Alert alertSearched = alertRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Alert with ID " + id + " not found"));
-        return alertSearched;
-    }
-
-    @Override
-    public List<Alert> getAllAlerts() {
-        return alertRepository.findAll();
-    }
-
-    @Override
     public void deleteAlert(Long id) {
-        Alert alertSearched = alertRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Alert with ID " + id + " not found"));
-        if (!alertSearched.getPlants().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Alert has associated plants and cannot be erased.");
-        }
         alertRepository.deleteById(id);
     }
 
     @Override
-    public Alert updateAlert(Long id, Alert alert) {
+    public AlertDTO updateAlert(Long id, Alert alert) {
 
         Alert alertToUpdate = alertRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Alert with ID " + id + " not found"));
 
-        alertToUpdate.setType(alert.getType());
-        alertToUpdate.setMessage(alert.getMessage());
+        alertToUpdate.setAlertType(alert.getAlertType());
         alertToUpdate.setStatus(alert.getStatus());
-        alertToUpdate.setPlants(alert.getPlants());
-        alertToUpdate.setResolver(alert.getResolver());
+        if (alert.getResolver() != null) {
+            alertToUpdate.setResolver(alert.getResolver());
+        }
         alertRepository.save(alertToUpdate);
 
-        return alertToUpdate;
+        return mapToDTO(alertToUpdate);
     }
 
-    // EXTRA METHODS
+    // -------------------------- EXTRA METHODS
+    
     public void validateNewAlert(Alert alert) {
 
         if (alert.getAlertId() != null) {
             throw new IllegalArgumentException("New alert cannot have an ID");
         }
-        if (alert.getType() == null || alert.getType().isEmpty()) {
+        if (alert.getAlertType() == null) {
             throw new IllegalArgumentException("Alert type cannot be null or empty");
-        }
-        if (alert.getMessage() == null || alert.getMessage().isEmpty()) {
-            throw new IllegalArgumentException("Alert message cannot be null or empty");
         }
         if (alert.getCreationDate() == null) {
             throw new IllegalArgumentException("Alert creation date cannot be null");
@@ -107,18 +104,6 @@ public class AlertServiceImpl implements AlertService {
         dto.setPlantId(alert.getPlant().getPlantId());
 
         return dto;
-    }
-
-    private Alert mapToEntity(AlertDTO dto) {
-        Alert alert = new Alert();
-        alert.setType(dto.getType());
-        alert.setMessage(dto.getMessage());
-        alert.setCreationDate(dto.getCreationDate());
-        // Status puede ser null, por defecto PENDING
-        alert.setStatus(dto.getStatus() != null ? Enum.valueOf(Alert.AlertStatus.class, dto.getStatus()) : Alert.AlertStatus.PENDING);
-
-        // Relacion creator/resolver se asignaría en el service que conozca los Users
-        return alert;
     }
 
 }
