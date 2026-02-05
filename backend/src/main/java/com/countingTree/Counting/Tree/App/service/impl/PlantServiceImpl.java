@@ -1,10 +1,17 @@
 package com.countingTree.Counting.Tree.App.service.impl;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.countingTree.Counting.Tree.App.model.Alert;
 import com.countingTree.Counting.Tree.App.model.Plant;
+import com.countingTree.Counting.Tree.App.model.Photo;
+import com.countingTree.Counting.Tree.App.dto.PhotoDTO;
+import com.countingTree.Counting.Tree.App.dto.PlantDTO;
 import com.countingTree.Counting.Tree.App.repository.PlantRepository;
 import com.countingTree.Counting.Tree.App.service.PlantService;
 
@@ -15,26 +22,42 @@ public class PlantServiceImpl implements PlantService {
     private PlantRepository plantRepository;
 
     @Override
+    public PlantDTO getPlantById(Long plantId) {
+        Plant existingPlant = plantRepository.findById(plantId)
+                .orElseThrow(() -> new IllegalArgumentException("Plant with ID " + plantId + " not found."));
+        return mapToDTO(existingPlant);
+    }
+
+    @Override
+    public List<PlantDTO> getAllPlants() {
+        return plantRepository.findAll()
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+
+    @Override
     public void addPlant(Plant newPlant) {
         validatePlant(newPlant);
         plantRepository.save(newPlant);
     }
 
     @Override
-    public void updatePlant(Long plantId, Plant newPlant) {
-        Plant existingPlant = plantRepository.findById(plantId)
+    public PlantDTO updatePlant(Long plantId, Plant plant) {
+
+        validatePlant(plant);
+        Plant plantUpdated = plantRepository.findById(plantId)
                 .orElseThrow(() -> new IllegalArgumentException("Plant with ID " + plantId + " not found."));
-        validatePlant(newPlant);
-        existingPlant.setMainPhoto(newPlant.getMainPhoto());
-        existingPlant.setDatePlanted(newPlant.getDatePlanted());
-        existingPlant.setSpecies(newPlant.getSpecies());
-        existingPlant.setOwner(newPlant.getOwner());
-        existingPlant.setPhotos(newPlant.getPhotos());
-        existingPlant.setHealthStatus(newPlant.getHealthStatus());
-        existingPlant.setVerificationStatus(newPlant.getVerificationStatus());
-        existingPlant.setAlerts(newPlant.getAlerts());
-        existingPlant.setComments(newPlant.getComments());
-        plantRepository.save(existingPlant);
+
+        plantUpdated.setSpecie(plant.getSpecie());
+        plantUpdated.setPlantVerificationStatus(plant.getPlantVerificationStatus());
+        plantUpdated.setHealthStatus(plant.getHealthStatus());
+        plantUpdated.setPhotos(plant.getPhotos());
+        plantUpdated.setNotes(plant.getNotes());
+        plantUpdated.setAlerts(plant.getAlerts());
+        plantRepository.save(plantUpdated);
+
+        return mapToDTO(plantUpdated);
     }
 
     @Override
@@ -44,30 +67,59 @@ public class PlantServiceImpl implements PlantService {
         plantRepository.deleteById(plantId);
     }
 
-    @Override
-    public Plant getPlant(Long plantId) {
-        Plant existingPlant = plantRepository.findById(plantId)
-                .orElseThrow(() -> new IllegalArgumentException("Plant with ID " + plantId + " not found."));
-        return existingPlant;
-    }
-
-    @Override
-    public List<Plant> getAllPlants() {
-        return plantRepository.findAll();
-    }
-
-
     // EXTRA METHODS
     private void validatePlant(Plant plant) {
+
         if (plant == null) {
             throw new IllegalArgumentException("Plant must not be null");
         }
-        if (plant.getSpecies() == null) {
+
+        if (plant.getLatitude() == null || plant.getLongitude() == null) {
+            throw new IllegalArgumentException("Plant must have a latitude and longitud coordenates.");
+        }
+
+        if (plant.getSpecie() == null) {
             throw new IllegalArgumentException("Plant must have a species");
         }
-        if (plant.getOwner() == null) {
-            throw new IllegalArgumentException("Plant must have an owner");
-        }
+
     }
 
+    private PlantDTO mapToDTO(Plant plant) {
+        PlantDTO plantDTO = new PlantDTO();
+
+        plantDTO.setPlantId(plant.getPlantId());
+        plantDTO.setLatitude(plant.getLatitude());
+        plantDTO.setLongitude(plant.getLongitude());
+
+        plantDTO.setDatePlanted(plant.getDatePlanted());
+
+        plantDTO.setSpecieId(plant.getSpecie().getSpecieId());
+        plantDTO.setSpecieCommonName(plant.getSpecie().getCommonName());
+        plantDTO.setSpecieScientificName(plant.getSpecie().getScientificName());
+
+        plantDTO.setPlantedById(plant.getPlantedBy().getUserId());
+        plantDTO.setPlantedByName(plant.getPlantedBy().getFirstName());
+
+        plantDTO.setPlantVerificationStatus(plant.getPlantVerificationStatus().toString());
+
+        plantDTO.setHealthStatusId(plant.getHealthStatus().getStatusId());
+        plantDTO.setHealthStatusName(plant.getHealthStatus().getName());
+        plantDTO.setHealthStatusDescription(plant.getHealthStatus().getDescription());
+
+        Set<Long> photoIds = plant.getPhotos()
+            .stream()
+            .map(Photo::getPhotoId)
+            .collect(Collectors.toSet());
+
+        plantDTO.setPhotos(photoIds);
+
+        Set<Long> alertIds = plant.getAlerts()
+            .stream()
+            .map(Alert::getAlertId)
+            .collect(Collectors.toSet());
+
+        plantDTO.setAlertIds(alertIds);
+
+        return plantDTO;
+    }
 }

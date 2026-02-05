@@ -5,6 +5,6 @@ import com.countingTree.Counting.Tree.App.model.AlertType;
 
 public interface AlertTypeRepository extends JpaRepository<AlertType, Long> {
 
-    public Object findByName(String name);
+    AlertType findByName(String name);
     
 }

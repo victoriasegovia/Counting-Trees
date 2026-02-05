@@ -7,5 +7,7 @@ import com.countingTree.Counting.Tree.App.model.HealthStatus;
 public interface HealthStatusRepository extends JpaRepository<HealthStatus, Long> {
 
     public boolean existsByName(String name);
+
+    public HealthStatus findByName(String name);
     
 }

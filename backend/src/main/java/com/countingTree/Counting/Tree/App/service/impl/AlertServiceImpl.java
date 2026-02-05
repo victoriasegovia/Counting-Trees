@@ -68,9 +68,6 @@ public class AlertServiceImpl implements AlertService {
     
     public void validateNewAlert(Alert alert) {
 
-        if (alert.getAlertId() != null) {
-            throw new IllegalArgumentException("New alert cannot have an ID");
-        }
         if (alert.getAlertType() == null) {
             throw new IllegalArgumentException("Alert type cannot be null or empty");
         }

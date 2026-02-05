@@ -14,11 +14,13 @@ This is a app to help track reforestation activities in cities and surrounings
 - rethinking the app design: creating a realistic MVP.
 - polishing the uml.
 
+## Day 3 - 05/02/2026
+- working on the services and services impl.
 
 ## Next Steps
+- correct controllers.
 - DTO creation necessary to avoid 415 error!
 - Manual tests in postman
-
 - Errores controlados
 - Validaciones
 - Seguridad

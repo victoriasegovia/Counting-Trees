@@ -71,13 +71,12 @@ public class HealthStatusServiceImpl implements HealthStatusService {
 
     private void validateHealthStatus(HealthStatus healthStatus) {
         
-		if (healthStatus.getStatusId() == null) {
-            throw new IllegalArgumentException("Health status ID cannot be null");
-        }
+		HealthStatus existing = healthStatusRepository.findByName(healthStatus.getName());
+
 		if (healthStatus.getName() == null || healthStatus.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Health status name cannot be null or empty");
         }
-        if (healthStatusRepository.existsByName(healthStatus.getName())) {
+        if (existing != null && !existing.getStatusId().equals(healthStatus.getStatusId())) {
             throw new IllegalArgumentException("Health status with the same name already exists");
         }
 

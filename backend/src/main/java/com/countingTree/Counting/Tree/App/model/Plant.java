@@ -14,11 +14,16 @@ public class Plant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long plantId;
 
+    @Column(name = "latitude", nullable = false)
+    private Double latitude;
+
+    @Column(name = "longitude", nullable = false)
+    private Double longitude;
+
     @Column(name = "date_planted")
     private LocalDateTime datePlanted;
 
     // -------------------------------------------------------- RELATIONS
-
     @ManyToOne
     @JoinColumn(name = "species_id", nullable = false)
     @JsonBackReference("specie-plants")
@@ -52,11 +57,12 @@ public class Plant {
     private Set<Alert> alerts = new HashSet<>();
 
     // -------------------------------------------------------- CONSTRUCTORS, GETTERS AND SETTERS
-
-        public Plant(Long plantId, LocalDateTime datePlanted, Specie specie, User plantedBy,
+    public Plant(Long plantId, double latitude, double longitude, LocalDateTime datePlanted, Specie specie, User plantedBy,
             PlantVerificationStatus plantVerificationStatus, HealthStatus healthStatus, Set<Photo> photos,
             Set<Note> notes, Set<Alert> alerts) {
         this.plantId = plantId;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.datePlanted = datePlanted;
         this.specie = specie;
         this.plantedBy = plantedBy;
@@ -67,7 +73,8 @@ public class Plant {
         this.alerts = alerts;
     }
 
-    public Plant() {}
+    public Plant() {
+    }
 
     public Long getPlantId() {
         return plantId;
@@ -75,6 +82,22 @@ public class Plant {
 
     public void setPlantId(Long plantId) {
         this.plantId = plantId;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public LocalDateTime getDatePlanted() {
