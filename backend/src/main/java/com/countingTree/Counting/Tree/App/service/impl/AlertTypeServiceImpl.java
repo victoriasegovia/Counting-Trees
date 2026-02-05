@@ -47,6 +47,8 @@ public class AlertTypeServiceImpl implements AlertTypeService {
 
         alertTypeUpdated.setName(alertType.getName());
         alertTypeUpdated.setDescription(alertType.getDescription());
+        alertTypeRepository.save(alertTypeUpdated);
+
         return mapToDTO(alertTypeUpdated);
     }
 
@@ -57,14 +59,14 @@ public class AlertTypeServiceImpl implements AlertTypeService {
 
     // -------------------------- EXTRA METHODS
     private void validateAlertType(AlertType alertType) {
-        if (alertType.getAlertTypeId() != null) {
-            throw new IllegalArgumentException("New alert type cannot have an ID");
-        }
+
+        AlertType existing = alertTypeRepository.findByName(alertType.getName());
+
         if (alertType.getName() == null) {
             throw new IllegalArgumentException("New alert type name cannot be null.");
         }
 
-        if (alertType.getName() != null && alertType.getName() == alertTypeRepository.findByName(alertType.getName())) {
+        if (existing != null && !existing.getAlertTypeId().equals(alertType.getAlertTypeId())) {
             throw new IllegalArgumentException("New alert type name already exist.");
         }
     }
