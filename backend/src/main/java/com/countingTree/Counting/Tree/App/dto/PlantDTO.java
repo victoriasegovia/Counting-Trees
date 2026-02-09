@@ -94,7 +94,7 @@ public class PlantDTO {
     public String getHealthStatusDescription() { return healthStatusDescription; }
     public void setHealthStatusDescription(String healthStatusDescription) { this.healthStatusDescription = healthStatusDescription; }
 
-    public Set<Long> getPhotoIds() { return Set<Long> photoIds; }
+    public Set<Long> getPhotoIds() { return photoIds; }
     public void setPhotos(Set<Long> photoIds) { this.photoIds = photoIds; }
 
     public Set<Long> getAlertIds() { return alertIds; }

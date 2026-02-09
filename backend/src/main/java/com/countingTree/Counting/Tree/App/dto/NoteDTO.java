@@ -1,8 +1,6 @@
 package com.countingTree.Counting.Tree.App.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
-import jakarta.persistence.*;
 
 public class NoteDTO {
     
