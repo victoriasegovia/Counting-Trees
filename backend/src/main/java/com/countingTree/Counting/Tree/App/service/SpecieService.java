@@ -1,18 +1,18 @@
 package com.countingTree.Counting.Tree.App.service;
 
 import java.util.List;
+import com.countingTree.Counting.Tree.App.dto.SpecieDTO;
 import com.countingTree.Counting.Tree.App.model.Specie;
 
 public interface SpecieService {
 
-    Specie getSpecieById(Long specieId);
+    SpecieDTO getSpecieById(Long specieId);
+
+    List<SpecieDTO> getAllSpecies();
 
     void addSpecie(Specie newSpecie);
 
-    void updateSpecie(Long specieId, Specie specie);
+    SpecieDTO updateSpecie(Long specieId, Specie specie);
 
     void deleteSpecie(Long specieId);
-
-    List<Specie> getAllSpecies();
-
 }

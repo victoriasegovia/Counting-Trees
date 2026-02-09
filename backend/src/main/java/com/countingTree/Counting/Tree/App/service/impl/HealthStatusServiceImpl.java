@@ -1,6 +1,7 @@
 package com.countingTree.Counting.Tree.App.service.impl;
 
 import com.countingTree.Counting.Tree.App.model.HealthStatus;
+import com.countingTree.Counting.Tree.App.dto.HealthStatusDTO;
 import com.countingTree.Counting.Tree.App.repository.HealthStatusRepository;
 import com.countingTree.Counting.Tree.App.service.HealthStatusService;
 
@@ -21,25 +22,37 @@ public class HealthStatusServiceImpl implements HealthStatusService {
 	private HealthStatusRepository healthStatusRepository;
 
 	@Override
+	public HealthStatusDTO getHealthStatusById(Long healthStatusId) {
+		HealthStatus healthStatus = healthStatusRepository.findById(healthStatusId)
+                .orElseThrow(() -> new EntityNotFoundException("Health Status with ID " + healthStatusId + " not found."));
+	return mapToDTO(healthStatus);
+			}
+
+	@Override
+	public List<HealthStatusDTO> getAllHealthStatus() {
+		return healthStatusRepository.findAll()
+			.stream()
+			.map(this::mapToDTO)
+			.toList();
+	}
+
+	@Override
 	public void addHealthStatus(HealthStatus newHealthStatus) {
-        validateNewHealthStatus(newHealthStatus);
+        validateHealthStatus(newHealthStatus);
 		healthStatusRepository.save(newHealthStatus);
 	}
 
 	@Override
-	public HealthStatus getHealthStatusById(Long healthStatusId) {
-        return healthStatusRepository.findById(healthStatusId)
-                .orElseThrow(() -> new EntityNotFoundException("Health Status with ID " + healthStatusId + " not found."));
-	}
-
-	@Override
-	public void updateHealthStatus(Long healthStatusId, HealthStatus healthStatus) {
+	public HealthStatusDTO updateHealthStatus(Long healthStatusId, HealthStatus healthStatus) {
+		validateHealthStatus(healthStatus);
 		HealthStatus existingHealthStatus = healthStatusRepository.findById(healthStatusId)
                 .orElseThrow(() -> new EntityNotFoundException("Health Status with ID " + healthStatusId + " not found."));
-            
+        
 		existingHealthStatus.setName(healthStatus.getName());
 		existingHealthStatus.setDescription(healthStatus.getDescription());
 		healthStatusRepository.save(existingHealthStatus);
+
+		return mapToDTO(existingHealthStatus);
 	}
 
 	@Override
@@ -54,19 +67,29 @@ public class HealthStatusServiceImpl implements HealthStatusService {
 		healthStatusRepository.deleteById(healthStatusId);
 	}
 
-	@Override
-	public List<HealthStatus> getAllHealthStatus() {
-		return healthStatusRepository.findAll();
-	}
+    // ------------------------ EXTRA METHODS
 
-    // EXTRA METHODS
+    private void validateHealthStatus(HealthStatus healthStatus) {
+        
+		HealthStatus existing = healthStatusRepository.findByName(healthStatus.getName());
 
-    private void validateNewHealthStatus(HealthStatus newHealthStatus) {
-        if (newHealthStatus.getName() == null || newHealthStatus.getName().trim().isEmpty()) {
+		if (healthStatus.getName() == null || healthStatus.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Health status name cannot be null or empty");
         }
-        if (healthStatusRepository.existsByName(newHealthStatus.getName())) {
+        if (existing != null && !existing.getStatusId().equals(healthStatus.getStatusId())) {
             throw new IllegalArgumentException("Health status with the same name already exists");
         }
+
     }
+
+	private HealthStatusDTO mapToDTO(HealthStatus healthStatus) {
+		HealthStatusDTO healthStatusDTO = new HealthStatusDTO();
+
+		healthStatusDTO.setStatusId(healthStatus.getStatusId());
+		healthStatusDTO.setName(healthStatus.getName());
+		healthStatusDTO.setDescription(healthStatus.getDescription());
+
+		return healthStatusDTO;
+	}
+
 }

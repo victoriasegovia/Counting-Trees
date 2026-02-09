@@ -3,7 +3,10 @@ package com.countingTree.Counting.Tree.App.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.countingTree.Counting.Tree.App.model.AlertType;
 import com.countingTree.Counting.Tree.App.model.Specie;
+import com.countingTree.Counting.Tree.App.dto.SpecieDTO;
 import com.countingTree.Counting.Tree.App.repository.SpecieRepository;
 import com.countingTree.Counting.Tree.App.service.SpecieService;
 
@@ -16,10 +19,18 @@ public class SpecieServiceImpl implements SpecieService {
     private SpecieRepository specieRepository;
 
     @Override
-    public Specie getSpecieById(Long specieId) {
+    public SpecieDTO getSpecieById(Long specieId) {
         Specie existingSpecie = specieRepository.findById(specieId)
                 .orElseThrow(() -> new IllegalArgumentException("Specie with ID " + specieId + " not found."));
-        return existingSpecie;
+        return mapToDTO(existingSpecie);
+    }
+
+    @Override
+    public List<SpecieDTO> getAllSpecies() {
+        return specieRepository.findAll()
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
     }
 
     @Override
@@ -29,37 +40,27 @@ public class SpecieServiceImpl implements SpecieService {
     }
 
     @Override
-    public void updateSpecie(Long specieId, Specie specie) {
-        Specie existingSpecie = specieRepository.findById(specieId)
+    public SpecieDTO updateSpecie(Long specieId, Specie specie) {
+        validateSpecie(specie);
+        Specie specieUpdate = specieRepository.findById(specieId)
                 .orElseThrow(() -> new IllegalArgumentException("Specie with ID " + specieId + " not found."));
 
-        existingSpecie.setCommonName(specie.getCommonName());
-        existingSpecie.setScientificName(specie.getScientificName());
-        existingSpecie.setDescription(specie.getDescription());
-        validateSpecie(specie);
+        specieUpdate.setCommonName(specie.getCommonName());
+        specieUpdate.setScientificName(specie.getScientificName());
+        specieUpdate.setDescription(specie.getDescription());
+        specieRepository.save(specieUpdate);
 
-        specieRepository.save(existingSpecie);
+        return mapToDTO(specieUpdate);
     }
 
     @Override
     public void deleteSpecie(Long specieId) {
-        Specie existingSpecie = specieRepository.findById(specieId)
-                .orElseThrow(() -> new IllegalArgumentException("Specie with ID " + specieId + " not found."));
-
-        if (!existingSpecie.getPlants().isEmpty()) {
-            throw new IllegalArgumentException("Specie with ID " + specieId + " has associated plants and cannot be deleted.");
-        } else {
-            specieRepository.deleteById(specieId);
-        }
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    public List<Specie> getAllSpecies() {
-        return specieRepository.findAll();
-    }
-
-    // EXTRA METHODS
+    // -------------------------- EXTRA METHODS
     private void validateSpecie(Specie specie) {
+
         if (specie == null) {
             throw new IllegalArgumentException("Specie must not be null");
         }
@@ -69,5 +70,28 @@ public class SpecieServiceImpl implements SpecieService {
         if (specie.getScientificName() == null || specie.getScientificName().trim().isEmpty()) {
             throw new IllegalArgumentException("Scientific name must not be null or empty");
         }
+
+        Specie existingByCommonName = specieRepository.findByCommonName(specie.getCommonName());
+
+        if (existingByCommonName != null && !existingByCommonName.getSpecieId().equals(specie.getSpecieId())) {
+            throw new IllegalArgumentException("Specie common name already exists.");
+        }
+
+        Specie existingByScientificName = specieRepository.findByScientificName(specie.getScientificName());
+
+        if (existingByScientificName != null && !existingByScientificName.getSpecieId().equals(specie.getSpecieId())) {
+            throw new IllegalArgumentException("Specie scientific name already exists.");
+        }
+    }
+
+    private SpecieDTO mapToDTO(Specie specie) {
+        SpecieDTO specieDTO = new SpecieDTO();
+
+        specieDTO.setSpecieId(specie.getSpecieId());
+        specieDTO.setCommonName(specie.getCommonName());
+        specieDTO.setScientificName(specie.getScientificName());
+        specieDTO.setDescription(specie.getDescription());
+
+        return specieDTO;
     }
 }

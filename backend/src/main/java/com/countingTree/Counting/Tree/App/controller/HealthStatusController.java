@@ -1,5 +1,6 @@
 package com.countingTree.Counting.Tree.App.controller;
 
+import com.countingTree.Counting.Tree.App.dto.HealthStatusDTO;
 import com.countingTree.Counting.Tree.App.model.HealthStatus;
 import com.countingTree.Counting.Tree.App.service.HealthStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,13 @@ public class HealthStatusController {
     private HealthStatusService healthStatusService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<HealthStatus> getHealthStatusById(@PathVariable Long id) {
+    public ResponseEntity<HealthStatusDTO> getHealthStatusById(@PathVariable Long id) {
         return ResponseEntity.ok(healthStatusService.getHealthStatusById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<HealthStatusDTO>> getAllHealthStatuses() {
+        return ResponseEntity.ok(healthStatusService.getAllHealthStatus());
     }
 
     @PostMapping
@@ -26,9 +32,9 @@ public class HealthStatusController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateHealthStatus(@PathVariable Long id, @RequestBody HealthStatus healthStatus) {
-        healthStatusService.updateHealthStatus(id, healthStatus);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<HealthStatusDTO> updateHealthStatus(@PathVariable Long id, @RequestBody HealthStatus healthStatus) {
+        HealthStatusDTO updated = healthStatusService.updateHealthStatus(id, healthStatus);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -37,8 +43,4 @@ public class HealthStatusController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<HealthStatus>> getAllHealthStatuses() {
-        return ResponseEntity.ok(healthStatusService.getAllHealthStatus());
-    }
 }

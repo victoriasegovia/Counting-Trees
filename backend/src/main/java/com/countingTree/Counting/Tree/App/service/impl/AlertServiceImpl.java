@@ -1,13 +1,15 @@
 package com.countingTree.Counting.Tree.App.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.countingTree.Counting.Tree.App.model.Alert;
+import com.countingTree.Counting.Tree.App.dto.*;
+import com.countingTree.Counting.Tree.App.model.*;
 import com.countingTree.Counting.Tree.App.repository.AlertRepository;
 import com.countingTree.Counting.Tree.App.service.AlertService;
 
@@ -20,61 +22,54 @@ public class AlertServiceImpl implements AlertService {
     private AlertRepository alertRepository;
 
     @Override
+    public AlertDTO getAlertById(Long id) {
+        Alert alertSearched = alertRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Alert with ID " + id + " not found"));
+
+        return mapToDTO(alertSearched);
+    }
+
+    @Override
+    public List<AlertDTO> getAllAlerts() {
+        return alertRepository.findAll()
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+
+    @Override
     public void addAlert(Alert newAlert) {
         validateNewAlert(newAlert);
         alertRepository.save(newAlert);
     }
 
     @Override
-    public Alert getAlertById(Long id) {
-        Alert alertSearched = alertRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Alert with ID " + id + " not found"));
-        return alertSearched;
-    }
-
-    @Override
-    public List<Alert> getAllAlerts() {
-        return alertRepository.findAll();
-    }
-
-    @Override
     public void deleteAlert(Long id) {
-        Alert alertSearched = alertRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Alert with ID " + id + " not found"));
-        if (!alertSearched.getPlants().isEmpty()){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Alert has associated plants and cannot be erased.");
-        }
         alertRepository.deleteById(id);
     }
 
     @Override
-    public Alert updateAlert(Long id, Alert alert) {
+    public AlertDTO updateAlert(Long id, Alert alert) {
 
         Alert alertToUpdate = alertRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Alert with ID " + id + " not found"));
 
-        alertToUpdate.setType(alert.getType());
-        alertToUpdate.setMessage(alert.getMessage());
+        alertToUpdate.setAlertType(alert.getAlertType());
         alertToUpdate.setStatus(alert.getStatus());
-        alertToUpdate.setPlants(alert.getPlants());
-        alertToUpdate.setResolver(alert.getResolver());
+        if (alert.getResolvedBy() != null) {
+            alertToUpdate.setResolvedBy(alert.getResolvedBy());
+        }
         alertRepository.save(alertToUpdate);
 
-        return alertToUpdate;
+        return mapToDTO(alertToUpdate);
     }
 
-    // EXTRA METHODS
+    // -------------------------- EXTRA METHODS
+    
+    public void validateNewAlert(Alert alert) {
 
-    public void validateNewAlert (Alert alert) {
-
-        if (alert.getAlertId() != null) {
-            throw new IllegalArgumentException("New alert cannot have an ID");
-        }
-        if (alert.getType() == null || alert.getType().isEmpty()) {
+        if (alert.getAlertType() == null) {
             throw new IllegalArgumentException("Alert type cannot be null or empty");
-        }
-        if (alert.getMessage() == null || alert.getMessage().isEmpty()) {
-            throw new IllegalArgumentException("Alert message cannot be null or empty");
         }
         if (alert.getCreationDate() == null) {
             throw new IllegalArgumentException("Alert creation date cannot be null");
@@ -82,10 +77,30 @@ public class AlertServiceImpl implements AlertService {
         if (alert.getStatus() == null) {
             throw new IllegalArgumentException("Alert status cannot be null or empty");
         }
-        if (alert.getCreator() == null) {
+        if (alert.getCreatedBy() == null) {
             throw new IllegalArgumentException("Alert creator cannot be null");
         }
 
+    }
+
+    private AlertDTO mapToDTO(Alert alert) {
+        AlertDTO dto = new AlertDTO();
+
+        dto.setAlertTypeName(alert.getAlertType().getName());
+        dto.setAlertTypeDescription(alert.getAlertType().getDescription());
+        dto.setCreationDate(alert.getCreationDate());
+        dto.setStatus(alert.getStatus());
+        dto.setCreatedById(alert.getCreatedBy().getUserId());
+        dto.setCreatedByName(alert.getCreatedBy().getFirstName());
+
+        if (alert.getResolvedBy() != null) {
+            dto.setResolvedById(alert.getResolvedBy().getUserId());
+            dto.setResolvedByName(alert.getResolvedBy().getFirstName());
+        }
+
+        dto.setPlantId(alert.getPlant().getPlantId());
+
+        return dto;
     }
 
 }

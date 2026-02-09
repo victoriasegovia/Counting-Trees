@@ -1,5 +1,6 @@
 package com.countingTree.Counting.Tree.App.controller;
 
+import com.countingTree.Counting.Tree.App.dto.SpecieDTO;
 import com.countingTree.Counting.Tree.App.model.Specie;
 import com.countingTree.Counting.Tree.App.service.SpecieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,13 @@ public class SpecieController {
     private SpecieService specieService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Specie> getSpecieById(@PathVariable Long id) {
+    public ResponseEntity<SpecieDTO> getSpecieById(@PathVariable Long id) {
         return ResponseEntity.ok(specieService.getSpecieById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SpecieDTO>> getAllSpecies() {
+        return ResponseEntity.ok(specieService.getAllSpecies());
     }
 
     @PostMapping
@@ -26,9 +32,9 @@ public class SpecieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateSpecie(@PathVariable Long id, @RequestBody Specie specie) {
-        specieService.updateSpecie(id, specie);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<SpecieDTO> updateSpecie(@PathVariable Long id, @RequestBody Specie specie) {
+        SpecieDTO updated = specieService.updateSpecie(id, specie);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -37,8 +43,4 @@ public class SpecieController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<Specie>> getAllSpecies() {
-        return ResponseEntity.ok(specieService.getAllSpecies());
     }
-}

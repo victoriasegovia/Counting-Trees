@@ -4,9 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.*;
+import lombok.*;
 
 @Entity
 @Table(name = "species")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Specie {
     
     @Id
@@ -24,61 +29,10 @@ public class Specie {
 
     // ------------------------------------------------------------ RELATIONS
 
-    @OneToMany(mappedBy = "species")
-    @JsonManagedReference
+    @OneToMany(mappedBy = "specie")
+    @JsonManagedReference("specie-plants")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Plant> plants = new HashSet<>();
 
-    // ------------------------------------ CONSTRUCTORS, GETTERS AND SETTERS
-
-    public Specie(Long specieId, String commonName, String scientificName, String description, Set<Plant> plants) {
-        this.specieId = specieId;
-        this.commonName = commonName;
-        this.scientificName = scientificName;
-        this.description = description;
-        this.plants = plants;
-    }
-
-    public Specie() {
-    }
-
-    public Long getSpecieId() {
-        return specieId;
-    }
-
-    public void setSpecieId(Long specieId) {
-        this.specieId = specieId;
-    }
-
-    public String getCommonName() {
-        return commonName;
-    }
-
-    public void setCommonName(String commonName) {
-        this.commonName = commonName;
-    }
-
-    public String getScientificName() {
-        return scientificName;
-    }
-
-    public void setScientificName(String scientificName) {
-        this.scientificName = scientificName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Plant> getPlants() {
-        return plants;
-    }
-
-    public void setPlants(Set<Plant> plants) {
-        this.plants = plants;
-    }
-    
 }
