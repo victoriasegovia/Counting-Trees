@@ -30,14 +30,14 @@ public class Plant {
 
     // -------------------------------------------------------- RELATIONS
     @ManyToOne
-    @JoinColumn(name = "species_id", nullable = false)
+    @JoinColumn(name = "specie_id", nullable = false)
     @JsonBackReference("specie-plants")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Specie specie;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
+    @JoinColumn(name = "planted_by", nullable = false)
     @JsonBackReference("user-plants")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -66,8 +66,7 @@ public class Plant {
     @EqualsAndHashCode.Exclude
     private Set<Note> notes = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "alert_id")
+    @OneToMany(mappedBy = "plant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("plant-alerts")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

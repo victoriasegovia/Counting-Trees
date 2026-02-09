@@ -56,8 +56,8 @@ public class AlertServiceImpl implements AlertService {
 
         alertToUpdate.setAlertType(alert.getAlertType());
         alertToUpdate.setStatus(alert.getStatus());
-        if (alert.getResolver() != null) {
-            alertToUpdate.setResolver(alert.getResolver());
+        if (alert.getResolvedBy() != null) {
+            alertToUpdate.setResolvedBy(alert.getResolvedBy());
         }
         alertRepository.save(alertToUpdate);
 
@@ -77,7 +77,7 @@ public class AlertServiceImpl implements AlertService {
         if (alert.getStatus() == null) {
             throw new IllegalArgumentException("Alert status cannot be null or empty");
         }
-        if (alert.getCreator() == null) {
+        if (alert.getCreatedBy() == null) {
             throw new IllegalArgumentException("Alert creator cannot be null");
         }
 
@@ -90,12 +90,12 @@ public class AlertServiceImpl implements AlertService {
         dto.setAlertTypeDescription(alert.getAlertType().getDescription());
         dto.setCreationDate(alert.getCreationDate());
         dto.setStatus(alert.getStatus());
-        dto.setCreatedById(alert.getCreator().getUserId());
-        dto.setCreatedByName(alert.getCreator().getFirstName());
+        dto.setCreatedById(alert.getCreatedBy().getUserId());
+        dto.setCreatedByName(alert.getCreatedBy().getFirstName());
 
-        if (alert.getResolver() != null) {
-            dto.setResolvedById(alert.getResolver().getUserId());
-            dto.setResolvedByName(alert.getResolver().getFirstName());
+        if (alert.getResolvedBy() != null) {
+            dto.setResolvedById(alert.getResolvedBy().getUserId());
+            dto.setResolvedByName(alert.getResolvedBy().getFirstName());
         }
 
         dto.setPlantId(alert.getPlant().getPlantId());

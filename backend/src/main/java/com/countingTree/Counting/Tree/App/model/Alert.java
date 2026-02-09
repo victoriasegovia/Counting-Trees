@@ -15,6 +15,7 @@ public class Alert {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "alert_id")
     private Long alertId;
 
     @Column(name = "creation_date", nullable = false)

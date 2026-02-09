@@ -40,15 +40,15 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "plantedBy", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user-plants")
     private Set<Plant> plantsRegistered = new HashSet<>();
 
-    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user-alerts-created")
     private Set<Alert> alertsCreated = new HashSet<>();
 
-    @OneToMany(mappedBy = "resolver", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "resolvedBy", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user-alerts-resolved")
     private Set<Alert> alertsResolved = new HashSet<>();
 

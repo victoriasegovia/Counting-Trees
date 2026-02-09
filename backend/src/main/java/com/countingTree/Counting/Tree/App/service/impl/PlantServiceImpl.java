@@ -111,7 +111,7 @@ public class PlantServiceImpl implements PlantService {
             .map(Photo::getPhotoId)
             .collect(Collectors.toSet());
 
-        plantDTO.setPhotos(photoIds);
+        plantDTO.setPhotoIds(photoIds);
 
         Set<Long> alertIds = plant.getAlerts()
             .stream()

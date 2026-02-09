@@ -29,7 +29,7 @@ public class Specie {
 
     // ------------------------------------------------------------ RELATIONS
 
-    @OneToMany(mappedBy = "species")
+    @OneToMany(mappedBy = "specie")
     @JsonManagedReference("specie-plants")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
