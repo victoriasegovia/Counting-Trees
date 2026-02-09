@@ -1,5 +1,7 @@
 package com.countingTree.Counting.Tree.App.controller;
 
+import com.countingTree.Counting.Tree.App.dto.NoteDTO;
+import com.countingTree.Counting.Tree.App.model.Note;
 import com.countingTree.Counting.Tree.App.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +17,24 @@ public class NoteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<NoteDTO> getNoteById(@PathVariable Long id) {
-        return ResponseEntity.ok(noteService.getNoteDTOById(id));
+        return ResponseEntity.ok(noteService.getNoteById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<NoteDTO>> getAllNotes() {
+        return ResponseEntity.ok(noteService.getAllNotes());
     }
 
     @PostMapping
-    public ResponseEntity<Void> addNote(@RequestBody NoteDTO noteDTO) {
-        noteService.addNote(noteDTO);
+    public ResponseEntity<Void> addNote(@RequestBody Note note) {
+        noteService.addNote(note);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateNote(@PathVariable Long id, @RequestBody NoteDTO noteDTO) {
-        noteService.updateNote(id, noteDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<NoteDTO> updateNote(@PathVariable Long id, @RequestBody Note note) {
+        NoteDTO updated = noteService.updateNote(id, note);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -36,8 +43,4 @@ public class NoteController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<NoteDTO>> getAllNotes() {
-        return ResponseEntity.ok(noteService.getAllNoteDTOs());
     }
-}

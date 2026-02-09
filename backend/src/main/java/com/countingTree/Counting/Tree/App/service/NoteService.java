@@ -7,7 +7,7 @@ import com.countingTree.Counting.Tree.App.model.Note;
 
 public interface NoteService {
 
-    NoteDTO getNoteDTOById(Long noteId);
+    NoteDTO getNoteById(Long noteId);
 
     List<NoteDTO> getAllNotes();
 

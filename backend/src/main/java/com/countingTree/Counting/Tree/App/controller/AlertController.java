@@ -2,6 +2,7 @@ package com.countingTree.Counting.Tree.App.controller;
 
 import java.util.List;
 
+import com.countingTree.Counting.Tree.App.dto.AlertDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.countingTree.Counting.Tree.App.model.Alert;
 import com.countingTree.Counting.Tree.App.service.AlertService;
 
-
 @RestController
 @RequestMapping("api/v1/alerts")
 public class AlertController {
@@ -25,8 +25,13 @@ public class AlertController {
     private AlertService alertService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Alert> getAlertById(@PathVariable Long id) {
+    public ResponseEntity<AlertDTO> getAlertById(@PathVariable Long id) {
         return ResponseEntity.ok(alertService.getAlertById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AlertDTO>> getAllAlerts() {
+        return ResponseEntity.ok(alertService.getAllAlerts());
     }
 
     @PostMapping
@@ -36,9 +41,9 @@ public class AlertController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateAlert(@PathVariable Long id, @RequestBody Alert alert) {
-        alertService.updateAlert(id, alert);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<AlertDTO> updateAlert(@PathVariable Long id, @RequestBody Alert alert) {
+        AlertDTO updated = alertService.updateAlert(id, alert);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -47,8 +52,4 @@ public class AlertController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<Alert>> getAllAlerts() {
-        return ResponseEntity.ok(alertService.getAllAlerts());
-    }
 }

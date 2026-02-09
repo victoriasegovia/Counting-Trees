@@ -24,7 +24,7 @@ public class NoteServiceImpl implements NoteService {
     private NoteRepository noteRepository;
 
     @Override
-    public NoteDTO getNoteDTOById(Long noteId) {
+    public NoteDTO getNoteById(Long noteId) {
         Note note = noteRepository.findById(noteId)
                 .orElseThrow(() -> new EntityNotFoundException("Note with ID " + noteId + " not found"));
         return mapToDTO(note);
