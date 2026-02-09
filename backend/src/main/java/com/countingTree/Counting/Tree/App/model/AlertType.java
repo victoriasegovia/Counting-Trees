@@ -4,9 +4,14 @@ import jakarta.persistence.*;
 
 import java.util.*;
 import com.fasterxml.jackson.annotation.*;
+import lombok.*;
 
 @Entity
 @Table(name = "alert_types")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AlertType {
 
     @Id
@@ -21,47 +26,8 @@ public class AlertType {
 
     @OneToMany(mappedBy = "alertType", fetch = FetchType.LAZY)
     @JsonManagedReference("type-alerts")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Alert> alerts = new HashSet<>();
 
-    public AlertType(Long alertTypeId, String name, String description, Set<Alert> alerts) {
-        this.alertTypeId = alertTypeId;
-        this.name = name;
-        this.description = description;
-        this.alerts = alerts;
-    }
-
-    public AlertType() {}
-
-    public Long getAlertTypeId() {
-        return alertTypeId;
-    }
-
-    public void setAlertTypeId(Long alertTypeId) {
-        this.alertTypeId = alertTypeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Alert> getAlerts() {
-        return alerts;
-    }
-
-    public void setAlerts(Set<Alert> alerts) {
-        this.alerts = alerts;
-    }
-    
 }

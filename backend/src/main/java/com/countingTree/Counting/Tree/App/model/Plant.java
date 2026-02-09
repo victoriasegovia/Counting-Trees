@@ -5,9 +5,14 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "plants")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Plant {
 
     @Id
@@ -27,11 +32,15 @@ public class Plant {
     @ManyToOne
     @JoinColumn(name = "species_id", nullable = false)
     @JsonBackReference("specie-plants")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Specie specie;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     @JsonBackReference("user-plants")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private User plantedBy;
 
     @Enumerated(EnumType.STRING)
@@ -41,127 +50,27 @@ public class Plant {
     @ManyToOne
     @JoinColumn(name = "health_status_id")
     @JsonBackReference("plant-health")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private HealthStatus healthStatus;
 
     @OneToMany(mappedBy = "plant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("plant-photos")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Photo> photos = new HashSet<>();
 
     @OneToMany(mappedBy = "plant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("plant-notes")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Note> notes = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "alert_id")
     @JsonManagedReference("plant-alerts")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Alert> alerts = new HashSet<>();
-
-    // -------------------------------------------------------- CONSTRUCTORS, GETTERS AND SETTERS
-    public Plant(Long plantId, double latitude, double longitude, LocalDateTime datePlanted, Specie specie, User plantedBy,
-            PlantVerificationStatus plantVerificationStatus, HealthStatus healthStatus, Set<Photo> photos,
-            Set<Note> notes, Set<Alert> alerts) {
-        this.plantId = plantId;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.datePlanted = datePlanted;
-        this.specie = specie;
-        this.plantedBy = plantedBy;
-        this.plantVerificationStatus = plantVerificationStatus;
-        this.healthStatus = healthStatus;
-        this.photos = photos;
-        this.notes = notes;
-        this.alerts = alerts;
-    }
-
-    public Plant() {
-    }
-
-    public Long getPlantId() {
-        return plantId;
-    }
-
-    public void setPlantId(Long plantId) {
-        this.plantId = plantId;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public LocalDateTime getDatePlanted() {
-        return datePlanted;
-    }
-
-    public void setDatePlanted(LocalDateTime datePlanted) {
-        this.datePlanted = datePlanted;
-    }
-
-    public Specie getSpecie() {
-        return specie;
-    }
-
-    public void setSpecie(Specie specie) {
-        this.specie = specie;
-    }
-
-    public User getPlantedBy() {
-        return plantedBy;
-    }
-
-    public void setPlantedBy(User plantedBy) {
-        this.plantedBy = plantedBy;
-    }
-
-    public PlantVerificationStatus getPlantVerificationStatus() {
-        return plantVerificationStatus;
-    }
-
-    public void setPlantVerificationStatus(PlantVerificationStatus plantVerificationStatus) {
-        this.plantVerificationStatus = plantVerificationStatus;
-    }
-
-    public HealthStatus getHealthStatus() {
-        return healthStatus;
-    }
-
-    public void setHealthStatus(HealthStatus healthStatus) {
-        this.healthStatus = healthStatus;
-    }
-
-    public Set<Photo> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(Set<Photo> photos) {
-        this.photos = photos;
-    }
-
-    public Set<Note> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(Set<Note> notes) {
-        this.notes = notes;
-    }
-
-    public Set<Alert> getAlerts() {
-        return alerts;
-    }
-
-    public void setAlerts(Set<Alert> alerts) {
-        this.alerts = alerts;
-    }
 
 }
