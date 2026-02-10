@@ -28,7 +28,6 @@ public class User {
     private String email;
 
     @Column(name = "password", nullable = false)
-    @JsonIgnore
     private String password;
 
     // -------------------------------------------------------- RELATIONS
