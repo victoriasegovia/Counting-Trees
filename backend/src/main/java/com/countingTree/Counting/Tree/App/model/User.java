@@ -38,6 +38,7 @@ public class User {
     private Photo photo;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "plantedBy", cascade = CascadeType.ALL, orphanRemoval = true)

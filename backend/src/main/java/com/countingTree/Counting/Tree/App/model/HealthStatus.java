@@ -5,9 +5,17 @@ import java.util.Set;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "health_statuses")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class HealthStatus {
     
     @Id
@@ -25,49 +33,5 @@ public class HealthStatus {
     @OneToMany(mappedBy = "healthStatus", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Plant> plants = new HashSet<>();
-    
-    // -------------------------------------------------------- CONSTRUCTORS, GETTERS AND SETTERS
 
-    public HealthStatus(Long statusId, String name, String description, Set<Plant> plants) {
-        this.statusId = statusId;
-        this.name = name;
-        this.description = description;
-        this.plants = plants;
-    }
-
-    public HealthStatus() {
-    }
-
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Plant> getPlants() {
-        return plants;
-    }
-
-    public void setPlants(Set<Plant> plants) {
-        this.plants = plants;
-    }
-    
 }
