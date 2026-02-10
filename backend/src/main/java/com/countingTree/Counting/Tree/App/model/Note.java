@@ -23,7 +23,7 @@ public class Note {
     @Column(name = "date_created", nullable = false)
     private LocalDateTime dateCreated;
 
-    @Column(name = "date_modified", nullable = false)
+    @Column(name = "date_modified", nullable = true)
     private LocalDateTime dateModified;
 
 

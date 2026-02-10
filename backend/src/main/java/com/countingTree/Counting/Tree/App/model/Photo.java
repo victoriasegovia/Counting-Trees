@@ -27,7 +27,7 @@ public class Photo {
     // -------------------------------------------------------- RELATIONS
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plant_id", nullable = false)
-    @JsonIgnore
+    @JsonBackReference("plant-photos")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Plant plant;

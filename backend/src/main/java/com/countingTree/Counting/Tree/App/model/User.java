@@ -28,7 +28,6 @@ public class User {
     private String email;
 
     @Column(name = "password", nullable = false)
-    @JsonIgnore
     private String password;
 
     // -------------------------------------------------------- RELATIONS
@@ -38,6 +37,7 @@ public class User {
     private Photo photo;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "plantedBy", cascade = CascadeType.ALL, orphanRemoval = true)

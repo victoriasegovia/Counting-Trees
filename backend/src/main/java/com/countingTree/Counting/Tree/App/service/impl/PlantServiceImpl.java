@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.countingTree.Counting.Tree.App.model.Note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,17 +95,12 @@ public class PlantServiceImpl implements PlantService {
         plantDTO.setDatePlanted(plant.getDatePlanted());
 
         plantDTO.setSpecieId(plant.getSpecie().getSpecieId());
-        plantDTO.setSpecieCommonName(plant.getSpecie().getCommonName());
-        plantDTO.setSpecieScientificName(plant.getSpecie().getScientificName());
 
         plantDTO.setPlantedById(plant.getPlantedBy().getUserId());
-        plantDTO.setPlantedByName(plant.getPlantedBy().getFirstName());
 
         plantDTO.setPlantVerificationStatus(plant.getPlantVerificationStatus().toString());
 
         plantDTO.setHealthStatusId(plant.getHealthStatus().getStatusId());
-        plantDTO.setHealthStatusName(plant.getHealthStatus().getName());
-        plantDTO.setHealthStatusDescription(plant.getHealthStatus().getDescription());
 
         Set<Long> photoIds = plant.getPhotos()
             .stream()
@@ -112,6 +108,13 @@ public class PlantServiceImpl implements PlantService {
             .collect(Collectors.toSet());
 
         plantDTO.setPhotoIds(photoIds);
+
+        Set<Long> notesIds = plant.getNotes()
+                .stream()
+                .map(Note::getNoteId)
+                .collect(Collectors.toSet());
+
+        plantDTO.setNoteIds(notesIds);
 
         Set<Long> alertIds = plant.getAlerts()
             .stream()
