@@ -22,15 +22,22 @@ This is an app to help track reforestation activities in cities and surrounings.
 - switched to intellij.
 - controllers corrected.
 - project up to date following new UML.
+- App running!
 
+## Day 5 - 10/02/2026
+- seeder.
+- 
 
 ## Next Steps
+- Seeder to test postman
 - Tests in postman!
 - Swagger implementation (maybe).
+------
 - Errores controlados
 - revisar validaciones de los services
 - Seguridad de la app
 - Tests automáticos
+- ...
 
 ## In Next Releases...
 - Exports

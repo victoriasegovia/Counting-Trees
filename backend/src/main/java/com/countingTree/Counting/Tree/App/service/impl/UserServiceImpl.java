@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException("Email must not be null or empty");
         }
-        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
             throw new IllegalArgumentException("Password must not be null or empty");
         }
         if (user.getRole() == null) {
@@ -101,8 +101,9 @@ public class UserServiceImpl implements UserService {
         userDTO.setLastName(user.getLastName());
         userDTO.setEmail(user.getEmail());
         userDTO.setRole(user.getRole().toString());
-        userDTO.setImageBase64(Base64.getEncoder().encodeToString(user.getPhoto().getImageData()));
-        
+        if (user.getPhoto() != null) {
+            userDTO.setImageBase64(Base64.getEncoder().encodeToString(user.getPhoto().getImageData()));
+        }
         return userDTO;
     }
 }
