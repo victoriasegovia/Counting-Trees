@@ -18,20 +18,14 @@ public class PlantDTO {
     private LocalDateTime datePlanted;
     
     private Long specieId;
-    private String specieCommonName;
-    private String specieScientificName;
-
     private Long plantedById;
-    private String plantedByName;
 
     private String plantVerificationStatus;
-    
+
     private Long healthStatusId;
-    private String healthStatusName;
-    private String healthStatusDescription;
 
     private Set<Long> photoIds;
-
+    private Set<Long> noteIds;
     private Set<Long> alertIds;
 
 }

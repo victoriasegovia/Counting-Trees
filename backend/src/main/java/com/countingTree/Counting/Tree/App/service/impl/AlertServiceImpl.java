@@ -86,16 +86,13 @@ public class AlertServiceImpl implements AlertService {
     private AlertDTO mapToDTO(Alert alert) {
         AlertDTO dto = new AlertDTO();
 
-        dto.setAlertTypeName(alert.getAlertType().getName());
-        dto.setAlertTypeDescription(alert.getAlertType().getDescription());
+        dto.setAlertId(alert.getAlertId());
         dto.setCreationDate(alert.getCreationDate());
         dto.setStatus(alert.getStatus());
         dto.setCreatedById(alert.getCreatedBy().getUserId());
-        dto.setCreatedByName(alert.getCreatedBy().getFirstName());
 
         if (alert.getResolvedBy() != null) {
             dto.setResolvedById(alert.getResolvedBy().getUserId());
-            dto.setResolvedByName(alert.getResolvedBy().getFirstName());
         }
 
         dto.setPlantId(alert.getPlant().getPlantId());
