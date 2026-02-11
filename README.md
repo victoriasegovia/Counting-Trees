@@ -36,6 +36,8 @@ This is an app to help track reforestation activities in cities and surrounings.
 ## Next Steps
 - User access configuration.
 
+## Swagger
+http://localhost:8080/swagger-ui/index.html#/plant-controller/deletePlant
 
 ------
 - Errores controlados
