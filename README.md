@@ -29,10 +29,14 @@ This is an app to help track reforestation activities in cities and surrounings.
 - postman tested (works!).
 - test with swagger (doesnt work).
 
+## Day 6 - 11/02/2026
+- swagger created!.
+- 
 
 ## Next Steps
 - User access configuration.
-- Swagger implementation (maybe).
+
+
 ------
 - Errores controlados
 - Revisar validaciones de los services
