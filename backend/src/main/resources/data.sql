@@ -1,8 +1,8 @@
+DROP DATABASE IF EXISTS db_countingTree;
+CREATE DATABASE db_countingTree;
 
--- CREATE DATABASE db_countingTree;
+CREATE USER 'root'@'%' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON db_countingTree.* TO 'root'@'%';
+FLUSH PRIVILEGES;
 
--- CREATE USER 'root'@'%' IDENTIFIED BY '1234';
--- GRANT ALL PRIVILEGES ON db_countingTree.* TO 'root'@'%';
--- FLUSH PRIVILEGES;
-
--- USE db_countingTree;
+USE db_countingTree;
