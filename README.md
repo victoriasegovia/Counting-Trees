@@ -32,14 +32,16 @@ This is an app to help track reforestation activities in cities and surrounings.
 ## Day 6 - 11/02/2026
 - swagger created!.
 - el swagger peta más que una escopeta de valines!
+- Security configuration in place and working!
 
-## Next Steps
-- User access configuration.
-- Swagger not really working... moving on for now.
-
-## Swagger (Does not work :( )
+## Swagger (Does not work 🥲 )
 http://localhost:8080/swagger-ui/index.html#/plant-controller/deletePlant
 
+
+## Next Steps
+- Time to start with front and React.
+  - first step would be a login form.
+- Swagger not really working... moving on for now.
 ------
 - Errores controlados
 - Revisar validaciones de los services
