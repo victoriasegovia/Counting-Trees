@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -24,18 +25,49 @@ public class DataSeeder implements CommandLineRunner {
     private final HealthStatusRepository healthStatusRepository;
     private final NoteRepository noteRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public void run(String... args) {
 
+        // ---------- USER ADMIN
         User admin = userRepository.findByEmail("admin@email.com");
         if (admin == null) {
             admin = userRepository.save(
                     User.builder()
-                            .firstName("admin")
-                            .lastName("admin")
+                            .firstName("Super")
+                            .lastName("Admin")
                             .email("admin@email.com")
-                            .password("1234")
+                            .password(passwordEncoder.encode("123"))
                             .role(Role.ADMIN)
+                            .build()
+            );
+        }
+
+        // ---------- USER GUARDIAN
+        User guardian = userRepository.findByEmail("guardian@email.com");
+        if (guardian == null) {
+            userRepository.save(
+                    User.builder()
+                            .firstName("Miss")
+                            .lastName("Guardian")
+                            .email("guardian@email.com")
+                            .password(passwordEncoder.encode("123"))
+                            .role(Role.GUARDIAN)
+                            .build()
+            );
+        }
+
+        // ---------- USER BOTANIST
+        User botanist = userRepository.findByEmail("botanist@email.com");
+        if (botanist == null) {
+            userRepository.save(
+                    User.builder()
+                            .firstName("Mr.")
+                            .lastName("Botanist")
+                            .email("botanist@email.com")
+                            .password(passwordEncoder.encode("123"))
+                            .role(Role.GUARDIAN)
                             .build()
             );
         }
