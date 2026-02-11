@@ -25,16 +25,17 @@ This is an app to help track reforestation activities in cities and surrounings.
 - App running!
 
 ## Day 5 - 10/02/2026
-- seeder.
-- 
+- seeder created.
+- postman tested (works!).
+- test with swagger (doesnt work).
+
 
 ## Next Steps
-- Seeder to test postman
-- Tests in postman!
+- User access configuration.
 - Swagger implementation (maybe).
 ------
 - Errores controlados
-- revisar validaciones de los services
+- Revisar validaciones de los services
 - Seguridad de la app
 - Tests automáticos
 - ...
