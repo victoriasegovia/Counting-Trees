@@ -21,27 +21,27 @@ echo "" >> "$LOG_FILE"
 
 # Helper Function to Log and Execute
 perform_request() {
-    DESC=$1
-    METHOD=$2
-    ENDPOINT=$3
-    DATA=$4
-    EXPECTED_CODE=$5
-    TOKEN=$6
+    local DESC=$1
+    local METHOD=$2
+    local ENDPOINT=$3
+    local DATA=$4
+    local EXPECTED_CODE=$5
+    local TOKEN=$6
 
-    echo "DEBUG_FUNC_ARGS: METHOD='$METHOD' ENDPOINT='$ENDPOINT' DATA_LEN=${#DATA} TOKEN_LEN=${#TOKEN}" >&2
-    echo "DEBUG_FUNC_TOKEN: '$TOKEN'" >&2
+    # echo "DEBUG_FUNC_ARGS: METHOD='$METHOD' ENDPOINT='$ENDPOINT' DATA_LEN=${#DATA} TOKEN_LEN=${#TOKEN}" >&2
+    # echo "DEBUG_FUNC_TOKEN: '$TOKEN'" >&2
 
     echo -e "\n[$METHOD] $ENDPOINT - $DESC"
     echo "## $DESC" >> "$LOG_FILE"
     echo "**Endpoint:** \`$METHOD $ENDPOINT\`" >> "$LOG_FILE"
     
     # Files
-    REQ_FILE="request_${TIMESTAMP}.json"
-    HEAD_FILE="headers_${TIMESTAMP}.txt"
-    BODY_FILE="body_${TIMESTAMP}.txt"
+    local REQ_FILE="request_${TIMESTAMP}.json"
+    local HEAD_FILE="headers_${TIMESTAMP}.txt"
+    local BODY_FILE="body_${TIMESTAMP}.txt"
 
     # Prepare Command
-    CMD=(curl -v -X "$METHOD" "$BASE_URL$ENDPOINT" -D "$HEAD_FILE" -o "$BODY_FILE")
+    local CMD=(curl -s -X "$METHOD" "$BASE_URL$ENDPOINT" -D "$HEAD_FILE" -o "$BODY_FILE")
     
     if [ -n "$DATA" ]; then
         echo "$DATA" > "$REQ_FILE"
