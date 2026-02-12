@@ -18,7 +18,7 @@ import com.countingTree.Counting.Tree.App.model.Photo;
 import com.countingTree.Counting.Tree.App.service.PhotoService;
 
 @RestController
-@RequestMapping("/api/v1/-photos")
+@RequestMapping("/api/v1/photos")
 public class PhotoController {
 
     @Autowired
