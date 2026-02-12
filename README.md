@@ -1,14 +1,14 @@
 # Planting-Trees
-This is an app to help track reforestation activities in cities and surrounings.
+This is an app to help track reforestation activities in cities and surroundings.
 
 # Dairy
 
 ## Day 1 AC - 03/02/2026
 - App doesnt start.
 - Errors on exiting code solved.
-- Changing properties with info -> it was completly empty LOL
+- Changing properties with info -> it was completely empty LOL
 - Initial DB created
-- debuggin completed, app compiles!
+- debugging completed, app compiles!
 
 ## Day 2 - 04/02/2026
 - rethinking the app design: creating a realistic MVP.
@@ -35,7 +35,7 @@ This is an app to help track reforestation activities in cities and surrounings.
 - Security configuration in place and working!
 
 ## Swagger (Does not work 🥲 )
-http://localhost:8080/swagger-ui/index.html#/plant-controller/deletePlant
+http://localhost:8080/swagger-ui/index.html
 
 
 ## Next Steps
@@ -43,9 +43,7 @@ http://localhost:8080/swagger-ui/index.html#/plant-controller/deletePlant
   - first step would be a login form.
 - Swagger not really working... moving on for now.
 ------
-- Errores controlados
 - Revisar validaciones de los services
-- Seguridad de la app
 - Tests automáticos
 - ...
 
@@ -54,3 +52,73 @@ http://localhost:8080/swagger-ui/index.html#/plant-controller/deletePlant
 - Logs
 - Zones
 - Add complexity to coordinates (maybe)
+
+
+## Project Specification
+
+This application is designed to help organizations and individuals manage and monitor their reforestation projects. 
+It centralizes relevant information, facilitates collaboration among participants, and ensures proper tracking of plants, species, alerts, and overall project health. 
+This means the app has ROLES:
+- ADMIN: The Admin is responsible for the overall administration and governance of the application. This role does not directly participate in reforestation activities but ensures the proper functioning and management of the platform.
+- BOTANIST: Has the Know-how! This role represents the plant expert and has advanced permissions related to biological and project data.
+- GUARDIAN: The Guardian supports field activities such as planting, monitoring, and responding to issues.
+
+
+## CLASS DEFINITION - WHAT MEANS WHAT
+
+- Plant: Is the main class, the core of the project. It represents each real-world plant that is being tracked in the system.
+- Species: Every plant has a species from which it gets its name and general description. This also serves educational purposes. In the field, it is not always easy to recognize all plants, so this helps with identification.
+- Health Status: This helps track the evolution and condition of the plant. For example: "Growing well but slowly", "Not growing but still alive", etc. This should be defined by the Botanist.
+- Plant Verification Status: This simple enum helps verify that the information introduced into the system about a plant is correct. It allows the Botanist to oversee and control the process of inserting new plant data.
+- Notes: These are comments created by users to help track the plant. They can serve many purposes, such as noting that the plant has fruits, that it seems a bit dry but nothing serious, or helping to locate the plant by describing its surroundings.
+- Alert Type: This defines the type of alerts related to a plant. They are usually standard (e.g., needs watering, protector is broken), but they can become more complex. Therefore, it is up to the Botanist to define them in the system.
+- Alert: Similar to a ticket system, alerts have a type and are assigned to plants so that Guardians can resolve them.
+
+
+### ROLES requirements
+
+- ADMIN:
+  - Full access to all system data.
+  - Manage users and assign roles.
+  - View, edit, or delete any record.
+
+- BOTANIST:
+  - Create and manage plant records.
+  - Verify plants registered in the system.
+  - Create and manage species.
+  - Define and manage plant health statuses.
+  - Create alert types.
+  - Create alerts.
+  - Add notes.
+
+- GUARDIAN:
+  - Register new plants.
+  - Add notes and observations.
+  - Create alerts (if enabled by the project).
+  - Attend and resolve alerts.
+
+
+### ISSUES THAT I SEE...
+
+  1. TIMESTAMP
+There is a timeStamp option with annotations:
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Instant createdAt;
+
+    @UpdateTimestamp
+    private Instant updatedAt;
+
+Maybe we could use this in Plants, Notes and Alerts!
+I have forgotten to implement date_atended in the Alert :)
+
+  2. PHOTO
+Maybe this should just be a string pointing at a repository.
+Right now it doesn't make much sense to be honest and byte type makes everything more complicated than necessary.
+
+  3. CONTROLLERS
+Welp, whole world to be built! xD
+
+
+...
