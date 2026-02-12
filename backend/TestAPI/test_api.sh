@@ -28,9 +28,6 @@ perform_request() {
     local EXPECTED_CODE=$5
     local TOKEN=$6
 
-    # echo "DEBUG_FUNC_ARGS: METHOD='$METHOD' ENDPOINT='$ENDPOINT' DATA_LEN=${#DATA} TOKEN_LEN=${#TOKEN}" >&2
-    # echo "DEBUG_FUNC_TOKEN: '$TOKEN'" >&2
-
     echo -e "\n[$METHOD] $ENDPOINT - $DESC"
     echo "## $DESC" >> "$LOG_FILE"
     echo "**Endpoint:** \`$METHOD $ENDPOINT\`" >> "$LOG_FILE"
