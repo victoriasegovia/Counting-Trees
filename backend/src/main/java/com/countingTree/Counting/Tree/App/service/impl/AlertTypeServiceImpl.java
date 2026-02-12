@@ -54,7 +54,10 @@ public class AlertTypeServiceImpl implements AlertTypeService {
 
     @Override
     public void deleteAlertType(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!alertTypeRepository.existsById(id)) {
+            throw new IllegalArgumentException("AlertType with ID " + id + " not found.");
+        }
+        alertTypeRepository.deleteById(id);
     }
 
     // -------------------------- EXTRA METHODS

@@ -53,20 +53,23 @@ public class NoteServiceImpl implements NoteService {
         noteUpdated.setText(note.getText());
         noteUpdated.setDateModified(note.getDateModified());
         noteRepository.save(noteUpdated);
-        
+
         return mapToDTO(noteUpdated);
     }
 
     @Override
     public void deleteNote(Long noteId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!noteRepository.existsById(noteId)) {
+            throw new IllegalArgumentException("Note with ID " + noteId + " not found.");
+        }
+        noteRepository.deleteById(noteId);
     }
 
     // --------------------------------------------------------- EXTRA METHODS
 
     private NoteDTO mapToDTO(Note note) {
         NoteDTO noteDTO = new NoteDTO();
-        
+
         noteDTO.setNoteId(note.getNoteId());
         noteDTO.setText(note.getText());
         noteDTO.setDateCreated(note.getDateCreated());
@@ -78,7 +81,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     private void validateNote(Note note) {
-        
+
         if (note.getText() == null || note.getText().trim().isEmpty()) {
             throw new IllegalArgumentException("Note text cannot be null or empty");
         }

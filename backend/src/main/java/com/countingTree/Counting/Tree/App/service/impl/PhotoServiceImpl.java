@@ -62,11 +62,12 @@ public class PhotoServiceImpl implements PhotoService {
         validatePhoto(photo);
 
         Plant plant = plantRepository.findById(photo.getPlant().getPlantId())
-                .orElseThrow(() -> new IllegalArgumentException("Plant with ID " + photo.getPlant().getPlantId() + " not found."));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Plant with ID " + photo.getPlant().getPlantId() + " not found."));
         User user = userRepository.findById(photo.getUser().getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User with ID " + photo.getUser().getUserId() + " not found."));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "User with ID " + photo.getUser().getUserId() + " not found."));
 
-        
         photo.setPlant(plant);
         photo.setUser(user);
 
@@ -75,7 +76,19 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public PhotoDTO updatePhoto(Long photoId, Photo newPhoto) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Photo existingPhoto = photoRepository.findById(photoId)
+                .orElseThrow(() -> new IllegalArgumentException("Photo with ID " + photoId + " not found."));
+
+        validatePhoto(newPhoto);
+
+        existingPhoto.setImageData(newPhoto.getImageData());
+        // We probably don't want to change User or Plant on update unless specified,
+        // but for simple CRUD:
+        // existingPhoto.setUser(newPhoto.getUser());
+        // existingPhoto.setPlant(newPhoto.getPlant());
+
+        photoRepository.save(existingPhoto);
+        return mapToDTO(existingPhoto);
     }
 
     @Override
@@ -84,7 +97,7 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     // ---------------------------------------------------- EXTRA METHODS
-    
+
     private void validatePhoto(Photo photo) {
 
         if (photo.getImageData() == null) {
@@ -95,14 +108,14 @@ public class PhotoServiceImpl implements PhotoService {
         }
     }
 
-    private PhotoDTO mapToDTO (Photo photo) {
+    private PhotoDTO mapToDTO(Photo photo) {
         PhotoDTO photoDTO = new PhotoDTO();
         photoDTO.setPhotoId(photo.getPhotoId());
         photoDTO.setPlantId(photo.getPlant().getPlantId());
         photoDTO.setUserId(photo.getUser().getUserId());
         photoDTO.setUploadedAt(photo.getUploadedAt());
         photoDTO.setImageBase64(Base64.getEncoder().encodeToString(photo.getImageData()));
-        
+
         return photoDTO;
     }
 

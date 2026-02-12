@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(Long userId, User user) {
+        user.setUserId(userId);
         validateUser(user);
         User userUpdated = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + userId + " not found."));
@@ -70,7 +71,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!userRepository.existsById(userId)) {
+            throw new IllegalArgumentException("User with ID " + userId + " not found.");
+        }
+        userRepository.deleteById(userId);
     }
 
     // -------------------------- EXTRA METHODS
