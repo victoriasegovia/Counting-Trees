@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     @Autowired
@@ -55,19 +55,19 @@ public class UserController {
     }
 
     @GetMapping("/guardian/guardianProfile")
-    @PreAuthorize("hasRole('GUARDIAN')")  // Use hasRole for role-based access control
+    @PreAuthorize("hasRole('GUARDIAN')") // Use hasRole for role-based access control
     public String guardianProfile(@AuthenticationPrincipal UserDetailsImpl user) {
         return "Welcome to Guardian Profile " + user.getFullName() + ".";
     }
 
     @GetMapping("/botanist/botanistProfile")
-    @PreAuthorize("hasRole('BOTANIST')")  // Use hasRole for role-based access control
+    @PreAuthorize("hasRole('BOTANIST')") // Use hasRole for role-based access control
     public String botanistProfile(@AuthenticationPrincipal UserDetailsImpl user) {
         return "Welcome to Botanist Profile " + user.getFullName() + ".";
     }
 
     @GetMapping("/admin/adminProfile")
-    @PreAuthorize("hasRole('ADMIN')")  // Use hasRole for role-based access control
+    @PreAuthorize("hasRole('ADMIN')") // Use hasRole for role-based access control
     public String adminProfile(@AuthenticationPrincipal UserDetailsImpl user) {
         return "Welcome to Admin Profile " + user.getFullName() + ".";
     }
