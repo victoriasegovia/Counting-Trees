@@ -122,3 +122,12 @@ Welp, whole world to be built! xD
 
 
 ...
+
+### BRAINSTORMING IDEAS FOR FUTURE PLANS
+
+  1. Base user with limited access to the app for uni/curious ppl 
+
+  2. AREAS Class zona
+    - Be able to store in db the coordinates of at least 3 points then triangulate those on a map create a inside of that "area" and then be able to check if users are in that area 
+    
+  3. Security and JTF tokens (import from XPlore)
