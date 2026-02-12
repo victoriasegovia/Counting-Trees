@@ -100,12 +100,14 @@ public class PlantServiceImpl implements PlantService {
 
         plantDTO.setPlantVerificationStatus(plant.getPlantVerificationStatus().toString());
 
-        plantDTO.setHealthStatusId(plant.getHealthStatus().getStatusId());
+        if (plant.getHealthStatus() != null) {
+            plantDTO.setHealthStatusId(plant.getHealthStatus().getStatusId());
+        }
 
         Set<Long> photoIds = plant.getPhotos()
-            .stream()
-            .map(Photo::getPhotoId)
-            .collect(Collectors.toSet());
+                .stream()
+                .map(Photo::getPhotoId)
+                .collect(Collectors.toSet());
 
         plantDTO.setPhotoIds(photoIds);
 
@@ -117,9 +119,9 @@ public class PlantServiceImpl implements PlantService {
         plantDTO.setNoteIds(notesIds);
 
         Set<Long> alertIds = plant.getAlerts()
-            .stream()
-            .map(Alert::getAlertId)
-            .collect(Collectors.toSet());
+                .stream()
+                .map(Alert::getAlertId)
+                .collect(Collectors.toSet());
 
         plantDTO.setAlertIds(alertIds);
 

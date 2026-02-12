@@ -55,7 +55,10 @@ public class SpecieServiceImpl implements SpecieService {
 
     @Override
     public void deleteSpecie(Long specieId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!specieRepository.existsById(specieId)) {
+            throw new IllegalArgumentException("Specie with ID " + specieId + " not found.");
+        }
+        specieRepository.deleteById(specieId);
     }
 
     // -------------------------- EXTRA METHODS
