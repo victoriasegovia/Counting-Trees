@@ -37,10 +37,15 @@ This is an app to help track reforestation activities in cities and surroundings
 ## Swagger (Does not work 🥲 )
 http://localhost:8080/swagger-ui/index.html
 
+## Figma Prototype
+https://www.figma.com/proto/1SgDBbxGB57nwyR4tS7f6I/Counting-Trees?node-id=0-1&t=EhE7ehMwodyPRrtl-1
+
 
 ## Next Steps
 - Time to start with front and React.
-  - first step would be a login form.
+  - first step would be the landing...
+  - ...then then login form.
+- Erase photo class.
 - Swagger not really working... moving on for now.
 ------
 - Revisar validaciones de los services
