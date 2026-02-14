@@ -54,9 +54,21 @@ public class PlantServiceImpl implements PlantService {
         java.util.Optional.ofNullable(plant.getPlantVerificationStatus())
                 .ifPresent(plantUpdated::setPlantVerificationStatus);
         java.util.Optional.ofNullable(plant.getHealthStatus()).ifPresent(plantUpdated::setHealthStatus);
-        java.util.Optional.ofNullable(plant.getPhotos()).ifPresent(plantUpdated::setPhotos);
-        java.util.Optional.ofNullable(plant.getNotes()).ifPresent(plantUpdated::setNotes);
-        java.util.Optional.ofNullable(plant.getAlerts()).ifPresent(plantUpdated::setAlerts);
+        java.util.Optional.ofNullable(plant.getPhotos()).ifPresent(photos -> {
+            plantUpdated.getPhotos().clear();
+            photos.forEach(photo -> photo.setPlant(plantUpdated));
+            plantUpdated.getPhotos().addAll(photos);
+        });
+        java.util.Optional.ofNullable(plant.getNotes()).ifPresent(notes -> {
+            plantUpdated.getNotes().clear();
+            notes.forEach(note -> note.setPlant(plantUpdated));
+            plantUpdated.getNotes().addAll(notes);
+        });
+        java.util.Optional.ofNullable(plant.getAlerts()).ifPresent(alerts -> {
+            plantUpdated.getAlerts().clear();
+            alerts.forEach(alert -> alert.setPlant(plantUpdated));
+            plantUpdated.getAlerts().addAll(alerts);
+        });
 
         plantRepository.save(plantUpdated);
 

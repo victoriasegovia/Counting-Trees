@@ -66,11 +66,20 @@ public class UserServiceImpl implements UserService {
                 .ifPresent(userUpdated::setPassword);
 
         java.util.Optional.ofNullable(user.getPhoto()).ifPresent(userUpdated::setPhoto);
-        java.util.Optional.ofNullable(user.getPlantsRegistered()).ifPresent(p -> {
+        java.util.Optional.ofNullable(user.getPlantsRegistered()).ifPresent(plants -> {
+            userUpdated.getPlantsRegistered().clear();
+            plants.forEach(plant -> plant.setPlantedBy(userUpdated));
+            userUpdated.getPlantsRegistered().addAll(plants);
         });
-        java.util.Optional.ofNullable(user.getAlertsCreated()).ifPresent(a -> {
+        java.util.Optional.ofNullable(user.getAlertsCreated()).ifPresent(alerts -> {
+            userUpdated.getAlertsCreated().clear();
+            alerts.forEach(alert -> alert.setCreatedBy(userUpdated));
+            userUpdated.getAlertsCreated().addAll(alerts);
         });
-        java.util.Optional.ofNullable(user.getAlertsResolved()).ifPresent(a -> {
+        java.util.Optional.ofNullable(user.getAlertsResolved()).ifPresent(alerts -> {
+            userUpdated.getAlertsResolved().clear();
+            alerts.forEach(alert -> alert.setResolvedBy(userUpdated));
+            userUpdated.getAlertsResolved().addAll(alerts);
         });
 
         userRepository.save(userUpdated);
