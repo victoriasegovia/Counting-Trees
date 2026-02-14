@@ -18,27 +18,28 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class HealthStatusServiceImpl implements HealthStatusService {
 
-    @Autowired
+	@Autowired
 	private HealthStatusRepository healthStatusRepository;
 
 	@Override
 	public HealthStatusDTO getHealthStatusById(Long healthStatusId) {
 		HealthStatus healthStatus = healthStatusRepository.findById(healthStatusId)
-                .orElseThrow(() -> new EntityNotFoundException("Health Status with ID " + healthStatusId + " not found."));
-	return mapToDTO(healthStatus);
-			}
+				.orElseThrow(
+						() -> new EntityNotFoundException("Health Status with ID " + healthStatusId + " not found."));
+		return mapToDTO(healthStatus);
+	}
 
 	@Override
 	public List<HealthStatusDTO> getAllHealthStatus() {
 		return healthStatusRepository.findAll()
-			.stream()
-			.map(this::mapToDTO)
-			.toList();
+				.stream()
+				.map(this::mapToDTO)
+				.toList();
 	}
 
 	@Override
 	public void addHealthStatus(HealthStatus newHealthStatus) {
-        validateHealthStatus(newHealthStatus);
+		validateHealthStatus(newHealthStatus);
 		healthStatusRepository.save(newHealthStatus);
 	}
 
@@ -46,10 +47,13 @@ public class HealthStatusServiceImpl implements HealthStatusService {
 	public HealthStatusDTO updateHealthStatus(Long healthStatusId, HealthStatus healthStatus) {
 		validateHealthStatus(healthStatus);
 		HealthStatus existingHealthStatus = healthStatusRepository.findById(healthStatusId)
-                .orElseThrow(() -> new EntityNotFoundException("Health Status with ID " + healthStatusId + " not found."));
-        
-		existingHealthStatus.setName(healthStatus.getName());
-		existingHealthStatus.setDescription(healthStatus.getDescription());
+				.orElseThrow(
+						() -> new EntityNotFoundException("Health Status with ID " + healthStatusId + " not found."));
+
+		java.util.Optional.ofNullable(healthStatus.getName())
+				.filter(s -> !s.trim().isEmpty())
+				.ifPresent(existingHealthStatus::setName);
+		java.util.Optional.ofNullable(healthStatus.getDescription()).ifPresent(existingHealthStatus::setDescription);
 		healthStatusRepository.save(existingHealthStatus);
 
 		return mapToDTO(existingHealthStatus);
@@ -57,30 +61,32 @@ public class HealthStatusServiceImpl implements HealthStatusService {
 
 	@Override
 	public void deleteHealthStatus(Long healthStatusId) {
-        HealthStatus existing = healthStatusRepository.findById(healthStatusId)
-                .orElseThrow(() -> new EntityNotFoundException("Health Status with ID " + healthStatusId + " not found."));
-        
-        if (!existing.getPlants().isEmpty()){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "This Health Status has associated plants and cannot be erased.");
-        }
-        
+		HealthStatus existing = healthStatusRepository.findById(healthStatusId)
+				.orElseThrow(
+						() -> new EntityNotFoundException("Health Status with ID " + healthStatusId + " not found."));
+
+		if (!existing.getPlants().isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT,
+					"This Health Status has associated plants and cannot be erased.");
+		}
+
 		healthStatusRepository.deleteById(healthStatusId);
 	}
 
-    // ------------------------ EXTRA METHODS
+	// ------------------------ EXTRA METHODS
 
-    private void validateHealthStatus(HealthStatus healthStatus) {
-        
+	private void validateHealthStatus(HealthStatus healthStatus) {
+
 		HealthStatus existing = healthStatusRepository.findByName(healthStatus.getName());
 
 		if (healthStatus.getName() == null || healthStatus.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("Health status name cannot be null or empty");
-        }
-        if (existing != null && !existing.getStatusId().equals(healthStatus.getStatusId())) {
-            throw new IllegalArgumentException("Health status with the same name already exists");
-        }
+			throw new IllegalArgumentException("Health status name cannot be null or empty");
+		}
+		if (existing != null && !existing.getStatusId().equals(healthStatus.getStatusId())) {
+			throw new IllegalArgumentException("Health status with the same name already exists");
+		}
 
-    }
+	}
 
 	private HealthStatusDTO mapToDTO(HealthStatus healthStatus) {
 		HealthStatusDTO healthStatusDTO = new HealthStatusDTO();

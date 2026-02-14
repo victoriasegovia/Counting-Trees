@@ -45,8 +45,10 @@ public class AlertTypeServiceImpl implements AlertTypeService {
         AlertType alertTypeUpdated = alertTypeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Alert type with ID " + id + " not found"));
 
-        alertTypeUpdated.setName(alertType.getName());
-        alertTypeUpdated.setDescription(alertType.getDescription());
+        java.util.Optional.ofNullable(alertType.getName())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(alertTypeUpdated::setName);
+        java.util.Optional.ofNullable(alertType.getDescription()).ifPresent(alertTypeUpdated::setDescription);
         alertTypeRepository.save(alertTypeUpdated);
 
         return mapToDTO(alertTypeUpdated);

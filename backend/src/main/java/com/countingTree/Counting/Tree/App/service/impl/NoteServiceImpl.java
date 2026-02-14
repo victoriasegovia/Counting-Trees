@@ -50,8 +50,10 @@ public class NoteServiceImpl implements NoteService {
         Note noteUpdated = noteRepository.findById(noteId)
                 .orElseThrow(() -> new EntityNotFoundException("Alert type with ID " + noteId + " not found"));
 
-        noteUpdated.setText(note.getText());
-        noteUpdated.setDateModified(note.getDateModified());
+        java.util.Optional.ofNullable(note.getText())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(noteUpdated::setText);
+        java.util.Optional.ofNullable(note.getDateModified()).ifPresent(noteUpdated::setDateModified);
         noteRepository.save(noteUpdated);
 
         return mapToDTO(noteUpdated);

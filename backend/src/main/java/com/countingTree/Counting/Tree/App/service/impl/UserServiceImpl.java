@@ -55,29 +55,23 @@ public class UserServiceImpl implements UserService {
         User userUpdated = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + userId + " not found."));
 
-        if (user.getFirstName() != null && !user.getFirstName().trim().isEmpty()) {
-            userUpdated.setFirstName(user.getFirstName());
-        }
-        if (user.getLastName() != null && !user.getLastName().trim().isEmpty()) {
-            userUpdated.setLastName(user.getLastName());
-        }
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            userUpdated.setPassword(user.getPassword()); // Note: should probably be encoded
-        }
+        java.util.Optional.ofNullable(user.getFirstName())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(userUpdated::setFirstName);
+        java.util.Optional.ofNullable(user.getLastName())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(userUpdated::setLastName);
+        java.util.Optional.ofNullable(user.getPassword())
+                .filter(s -> !s.isEmpty())
+                .ifPresent(userUpdated::setPassword);
 
-        // Collections and relationships
-        if (user.getPhoto() != null) {
-            userUpdated.setPhoto(user.getPhoto());
-        }
-        if (user.getPlantsRegistered() != null) {
-            userUpdated.setPlantsRegistered(user.getPlantsRegistered());
-        }
-        if (user.getAlertsCreated() != null) {
-            userUpdated.setAlertsCreated(user.getAlertsCreated());
-        }
-        if (user.getAlertsResolved() != null) {
-            userUpdated.setAlertsResolved(user.getAlertsResolved());
-        }
+        java.util.Optional.ofNullable(user.getPhoto()).ifPresent(userUpdated::setPhoto);
+        java.util.Optional.ofNullable(user.getPlantsRegistered()).ifPresent(p -> {
+        });
+        java.util.Optional.ofNullable(user.getAlertsCreated()).ifPresent(a -> {
+        });
+        java.util.Optional.ofNullable(user.getAlertsResolved()).ifPresent(a -> {
+        });
 
         userRepository.save(userUpdated);
 

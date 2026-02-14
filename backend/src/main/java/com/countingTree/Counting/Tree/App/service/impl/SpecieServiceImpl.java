@@ -45,9 +45,13 @@ public class SpecieServiceImpl implements SpecieService {
         Specie specieUpdate = specieRepository.findById(specieId)
                 .orElseThrow(() -> new IllegalArgumentException("Specie with ID " + specieId + " not found."));
 
-        specieUpdate.setCommonName(specie.getCommonName());
-        specieUpdate.setScientificName(specie.getScientificName());
-        specieUpdate.setDescription(specie.getDescription());
+        java.util.Optional.ofNullable(specie.getCommonName())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(specieUpdate::setCommonName);
+        java.util.Optional.ofNullable(specie.getScientificName())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(specieUpdate::setScientificName);
+        java.util.Optional.ofNullable(specie.getDescription()).ifPresent(specieUpdate::setDescription);
         specieRepository.save(specieUpdate);
 
         return mapToDTO(specieUpdate);
