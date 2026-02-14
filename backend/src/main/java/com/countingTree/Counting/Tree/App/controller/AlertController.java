@@ -18,7 +18,7 @@ import com.countingTree.Counting.Tree.App.model.Alert;
 import com.countingTree.Counting.Tree.App.service.AlertService;
 
 @RestController
-@RequestMapping("api/v1/alerts")
+@RequestMapping("/api/v1/alerts")
 public class AlertController {
 
     @Autowired

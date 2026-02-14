@@ -50,12 +50,26 @@ public class PlantServiceImpl implements PlantService {
         Plant plantUpdated = plantRepository.findById(plantId)
                 .orElseThrow(() -> new IllegalArgumentException("Plant with ID " + plantId + " not found."));
 
-        plantUpdated.setSpecie(plant.getSpecie());
-        plantUpdated.setPlantVerificationStatus(plant.getPlantVerificationStatus());
-        plantUpdated.setHealthStatus(plant.getHealthStatus());
-        plantUpdated.setPhotos(plant.getPhotos());
-        plantUpdated.setNotes(plant.getNotes());
-        plantUpdated.setAlerts(plant.getAlerts());
+        java.util.Optional.ofNullable(plant.getSpecie()).ifPresent(plantUpdated::setSpecie);
+        java.util.Optional.ofNullable(plant.getPlantVerificationStatus())
+                .ifPresent(plantUpdated::setPlantVerificationStatus);
+        java.util.Optional.ofNullable(plant.getHealthStatus()).ifPresent(plantUpdated::setHealthStatus);
+        java.util.Optional.ofNullable(plant.getPhotos()).ifPresent(photos -> {
+            plantUpdated.getPhotos().clear();
+            photos.forEach(photo -> photo.setPlant(plantUpdated));
+            plantUpdated.getPhotos().addAll(photos);
+        });
+        java.util.Optional.ofNullable(plant.getNotes()).ifPresent(notes -> {
+            plantUpdated.getNotes().clear();
+            notes.forEach(note -> note.setPlant(plantUpdated));
+            plantUpdated.getNotes().addAll(notes);
+        });
+        java.util.Optional.ofNullable(plant.getAlerts()).ifPresent(alerts -> {
+            plantUpdated.getAlerts().clear();
+            alerts.forEach(alert -> alert.setPlant(plantUpdated));
+            plantUpdated.getAlerts().addAll(alerts);
+        });
+
         plantRepository.save(plantUpdated);
 
         return mapToDTO(plantUpdated);
@@ -100,12 +114,14 @@ public class PlantServiceImpl implements PlantService {
 
         plantDTO.setPlantVerificationStatus(plant.getPlantVerificationStatus().toString());
 
-        plantDTO.setHealthStatusId(plant.getHealthStatus().getStatusId());
+        if (plant.getHealthStatus() != null) {
+            plantDTO.setHealthStatusId(plant.getHealthStatus().getStatusId());
+        }
 
         Set<Long> photoIds = plant.getPhotos()
-            .stream()
-            .map(Photo::getPhotoId)
-            .collect(Collectors.toSet());
+                .stream()
+                .map(Photo::getPhotoId)
+                .collect(Collectors.toSet());
 
         plantDTO.setPhotoIds(photoIds);
 
@@ -117,9 +133,9 @@ public class PlantServiceImpl implements PlantService {
         plantDTO.setNoteIds(notesIds);
 
         Set<Long> alertIds = plant.getAlerts()
-            .stream()
-            .map(Alert::getAlertId)
-            .collect(Collectors.toSet());
+                .stream()
+                .map(Alert::getAlertId)
+                .collect(Collectors.toSet());
 
         plantDTO.setAlertIds(alertIds);
 

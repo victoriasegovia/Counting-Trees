@@ -45,8 +45,10 @@ public class AlertTypeServiceImpl implements AlertTypeService {
         AlertType alertTypeUpdated = alertTypeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Alert type with ID " + id + " not found"));
 
-        alertTypeUpdated.setName(alertType.getName());
-        alertTypeUpdated.setDescription(alertType.getDescription());
+        java.util.Optional.ofNullable(alertType.getName())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(alertTypeUpdated::setName);
+        java.util.Optional.ofNullable(alertType.getDescription()).ifPresent(alertTypeUpdated::setDescription);
         alertTypeRepository.save(alertTypeUpdated);
 
         return mapToDTO(alertTypeUpdated);
@@ -54,7 +56,10 @@ public class AlertTypeServiceImpl implements AlertTypeService {
 
     @Override
     public void deleteAlertType(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!alertTypeRepository.existsById(id)) {
+            throw new IllegalArgumentException("AlertType with ID " + id + " not found.");
+        }
+        alertTypeRepository.deleteById(id);
     }
 
     // -------------------------- EXTRA METHODS
