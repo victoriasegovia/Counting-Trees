@@ -51,18 +51,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(Long userId, User user) {
-        user.setUserId(userId);
         validateUser(user);
         User userUpdated = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + userId + " not found."));
 
-        userUpdated.setFirstName(user.getFirstName());
-        userUpdated.setLastName(user.getLastName());
-        userUpdated.setPassword(user.getPassword());
-        userUpdated.setPhoto(user.getPhoto());
-        userUpdated.setPlantsRegistered(user.getPlantsRegistered());
-        userUpdated.setAlertsCreated(user.getAlertsCreated());
-        userUpdated.setAlertsResolved(user.getAlertsResolved());
+        if (user.getFirstName() != null && !user.getFirstName().trim().isEmpty()) {
+            userUpdated.setFirstName(user.getFirstName());
+        }
+        if (user.getLastName() != null && !user.getLastName().trim().isEmpty()) {
+            userUpdated.setLastName(user.getLastName());
+        }
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            userUpdated.setPassword(user.getPassword()); // Note: should probably be encoded
+        }
+
+        // Collections and relationships
+        if (user.getPhoto() != null) {
+            userUpdated.setPhoto(user.getPhoto());
+        }
+        if (user.getPlantsRegistered() != null) {
+            userUpdated.setPlantsRegistered(user.getPlantsRegistered());
+        }
+        if (user.getAlertsCreated() != null) {
+            userUpdated.setAlertsCreated(user.getAlertsCreated());
+        }
+        if (user.getAlertsResolved() != null) {
+            userUpdated.setAlertsResolved(user.getAlertsResolved());
+        }
 
         userRepository.save(userUpdated);
 

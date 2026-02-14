@@ -3,6 +3,7 @@
 # Configuration
 BASE_URL="http://localhost:8080/api/v1"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+TIMESTAMP_ISO=$(date +%Y-%m-%dT%H:%M:%S)
 LOG_DIR="testApiLogs"
 LOG_FILE="$LOG_DIR/api_test_log_$TIMESTAMP.md"
 EMAIL="test_${TIMESTAMP}@example.com"
@@ -100,7 +101,7 @@ USER_ID=$(echo "$USER_LIST" | grep -o '"userId":[0-9]*' | tail -1 | cut -d':' -f
 if [ -n "$USER_ID" ]; then
     perform_request "Get User $USER_ID" "GET" "/users/$USER_ID" "" 200 "$TOKEN" > /dev/null
     
-    UPDATE_USER_BODY="{\"firstName\":\"Updated\",\"lastName\":\"User\",\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\",\"role\":\"ADMIN\"}"
+    UPDATE_USER_BODY="{\"userId\":$USER_ID,\"firstName\":\"Updated\",\"lastName\":\"User\",\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\",\"role\":\"ADMIN\"}"
     perform_request "Update User $USER_ID" "PUT" "/users/$USER_ID" "$UPDATE_USER_BODY" 200 "$TOKEN" > /dev/null
     
     # Testing Profiles
@@ -118,7 +119,7 @@ SPECIE_ID=$(echo "$SPECIE_LIST" | grep -o '"specieId":[0-9]*' | tail -1 | cut -d
 
 if [ -n "$SPECIE_ID" ]; then
     perform_request "Get Specie $SPECIE_ID" "GET" "/species/$SPECIE_ID" "" 200 "$TOKEN" > /dev/null
-    UPD_SPECIE="{\"commonName\":\"Old Oak\",\"scientificName\":\"Quercus_Old_${TIMESTAMP}\",\"description\":\"Very Big Tree\"}"
+    UPD_SPECIE="{\"commonName\":\"Old Oak_${TIMESTAMP}\",\"scientificName\":\"Quercus_Old_${TIMESTAMP}\",\"description\":\"Very Big Tree\"}"
     perform_request "Update Specie $SPECIE_ID" "PUT" "/species/$SPECIE_ID" "$UPD_SPECIE" 200 "$TOKEN" > /dev/null
 fi
 
@@ -165,19 +166,21 @@ else
     
     if [ -n "$PLANT_ID" ]; then
         perform_request "Get Plant $PLANT_ID" "GET" "/plants/$PLANT_ID" "" 200 "$TOKEN" > /dev/null
-        UPD_PLANT="{\"latitude\":11.0,\"longitude\":21.0,\"specie\":{\"specieId\":$SPECIE_ID},\"plantedBy\":{\"userId\":$USER_ID},\"plantVerificationStatus\":\"APPROVED\"}"
+        # Fix 500 error: PENDING -> VERIFIED or just PENDING
+        UPD_PLANT="{\"latitude\":11.0,\"longitude\":21.0,\"specie\":{\"specieId\":$SPECIE_ID},\"plantedBy\":{\"userId\":$USER_ID},\"plantVerificationStatus\":\"VERIFIED\"}"
         perform_request "Update Plant $PLANT_ID" "PUT" "/plants/$PLANT_ID" "$UPD_PLANT" 200 "$TOKEN" > /dev/null
 
         # --- 7. NOTE ---
         echo "--- 7. Note ---"
-        NOTE_BODY="{\"content\":\"Test note\",\"plant\":{\"plantId\":$PLANT_ID}}"
+        # Note needs User and Plant and Date
+        NOTE_BODY="{\"text\":\"Test note\",\"dateCreated\":\"$TIMESTAMP_ISO\",\"plant\":{\"plantId\":$PLANT_ID},\"user\":{\"userId\":$USER_ID}}"
         perform_request "Create Note" "POST" "/notes" "$NOTE_BODY" 200 "$TOKEN" > /dev/null
         NOTE_LIST=$(perform_request "Get All Notes" "GET" "/notes" "" 200 "$TOKEN")
         NOTE_ID=$(echo "$NOTE_LIST" | grep -o '"noteId":[0-9]*' | tail -1 | cut -d':' -f2 | tr -d '\r')
         
         if [ -n "$NOTE_ID" ]; then
             perform_request "Get Note $NOTE_ID" "GET" "/notes/$NOTE_ID" "" 200 "$TOKEN" > /dev/null
-            UPD_NOTE="{\"content\":\"Updated note\",\"plant\":{\"plantId\":$PLANT_ID}}"
+            UPD_NOTE="{\"text\":\"Updated note\",\"dateCreated\":\"$TIMESTAMP_ISO\",\"plant\":{\"plantId\":$PLANT_ID},\"user\":{\"userId\":$USER_ID}}"
             perform_request "Update Note $NOTE_ID" "PUT" "/notes/$NOTE_ID" "$UPD_NOTE" 200 "$TOKEN" > /dev/null
             perform_request "Delete Note $NOTE_ID" "DELETE" "/notes/$NOTE_ID" "" 200 "$TOKEN" > /dev/null
         fi
@@ -185,15 +188,15 @@ else
         # --- 8. ALERT ---
         echo "--- 8. Alert ---"
         if [ -n "$ATYPE_ID" ]; then
-            # Needs alertTypeId
-            ALERT_BODY="{\"description\":\"Alert!\",\"plant\":{\"plantId\":$PLANT_ID},\"alertType\":{\"alertTypeId\":$ATYPE_ID}}"
+            # Needs alertTypeId, createdBy, creationDate
+            ALERT_BODY="{\"description\":\"Alert!\",\"creationDate\":\"$TIMESTAMP_ISO\",\"plant\":{\"plantId\":$PLANT_ID},\"alertType\":{\"alertTypeId\":$ATYPE_ID},\"createdBy\":{\"userId\":$USER_ID}}"
             perform_request "Create Alert" "POST" "/alerts" "$ALERT_BODY" 200 "$TOKEN" > /dev/null
             ALERT_LIST=$(perform_request "Get All Alerts" "GET" "/alerts" "" 200 "$TOKEN")
             ALERT_ID=$(echo "$ALERT_LIST" | grep -o '"alertId":[0-9]*' | tail -1 | cut -d':' -f2 | tr -d '\r')
 
             if [ -n "$ALERT_ID" ]; then
                 perform_request "Get Alert $ALERT_ID" "GET" "/alerts/$ALERT_ID" "" 200 "$TOKEN" > /dev/null
-                UPD_ALERT="{\"description\":\"Resolved Alert\",\"plant\":{\"plantId\":$PLANT_ID},\"alertType\":{\"alertTypeId\":$ATYPE_ID}}"
+                UPD_ALERT="{\"description\":\"Resolved Alert\",\"creationDate\":\"$TIMESTAMP_ISO\",\"plant\":{\"plantId\":$PLANT_ID},\"alertType\":{\"alertTypeId\":$ATYPE_ID},\"createdBy\":{\"userId\":$USER_ID}}"
                 perform_request "Update Alert $ALERT_ID" "PUT" "/alerts/$ALERT_ID" "$UPD_ALERT" 200 "$TOKEN" > /dev/null
                 perform_request "Delete Alert $ALERT_ID" "DELETE" "/alerts/$ALERT_ID" "" 200 "$TOKEN" > /dev/null
             fi
@@ -201,7 +204,9 @@ else
         
         # --- 9. PHOTO ---
         echo "--- 9. Photo ---"
-        PHOTO_BODY="{\"url\":\"http://test.com/img.jpg\",\"plant\":{\"plantId\":$PLANT_ID}}"
+        # Photo needs imageData, uploadedAt, plant. User is optional.
+        # Sending 1 pixel base64 (GIF)
+        PHOTO_BODY="{\"imageData\":\"R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7\",\"uploadedAt\":\"$TIMESTAMP_ISO\",\"plant\":{\"plantId\":$PLANT_ID}}"
         perform_request "Create Photo" "POST" "/photos" "$PHOTO_BODY" 200 "$TOKEN" > /dev/null
         PHOTO_LIST=$(perform_request "Get All Photos" "GET" "/photos" "" 200 "$TOKEN")
         PHOTO_ID=$(echo "$PHOTO_LIST" | grep -o '"photoId":[0-9]*' | tail -1 | cut -d':' -f2 | tr -d '\r')

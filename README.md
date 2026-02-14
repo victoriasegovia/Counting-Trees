@@ -1,7 +1,7 @@
 # Planting-Trees
 This is an app to help track reforestation activities in cities and surroundings.
 
-# Dairy
+
 
 ## Day 1 AC - 03/02/2026
 - App doesnt start.

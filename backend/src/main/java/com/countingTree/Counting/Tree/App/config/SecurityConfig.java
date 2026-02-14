@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll() // Login/Register endpoints
                         .requestMatchers("/api/v1/users/welcome").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/v1/users/guardian/**").hasRole("GUARDIAN")
                         .requestMatchers("/api/v1/users/botanist/**").hasRole("BOTANIST")
                         .requestMatchers("/api/v1/users/admin/**").hasRole("ADMIN")

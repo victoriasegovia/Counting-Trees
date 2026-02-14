@@ -64,12 +64,15 @@ public class PhotoServiceImpl implements PhotoService {
         Plant plant = plantRepository.findById(photo.getPlant().getPlantId())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Plant with ID " + photo.getPlant().getPlantId() + " not found."));
-        User user = userRepository.findById(photo.getUser().getUserId())
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "User with ID " + photo.getUser().getUserId() + " not found."));
+
+        if (photo.getUser() != null && photo.getUser().getUserId() != null) {
+            User user = userRepository.findById(photo.getUser().getUserId())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "User with ID " + photo.getUser().getUserId() + " not found."));
+            photo.setUser(user);
+        }
 
         photo.setPlant(plant);
-        photo.setUser(user);
 
         photoRepository.save(photo);
     }
@@ -103,16 +106,17 @@ public class PhotoServiceImpl implements PhotoService {
         if (photo.getImageData() == null) {
             throw new IllegalArgumentException("Photo data cannot be null or empty");
         }
-        if (photo.getUser() == null) {
-            throw new IllegalArgumentException("Photo user cannot be null");
-        }
+        // User is now optional
+
     }
 
     private PhotoDTO mapToDTO(Photo photo) {
         PhotoDTO photoDTO = new PhotoDTO();
         photoDTO.setPhotoId(photo.getPhotoId());
         photoDTO.setPlantId(photo.getPlant().getPlantId());
-        photoDTO.setUserId(photo.getUser().getUserId());
+        if (photo.getUser() != null) {
+            photoDTO.setUserId(photo.getUser().getUserId());
+        }
         photoDTO.setUploadedAt(photo.getUploadedAt());
         photoDTO.setImageBase64(Base64.getEncoder().encodeToString(photo.getImageData()));
 

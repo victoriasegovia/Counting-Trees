@@ -50,12 +50,14 @@ public class PlantServiceImpl implements PlantService {
         Plant plantUpdated = plantRepository.findById(plantId)
                 .orElseThrow(() -> new IllegalArgumentException("Plant with ID " + plantId + " not found."));
 
-        plantUpdated.setSpecie(plant.getSpecie());
-        plantUpdated.setPlantVerificationStatus(plant.getPlantVerificationStatus());
-        plantUpdated.setHealthStatus(plant.getHealthStatus());
-        plantUpdated.setPhotos(plant.getPhotos());
-        plantUpdated.setNotes(plant.getNotes());
-        plantUpdated.setAlerts(plant.getAlerts());
+        java.util.Optional.ofNullable(plant.getSpecie()).ifPresent(plantUpdated::setSpecie);
+        java.util.Optional.ofNullable(plant.getPlantVerificationStatus())
+                .ifPresent(plantUpdated::setPlantVerificationStatus);
+        java.util.Optional.ofNullable(plant.getHealthStatus()).ifPresent(plantUpdated::setHealthStatus);
+        java.util.Optional.ofNullable(plant.getPhotos()).ifPresent(plantUpdated::setPhotos);
+        java.util.Optional.ofNullable(plant.getNotes()).ifPresent(plantUpdated::setNotes);
+        java.util.Optional.ofNullable(plant.getAlerts()).ifPresent(plantUpdated::setAlerts);
+
         plantRepository.save(plantUpdated);
 
         return mapToDTO(plantUpdated);
