@@ -47,6 +47,12 @@ This is an app to help track reforestation activities in cities and surroundings
 - Updated `UserService`, `PlantService`, and DTOs to handle Base64 image data.
 - Enhanced `DataSeeder` and `test_api.sh` to reflect architecture changes.
 - Validated build and consistency with Java 21.
+- **Enhanced Data Seeder:**
+  - Implemented comprehensive initial data generation.
+  - Automatically seeds Users (Admin, Botanist, Guardian, User).
+  - Seeds Species (Ficus, Oak, Pine, Rose, Maple).
+  - Seeds Health Statuses and Alert Types.
+  - Generates sample Plants with varying statuses (Healthy, Needs Water, Pest, etc.) and linked Notes/Alerts.
 
 ## Swagger (Does not work 🥲 )
 http://localhost:8080/swagger-ui/index.html
