@@ -41,6 +41,13 @@ This is an app to help track reforestation activities in cities and surroundings
 - Added comprehensive bash scripts for end-to-end API testing.
 - Configuration updates and database properties adjustments.
 
+## Day 8 - 15/02/2026
+- Refactored Photo System: Removed `Photo` entity.
+- Implemented direct BLOB storage for `User` profile picture and `Plant` photo.
+- Updated `UserService`, `PlantService`, and DTOs to handle Base64 image data.
+- Enhanced `DataSeeder` and `test_api.sh` to reflect architecture changes.
+- Validated build and consistency with Java 21.
+
 ## Swagger (Does not work 🥲 )
 http://localhost:8080/swagger-ui/index.html
 
