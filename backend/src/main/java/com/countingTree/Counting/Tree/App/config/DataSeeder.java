@@ -62,7 +62,7 @@ public class DataSeeder implements CommandLineRunner {
         }
 
         private User createUser(String firstName, String lastName, String email, Role role) {
-                User user = userRepository.findByEmail(email).orElse(null);
+                User user = userRepository.findByEmail(email);
                 if (user == null) {
                         user = userRepository.save(
                                         User.builder()
@@ -96,7 +96,7 @@ public class DataSeeder implements CommandLineRunner {
         }
 
         private Specie createSpecie(String commonName, String scientificName, String description) {
-                Specie specie = specieRepository.findByCommonName(commonName).orElse(null);
+                Specie specie = specieRepository.findByCommonName(commonName);
                 if (specie == null) {
                         specie = specieRepository.save(
                                         Specie.builder()
