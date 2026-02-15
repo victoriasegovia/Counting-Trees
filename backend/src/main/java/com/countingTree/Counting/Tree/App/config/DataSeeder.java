@@ -2,9 +2,7 @@ package com.countingTree.Counting.Tree.App.config;
 
 import com.countingTree.Counting.Tree.App.model.*;
 import com.countingTree.Counting.Tree.App.repository.*;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -40,8 +38,7 @@ public class DataSeeder implements CommandLineRunner {
                             .email("admin@email.com")
                             .password(passwordEncoder.encode("123"))
                             .role(Role.ADMIN)
-                            .build()
-            );
+                            .build());
         }
 
         // ---------- USER GUARDIAN
@@ -54,8 +51,7 @@ public class DataSeeder implements CommandLineRunner {
                             .email("guardian@email.com")
                             .password(passwordEncoder.encode("123"))
                             .role(Role.GUARDIAN)
-                            .build()
-            );
+                            .build());
         }
 
         // ---------- USER BOTANIST
@@ -68,8 +64,7 @@ public class DataSeeder implements CommandLineRunner {
                             .email("botanist@email.com")
                             .password(passwordEncoder.encode("123"))
                             .role(Role.GUARDIAN)
-                            .build()
-            );
+                            .build());
         }
 
         HealthStatus healthy = healthStatusRepository.findByName("HEALTHY");
@@ -78,8 +73,7 @@ public class DataSeeder implements CommandLineRunner {
                     HealthStatus.builder()
                             .name("HEALTHY")
                             .description("Plants are growing healthy.")
-                            .build()
-            );
+                            .build());
         }
 
         Specie ficus = specieRepository.findByCommonName("Ficus");
@@ -89,8 +83,7 @@ public class DataSeeder implements CommandLineRunner {
                             .commonName("Ficus")
                             .scientificName("Ficus Maximus")
                             .description("Mediterranean specie with green leaves.")
-                            .build()
-            );
+                            .build());
         }
 
         Plant plant = plantRepository.findById(1L).orElse(null);
@@ -104,8 +97,7 @@ public class DataSeeder implements CommandLineRunner {
                             .plantedBy(admin)
                             .plantVerificationStatus(PlantVerificationStatus.VERIFIED)
                             .healthStatus(healthy)
-                            .build()
-            );
+                            .build());
         }
 
         Note note = noteRepository.findById(1L).orElse(null);
@@ -116,8 +108,7 @@ public class DataSeeder implements CommandLineRunner {
                             .dateCreated(now())
                             .user(admin)
                             .plant(plant)
-                            .build()
-            );
+                            .build());
         }
 
         AlertType temperature = alertTypeRepository.findByName("TEMPERATURE");
@@ -126,8 +117,7 @@ public class DataSeeder implements CommandLineRunner {
                     AlertType.builder()
                             .name("TEMPERATURE")
                             .description("Temperature out of range")
-                            .build()
-            );
+                            .build());
         }
 
         if (alertRepository.count() == 0) {
@@ -138,8 +128,7 @@ public class DataSeeder implements CommandLineRunner {
                             .alertType(temperature)
                             .plant(plant)
                             .createdBy(admin)
-                            .build()
-            );
+                            .build());
         }
 
         System.out.println("🌱 Seeder running...");

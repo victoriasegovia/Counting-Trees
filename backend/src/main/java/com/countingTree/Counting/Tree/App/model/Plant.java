@@ -54,11 +54,9 @@ public class Plant {
     @EqualsAndHashCode.Exclude
     private HealthStatus healthStatus;
 
-    @OneToMany(mappedBy = "plant", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("plant-photos")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<Photo> photos = new HashSet<>();
+    @Lob
+    @Column(name = "photo", columnDefinition = "MEDIUMBLOB")
+    private byte[] photo;
 
     @OneToMany(mappedBy = "plant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("plant-notes")
