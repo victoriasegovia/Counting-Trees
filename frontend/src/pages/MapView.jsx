@@ -7,7 +7,7 @@ import "../CSS/AppLayout.css";
 
 export default function MapView() {
 
-    const plazaNueva = [37.17684, -3.59587];
+    const periUrbanoGranada = [37.1741, -3.5663];
 
     const treeEmojiIcon = new DivIcon({
         html: "🌳",
@@ -22,7 +22,7 @@ export default function MapView() {
 
             <div className="view">
                 <MapContainer
-                    center={plazaNueva} // coordinates
+                    center={periUrbanoGranada} // coordinates
                     zoom={20}
                     style={{ width: "100%", height: "100%", borderRadius: "inherit" }}
                 >
@@ -30,7 +30,7 @@ export default function MapView() {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    <Marker position={plazaNueva} icon={treeEmojiIcon}>
+                    <Marker position={periUrbanoGranada} icon={treeEmojiIcon}>
                         <Popup>Plaza Nueva, Granada</Popup>
                     </Marker>
                 </MapContainer>
