@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.countingTree.Counting.Tree.App.model.AlertType;
 import com.countingTree.Counting.Tree.App.model.Specie;
 import com.countingTree.Counting.Tree.App.dto.SpecieDTO;
 import com.countingTree.Counting.Tree.App.repository.SpecieRepository;
@@ -45,9 +44,13 @@ public class SpecieServiceImpl implements SpecieService {
         Specie specieUpdate = specieRepository.findById(specieId)
                 .orElseThrow(() -> new IllegalArgumentException("Specie with ID " + specieId + " not found."));
 
-        specieUpdate.setCommonName(specie.getCommonName());
-        specieUpdate.setScientificName(specie.getScientificName());
-        specieUpdate.setDescription(specie.getDescription());
+        java.util.Optional.ofNullable(specie.getCommonName())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(specieUpdate::setCommonName);
+        java.util.Optional.ofNullable(specie.getScientificName())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(specieUpdate::setScientificName);
+        java.util.Optional.ofNullable(specie.getDescription()).ifPresent(specieUpdate::setDescription);
         specieRepository.save(specieUpdate);
 
         return mapToDTO(specieUpdate);
@@ -55,7 +58,10 @@ public class SpecieServiceImpl implements SpecieService {
 
     @Override
     public void deleteSpecie(Long specieId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!specieRepository.existsById(specieId)) {
+            throw new IllegalArgumentException("Specie with ID " + specieId + " not found.");
+        }
+        specieRepository.deleteById(specieId);
     }
 
     // -------------------------- EXTRA METHODS

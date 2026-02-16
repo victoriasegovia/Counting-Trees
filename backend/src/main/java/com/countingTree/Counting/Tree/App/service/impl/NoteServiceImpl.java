@@ -6,13 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.countingTree.Counting.Tree.App.dto.NoteDTO;
-import com.countingTree.Counting.Tree.App.model.AlertType;
 import com.countingTree.Counting.Tree.App.model.Note;
-import com.countingTree.Counting.Tree.App.model.Plant;
-import com.countingTree.Counting.Tree.App.model.User;
 import com.countingTree.Counting.Tree.App.repository.NoteRepository;
-import com.countingTree.Counting.Tree.App.repository.PlantRepository;
-import com.countingTree.Counting.Tree.App.repository.UserRepository;
 import com.countingTree.Counting.Tree.App.service.NoteService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -50,23 +45,28 @@ public class NoteServiceImpl implements NoteService {
         Note noteUpdated = noteRepository.findById(noteId)
                 .orElseThrow(() -> new EntityNotFoundException("Alert type with ID " + noteId + " not found"));
 
-        noteUpdated.setText(note.getText());
-        noteUpdated.setDateModified(note.getDateModified());
+        java.util.Optional.ofNullable(note.getText())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(noteUpdated::setText);
+        java.util.Optional.ofNullable(note.getDateModified()).ifPresent(noteUpdated::setDateModified);
         noteRepository.save(noteUpdated);
-        
+
         return mapToDTO(noteUpdated);
     }
 
     @Override
     public void deleteNote(Long noteId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!noteRepository.existsById(noteId)) {
+            throw new IllegalArgumentException("Note with ID " + noteId + " not found.");
+        }
+        noteRepository.deleteById(noteId);
     }
 
     // --------------------------------------------------------- EXTRA METHODS
 
     private NoteDTO mapToDTO(Note note) {
         NoteDTO noteDTO = new NoteDTO();
-        
+
         noteDTO.setNoteId(note.getNoteId());
         noteDTO.setText(note.getText());
         noteDTO.setDateCreated(note.getDateCreated());
@@ -78,7 +78,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     private void validateNote(Note note) {
-        
+
         if (note.getText() == null || note.getText().trim().isEmpty()) {
             throw new IllegalArgumentException("Note text cannot be null or empty");
         }

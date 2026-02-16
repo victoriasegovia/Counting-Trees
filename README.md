@@ -1,7 +1,7 @@
 # Planting-Trees
 This is an app to help track reforestation activities in cities and surroundings.
 
-# Dairy
+
 
 ## Day 1 AC - 03/02/2026
 - App doesnt start.
@@ -33,6 +33,26 @@ This is an app to help track reforestation activities in cities and surroundings
 - swagger created!.
 - el swagger peta más que una escopeta de valines!
 - Security configuration in place and working!
+
+## Day 7 - 12/02/2026
+- Implemented Spring Security with JWT authentication and role-based authorization.
+- Added Service layers for User, AlertType, Note, Photo, Plant, and Specie.
+- Created Controllers for Specie, Note, Alert, AlertType, HealthStatus, and Photo.
+- Added comprehensive bash scripts for end-to-end API testing.
+- Configuration updates and database properties adjustments.
+
+## Day 8 - 15/02/2026
+- Refactored Photo System: Removed `Photo` entity.
+- Implemented direct BLOB storage for `User` profile picture and `Plant` photo.
+- Updated `UserService`, `PlantService`, and DTOs to handle Base64 image data.
+- Enhanced `DataSeeder` and `test_api.sh` to reflect architecture changes.
+- Validated build and consistency with Java 21.
+- **Enhanced Data Seeder:**
+  - Implemented comprehensive initial data generation.
+  - Automatically seeds Users (Admin, Botanist, Guardian, User).
+  - Seeds Species (Ficus, Oak, Pine, Rose, Maple).
+  - Seeds Health Statuses and Alert Types.
+  - Generates sample Plants with varying statuses (Healthy, Needs Water, Pest, etc.) and linked Notes/Alerts.
 
 ## Swagger (Does not work 🥲 )
 http://localhost:8080/swagger-ui/index.html
@@ -127,3 +147,12 @@ Welp, whole world to be built! xD
 
 
 ...
+
+### BRAINSTORMING IDEAS FOR FUTURE PLANS
+
+  1. Base user with limited access to the app for uni/curious ppl 
+
+  2. AREAS Class zona
+    - Be able to store in db the coordinates of at least 3 points then triangulate those on a map create a inside of that "area" and then be able to check if users are in that area 
+    
+  3. Security and JTF tokens (import from XPlore)

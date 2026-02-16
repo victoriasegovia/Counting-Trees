@@ -1,12 +1,9 @@
 package com.countingTree.Counting.Tree.App.service.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.countingTree.Counting.Tree.App.dto.*;
 import com.countingTree.Counting.Tree.App.model.*;
@@ -54,18 +51,16 @@ public class AlertServiceImpl implements AlertService {
         Alert alertToUpdate = alertRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Alert with ID " + id + " not found"));
 
-        alertToUpdate.setAlertType(alert.getAlertType());
-        alertToUpdate.setStatus(alert.getStatus());
-        if (alert.getResolvedBy() != null) {
-            alertToUpdate.setResolvedBy(alert.getResolvedBy());
-        }
+        java.util.Optional.ofNullable(alert.getAlertType()).ifPresent(alertToUpdate::setAlertType);
+        java.util.Optional.ofNullable(alert.getStatus()).ifPresent(alertToUpdate::setStatus);
+        java.util.Optional.ofNullable(alert.getResolvedBy()).ifPresent(alertToUpdate::setResolvedBy);
         alertRepository.save(alertToUpdate);
 
         return mapToDTO(alertToUpdate);
     }
 
     // -------------------------- EXTRA METHODS
-    
+
     public void validateNewAlert(Alert alert) {
 
         if (alert.getAlertType() == null) {

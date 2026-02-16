@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/health-statuses")
+@RequestMapping("/api/v1/health-statuses")
 public class HealthStatusController {
 
     @Autowired
@@ -32,7 +32,8 @@ public class HealthStatusController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HealthStatusDTO> updateHealthStatus(@PathVariable Long id, @RequestBody HealthStatus healthStatus) {
+    public ResponseEntity<HealthStatusDTO> updateHealthStatus(@PathVariable Long id,
+            @RequestBody HealthStatus healthStatus) {
         HealthStatusDTO updated = healthStatusService.updateHealthStatus(id, healthStatus);
         return ResponseEntity.ok(updated);
     }

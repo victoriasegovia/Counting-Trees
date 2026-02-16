@@ -32,9 +32,9 @@ public class User {
 
     // -------------------------------------------------------- RELATIONS
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "photo_id", nullable = true)
-    private Photo photo;
+    @Lob
+    @Column(name = "profile_picture", nullable = true)
+    private byte[] profilePicture;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

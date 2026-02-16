@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.countingTree.Counting.Tree.App.dto.UserDTO;
-import com.countingTree.Counting.Tree.App.model.AlertType;
 import com.countingTree.Counting.Tree.App.model.User;
 import com.countingTree.Counting.Tree.App.repository.UserRepository;
 import com.countingTree.Counting.Tree.App.service.UserService;
@@ -55,13 +54,32 @@ public class UserServiceImpl implements UserService {
         User userUpdated = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + userId + " not found."));
 
-        userUpdated.setFirstName(user.getFirstName());
-        userUpdated.setLastName(user.getLastName());
-        userUpdated.setPassword(user.getPassword());
-        userUpdated.setPhoto(user.getPhoto());
-        userUpdated.setPlantsRegistered(user.getPlantsRegistered());
-        userUpdated.setAlertsCreated(user.getAlertsCreated());
-        userUpdated.setAlertsResolved(user.getAlertsResolved());
+        java.util.Optional.ofNullable(user.getFirstName())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(userUpdated::setFirstName);
+        java.util.Optional.ofNullable(user.getLastName())
+                .filter(s -> !s.trim().isEmpty())
+                .ifPresent(userUpdated::setLastName);
+        java.util.Optional.ofNullable(user.getPassword())
+                .filter(s -> !s.isEmpty())
+                .ifPresent(userUpdated::setPassword);
+
+        java.util.Optional.ofNullable(user.getProfilePicture()).ifPresent(userUpdated::setProfilePicture);
+        java.util.Optional.ofNullable(user.getPlantsRegistered()).ifPresent(plants -> {
+            userUpdated.getPlantsRegistered().clear();
+            plants.forEach(plant -> plant.setPlantedBy(userUpdated));
+            userUpdated.getPlantsRegistered().addAll(plants);
+        });
+        java.util.Optional.ofNullable(user.getAlertsCreated()).ifPresent(alerts -> {
+            userUpdated.getAlertsCreated().clear();
+            alerts.forEach(alert -> alert.setCreatedBy(userUpdated));
+            userUpdated.getAlertsCreated().addAll(alerts);
+        });
+        java.util.Optional.ofNullable(user.getAlertsResolved()).ifPresent(alerts -> {
+            userUpdated.getAlertsResolved().clear();
+            alerts.forEach(alert -> alert.setResolvedBy(userUpdated));
+            userUpdated.getAlertsResolved().addAll(alerts);
+        });
 
         userRepository.save(userUpdated);
 
@@ -70,7 +88,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!userRepository.existsById(userId)) {
+            throw new IllegalArgumentException("User with ID " + userId + " not found.");
+        }
+        userRepository.deleteById(userId);
     }
 
     // -------------------------- EXTRA METHODS
@@ -111,8 +132,8 @@ public class UserServiceImpl implements UserService {
         userDTO.setLastName(user.getLastName());
         userDTO.setEmail(user.getEmail());
         userDTO.setRole(user.getRole().toString());
-        if (user.getPhoto() != null) {
-            userDTO.setImageBase64(Base64.getEncoder().encodeToString(user.getPhoto().getImageData()));
+        if (user.getProfilePicture() != null) {
+            userDTO.setImageBase64(Base64.getEncoder().encodeToString(user.getProfilePicture()));
         }
         return userDTO;
     }

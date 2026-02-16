@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.countingTree.Counting.Tree.App.model.Alert;
 import com.countingTree.Counting.Tree.App.model.Plant;
-import com.countingTree.Counting.Tree.App.model.Photo;
-import com.countingTree.Counting.Tree.App.dto.PhotoDTO;
 import com.countingTree.Counting.Tree.App.dto.PlantDTO;
 import com.countingTree.Counting.Tree.App.repository.PlantRepository;
 import com.countingTree.Counting.Tree.App.service.PlantService;
@@ -50,12 +48,24 @@ public class PlantServiceImpl implements PlantService {
         Plant plantUpdated = plantRepository.findById(plantId)
                 .orElseThrow(() -> new IllegalArgumentException("Plant with ID " + plantId + " not found."));
 
-        plantUpdated.setSpecie(plant.getSpecie());
-        plantUpdated.setPlantVerificationStatus(plant.getPlantVerificationStatus());
-        plantUpdated.setHealthStatus(plant.getHealthStatus());
-        plantUpdated.setPhotos(plant.getPhotos());
-        plantUpdated.setNotes(plant.getNotes());
-        plantUpdated.setAlerts(plant.getAlerts());
+        java.util.Optional.ofNullable(plant.getSpecie()).ifPresent(plantUpdated::setSpecie);
+        java.util.Optional.ofNullable(plant.getPlantVerificationStatus())
+                .ifPresent(plantUpdated::setPlantVerificationStatus);
+        java.util.Optional.ofNullable(plant.getHealthStatus()).ifPresent(plantUpdated::setHealthStatus);
+
+        java.util.Optional.ofNullable(plant.getPhoto()).ifPresent(plantUpdated::setPhoto);
+
+        java.util.Optional.ofNullable(plant.getNotes()).ifPresent(notes -> {
+            plantUpdated.getNotes().clear();
+            notes.forEach(note -> note.setPlant(plantUpdated));
+            plantUpdated.getNotes().addAll(notes);
+        });
+        java.util.Optional.ofNullable(plant.getAlerts()).ifPresent(alerts -> {
+            plantUpdated.getAlerts().clear();
+            alerts.forEach(alert -> alert.setPlant(plantUpdated));
+            plantUpdated.getAlerts().addAll(alerts);
+        });
+
         plantRepository.save(plantUpdated);
 
         return mapToDTO(plantUpdated);
@@ -100,14 +110,13 @@ public class PlantServiceImpl implements PlantService {
 
         plantDTO.setPlantVerificationStatus(plant.getPlantVerificationStatus().toString());
 
-        plantDTO.setHealthStatusId(plant.getHealthStatus().getStatusId());
+        if (plant.getHealthStatus() != null) {
+            plantDTO.setHealthStatusId(plant.getHealthStatus().getStatusId());
+        }
 
-        Set<Long> photoIds = plant.getPhotos()
-            .stream()
-            .map(Photo::getPhotoId)
-            .collect(Collectors.toSet());
-
-        plantDTO.setPhotoIds(photoIds);
+        if (plant.getPhoto() != null) {
+            plantDTO.setImageBase64(java.util.Base64.getEncoder().encodeToString(plant.getPhoto()));
+        }
 
         Set<Long> notesIds = plant.getNotes()
                 .stream()
@@ -117,9 +126,9 @@ public class PlantServiceImpl implements PlantService {
         plantDTO.setNoteIds(notesIds);
 
         Set<Long> alertIds = plant.getAlerts()
-            .stream()
-            .map(Alert::getAlertId)
-            .collect(Collectors.toSet());
+                .stream()
+                .map(Alert::getAlertId)
+                .collect(Collectors.toSet());
 
         plantDTO.setAlertIds(alertIds);
 

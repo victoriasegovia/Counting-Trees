@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/notes")
+@RequestMapping("/api/v1/notes")
 public class NoteController {
 
     @Autowired
@@ -43,4 +43,4 @@ public class NoteController {
         return ResponseEntity.ok().build();
     }
 
-    }
+}
