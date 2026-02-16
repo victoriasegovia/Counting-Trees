@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.countingTree.Counting.Tree.App.dto.UserDTO;
-import com.countingTree.Counting.Tree.App.model.AlertType;
 import com.countingTree.Counting.Tree.App.model.User;
 import com.countingTree.Counting.Tree.App.repository.UserRepository;
 import com.countingTree.Counting.Tree.App.service.UserService;
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService {
                 .filter(s -> !s.isEmpty())
                 .ifPresent(userUpdated::setPassword);
 
-        java.util.Optional.ofNullable(user.getPhoto()).ifPresent(userUpdated::setPhoto);
+        java.util.Optional.ofNullable(user.getProfilePicture()).ifPresent(userUpdated::setProfilePicture);
         java.util.Optional.ofNullable(user.getPlantsRegistered()).ifPresent(plants -> {
             userUpdated.getPlantsRegistered().clear();
             plants.forEach(plant -> plant.setPlantedBy(userUpdated));
@@ -133,8 +132,8 @@ public class UserServiceImpl implements UserService {
         userDTO.setLastName(user.getLastName());
         userDTO.setEmail(user.getEmail());
         userDTO.setRole(user.getRole().toString());
-        if (user.getPhoto() != null) {
-            userDTO.setImageBase64(Base64.getEncoder().encodeToString(user.getPhoto().getImageData()));
+        if (user.getProfilePicture() != null) {
+            userDTO.setImageBase64(Base64.getEncoder().encodeToString(user.getProfilePicture()));
         }
         return userDTO;
     }

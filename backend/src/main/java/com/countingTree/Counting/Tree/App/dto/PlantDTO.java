@@ -16,7 +16,7 @@ public class PlantDTO {
     private Double longitude;
 
     private LocalDateTime datePlanted;
-    
+
     private Long specieId;
     private Long plantedById;
 
@@ -24,9 +24,8 @@ public class PlantDTO {
 
     private Long healthStatusId;
 
-    private Set<Long> photoIds;
+    private String imageBase64;
     private Set<Long> noteIds;
     private Set<Long> alertIds;
 
 }
-

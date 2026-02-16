@@ -6,13 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.countingTree.Counting.Tree.App.dto.NoteDTO;
-import com.countingTree.Counting.Tree.App.model.AlertType;
 import com.countingTree.Counting.Tree.App.model.Note;
-import com.countingTree.Counting.Tree.App.model.Plant;
-import com.countingTree.Counting.Tree.App.model.User;
 import com.countingTree.Counting.Tree.App.repository.NoteRepository;
-import com.countingTree.Counting.Tree.App.repository.PlantRepository;
-import com.countingTree.Counting.Tree.App.repository.UserRepository;
 import com.countingTree.Counting.Tree.App.service.NoteService;
 
 import jakarta.persistence.EntityNotFoundException;

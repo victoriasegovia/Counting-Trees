@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.countingTree.Counting.Tree.App.model.AlertType;
 import com.countingTree.Counting.Tree.App.model.Specie;
 import com.countingTree.Counting.Tree.App.dto.SpecieDTO;
 import com.countingTree.Counting.Tree.App.repository.SpecieRepository;

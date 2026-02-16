@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.countingTree.Counting.Tree.App.model.Alert;
 import com.countingTree.Counting.Tree.App.model.Plant;
-import com.countingTree.Counting.Tree.App.model.Photo;
-import com.countingTree.Counting.Tree.App.dto.PhotoDTO;
 import com.countingTree.Counting.Tree.App.dto.PlantDTO;
 import com.countingTree.Counting.Tree.App.repository.PlantRepository;
 import com.countingTree.Counting.Tree.App.service.PlantService;
@@ -54,11 +52,9 @@ public class PlantServiceImpl implements PlantService {
         java.util.Optional.ofNullable(plant.getPlantVerificationStatus())
                 .ifPresent(plantUpdated::setPlantVerificationStatus);
         java.util.Optional.ofNullable(plant.getHealthStatus()).ifPresent(plantUpdated::setHealthStatus);
-        java.util.Optional.ofNullable(plant.getPhotos()).ifPresent(photos -> {
-            plantUpdated.getPhotos().clear();
-            photos.forEach(photo -> photo.setPlant(plantUpdated));
-            plantUpdated.getPhotos().addAll(photos);
-        });
+
+        java.util.Optional.ofNullable(plant.getPhoto()).ifPresent(plantUpdated::setPhoto);
+
         java.util.Optional.ofNullable(plant.getNotes()).ifPresent(notes -> {
             plantUpdated.getNotes().clear();
             notes.forEach(note -> note.setPlant(plantUpdated));
@@ -118,12 +114,9 @@ public class PlantServiceImpl implements PlantService {
             plantDTO.setHealthStatusId(plant.getHealthStatus().getStatusId());
         }
 
-        Set<Long> photoIds = plant.getPhotos()
-                .stream()
-                .map(Photo::getPhotoId)
-                .collect(Collectors.toSet());
-
-        plantDTO.setPhotoIds(photoIds);
+        if (plant.getPhoto() != null) {
+            plantDTO.setImageBase64(java.util.Base64.getEncoder().encodeToString(plant.getPhoto()));
+        }
 
         Set<Long> notesIds = plant.getNotes()
                 .stream()

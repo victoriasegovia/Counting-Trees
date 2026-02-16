@@ -1,12 +1,9 @@
 package com.countingTree.Counting.Tree.App.service.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.countingTree.Counting.Tree.App.dto.*;
 import com.countingTree.Counting.Tree.App.model.*;

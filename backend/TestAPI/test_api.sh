@@ -158,7 +158,9 @@ if [ -z "$SPECIE_ID" ] || [ -z "$USER_ID" ]; then
 else
     # Plant needs Specie and User
     # Using correct DTO structure
-    PLANT_BODY="{\"latitude\":10.0,\"longitude\":20.0,\"specie\":{\"specieId\":$SPECIE_ID},\"plantedBy\":{\"userId\":$USER_ID},\"plantVerificationStatus\":\"PENDING\"}"
+    # 1 pixel blue dot base64
+    PLANT_IMG="R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+    PLANT_BODY="{\"latitude\":10.0,\"longitude\":20.0,\"specie\":{\"specieId\":$SPECIE_ID},\"plantedBy\":{\"userId\":$USER_ID},\"plantVerificationStatus\":\"PENDING\",\"imageBase64\":\"$PLANT_IMG\"}"
     perform_request "Create Plant" "POST" "/plants" "$PLANT_BODY" 200 "$TOKEN" > /dev/null
     
     PLANT_LIST=$(perform_request "Get All Plants" "GET" "/plants" "" 200 "$TOKEN")
@@ -167,7 +169,7 @@ else
     if [ -n "$PLANT_ID" ]; then
         perform_request "Get Plant $PLANT_ID" "GET" "/plants/$PLANT_ID" "" 200 "$TOKEN" > /dev/null
         # Fix 500 error: PENDING -> VERIFIED or just PENDING
-        UPD_PLANT="{\"latitude\":11.0,\"longitude\":21.0,\"specie\":{\"specieId\":$SPECIE_ID},\"plantedBy\":{\"userId\":$USER_ID},\"plantVerificationStatus\":\"VERIFIED\"}"
+        UPD_PLANT="{\"latitude\":11.0,\"longitude\":21.0,\"specie\":{\"specieId\":$SPECIE_ID},\"plantedBy\":{\"userId\":$USER_ID},\"plantVerificationStatus\":\"VERIFIED\",\"imageBase64\":\"$PLANT_IMG\"}"
         perform_request "Update Plant $PLANT_ID" "PUT" "/plants/$PLANT_ID" "$UPD_PLANT" 200 "$TOKEN" > /dev/null
 
         # --- 7. NOTE ---
@@ -203,18 +205,25 @@ else
         fi
         
         # --- 9. PHOTO ---
-        echo "--- 9. Photo ---"
-        # Photo needs imageData, uploadedAt, plant. User is optional.
-        # Sending 1 pixel base64 (GIF)
-        PHOTO_BODY="{\"imageData\":\"R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7\",\"uploadedAt\":\"$TIMESTAMP_ISO\",\"plant\":{\"plantId\":$PLANT_ID}}"
-        perform_request "Create Photo" "POST" "/photos" "$PHOTO_BODY" 200 "$TOKEN" > /dev/null
-        PHOTO_LIST=$(perform_request "Get All Photos" "GET" "/photos" "" 200 "$TOKEN")
-        PHOTO_ID=$(echo "$PHOTO_LIST" | grep -o '"photoId":[0-9]*' | tail -1 | cut -d':' -f2 | tr -d '\r')
+        # --- 9. PHOTO (Embedded in Plant) ---
+        echo "--- 9. Photo (Embedded) ---"
+        # Since Photo entity is removed, we test photo by ensuring Plant has imageBase64 (set in CREATE/UPDATE)
+        # We can check if the Plant JSON response contains the image data we sent (or a processed version)
+        # For this script, we just verify the plant update with imageBase64 works (which we added in step 6)
         
-        if [ -n "$PHOTO_ID" ]; then
-             perform_request "Get Photo $PHOTO_ID" "GET" "/photos/$PHOTO_ID" "" 200 "$TOKEN" > /dev/null
-             perform_request "Get Photos for Plant $PLANT_ID" "GET" "/photos/plants/$PLANT_ID" "" 200 "$TOKEN" > /dev/null
-             perform_request "Delete Photo $PHOTO_ID" "DELETE" "/photos/$PHOTO_ID" "" 200 "$TOKEN" > /dev/null
+        # We can also test User Profile Picture here
+        echo "Updating User Profile Picture..."
+        # 1 pixel red dot base64
+        PROFILE_PIC="R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        UPDATE_USER_PIC="{\"userId\":$USER_ID,\"firstName\":\"Updated\",\"lastName\":\"User\",\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\",\"role\":\"ADMIN\",\"imageBase64\":\"$PROFILE_PIC\"}"
+        perform_request "Update User Profile Pic $USER_ID" "PUT" "/users/$USER_ID" "$UPDATE_USER_PIC" 200 "$TOKEN" > /dev/null
+
+        # Verify User has pic
+        USER_WITH_PIC=$(perform_request "Get User With Pic $USER_ID" "GET" "/users/$USER_ID" "" 200 "$TOKEN")
+        if [[ "$USER_WITH_PIC" == *"$PROFILE_PIC"* ]]; then
+             echo -e "${GREEN}PASS${NC} User Profile Picture Updated"
+        else
+             echo -e "${RED}FAIL${NC} User Profile Picture Not Updated"
         fi
 
         # Delete Plant (Cleanup)
