@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import "../CSS/Landing.css";
 
-export default function Home() {
+export default function Landing() {
 
     return (
         <>

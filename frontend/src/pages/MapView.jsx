@@ -1,11 +1,9 @@
-import TopBar from "../components/TopBar";
-import BottomBar from "../components/BottomBar";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { DivIcon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "../CSS/AppLayout.css";
 
-export default function MapView() {
+export default function MapView({ user }) {
 
     const periUrbanoGranada = [37.1741, -3.5663];
 
@@ -18,9 +16,6 @@ export default function MapView() {
 
     return (
         <>
-            <TopBar />
-
-            <div className="view">
                 <MapContainer
                     center={periUrbanoGranada} // coordinates
                     zoom={20}
@@ -34,9 +29,6 @@ export default function MapView() {
                         <Popup>Plaza Nueva, Granada</Popup>
                     </Marker>
                 </MapContainer>
-            </div>
-
-            <BottomBar />
         </>
     )
 }
