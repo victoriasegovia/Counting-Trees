@@ -1,0 +1,131 @@
+:root {
+    --topbar-height: 60px;
+    --bottombar-height: 50px;
+    --side-margin: 5px;
+    --gap-margin: 5px;
+    --border-radius: 5px;
+}
+
+/* TopBar */
+.topbar {
+    position: fixed;
+    top: var(--side-margin);
+    left: var(--side-margin);
+    right: var(--side-margin);
+    height: var(--topbar-height);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #ECECEC;
+    border-radius: var(--border-radius);
+    z-index: 1000;
+    padding: 0 1rem;
+}
+
+.topbar-user {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    line-height: 1.1;
+    padding: 0.1rem;
+}
+
+.topbar-username {
+    font-size: 1.2rem;
+    font-family: 'Anton', sans-serif;
+    color: #094824;
+}
+
+.topbar-role {
+    font-size: 0.8rem;
+    font-family: 'Roboto Condensed Regular', sans-serif;
+    color: #094824;
+}
+
+.logout-button {
+    background-color: #094824;
+    color: #7BFF83;
+    border: none;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+    width: 2.7rem;
+    height: 2.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-button:hover {
+    background-color: #084d27;
+}
+
+/* BottomBar */
+.bottombar {
+    position: fixed;
+    bottom: var(--side-margin);
+    left: var(--side-margin);
+    right: var(--side-margin);
+    height: var(--bottombar-height);
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+
+    z-index: 1000;
+}
+
+.bottom-button {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #ECECEC;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 900;
+    color: #0a5c2f;
+}
+
+.center-button {
+    flex: 1.5;
+    position: relative;
+}
+
+.center-button span {
+    position: relative;
+    z-index: 2;
+}
+
+.center-button::before {
+    content: "🌿";
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.view {
+    position: absolute;
+    top: calc(var(--side-margin) + var(--topbar-height) + var(--gap-margin));
+    bottom: calc(var(--side-margin) + var(--bottombar-height) + var(--gap-margin));
+    left: var(--side-margin);
+    right: var(--side-margin);
+
+    background-color: #ececec;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    z-index: 0;
+}
