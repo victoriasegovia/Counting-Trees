@@ -129,3 +129,9 @@
     overflow: hidden;
     z-index: 0;
 }
+
+.emoji-marker {
+  font-size: 2rem;
+  text-align: center;
+  line-height: 1;
+}
