@@ -1,9 +1,11 @@
 import { API } from "./api.js"
 
+const API_URL = "http://localhost:8080/api/v1/auth";
+
 // LOG IN
 export async function loginUser(email, password) {
     try {
-        const response = await fetch(`${API}/login`, {
+        const response = await fetch(`${API_URL}/authenticate`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }),
@@ -17,6 +19,37 @@ export async function loginUser(email, password) {
         return data;
     } catch (error) {
         console.error("Error login:", error);
+        throw error;
+    }
+}
+
+// REGISTER
+export async function registerUser(firstName, lastName, email, password, role) {
+    try {
+        const response = await fetch(`${API_URL}/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+                role: role
+            }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Error al registrar el usuario");
+        }
+
+        const data = await response.text();
+        console.log("STATUS:", response.status);
+        console.log("RESPONSE DATA:", data);
+
+        return data;
+
+    } catch (error) {
         throw error;
     }
 }
