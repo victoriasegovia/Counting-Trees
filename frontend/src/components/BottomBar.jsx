@@ -17,6 +17,15 @@ export default function BottomBar() {
                 </NavLink>
 
                 <NavLink
+                    to="/plants"
+                    className={({ isActive }) =>
+                        `bottom-button ${isActive ? "active" : ""}`
+                    }
+                >
+                    <span>LISTA</span>
+                </NavLink>
+
+                <NavLink
                     to="/new-plant"
                     className={({ isActive }) =>
                         `bottom-button center-button ${isActive ? "active" : ""}`
@@ -31,7 +40,7 @@ export default function BottomBar() {
                         `bottom-button ${isActive ? "active" : ""}`
                     }
                 >
-                    <span>MIS ESTATS</span>
+                    <span>ESTATS</span>
                 </NavLink>
 
             </div>

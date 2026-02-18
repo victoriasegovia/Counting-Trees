@@ -37,8 +37,8 @@ export default function PlantDetail() {
 
     const [alert, setAlert] = useState({
         description: "",
-        plant: Number(id),
-        alertType: null,
+        plant: { plantId: Number(id) },
+        alertType: { alertType: Number(null) },
     })
 
     useEffect(() => {
@@ -84,7 +84,7 @@ export default function PlantDetail() {
         const value = Number(e.target.value);
         setAlert(prev => ({
             ...prev,
-            alertType: value
+            alertType: {alertTypeId: value}
         }));
     }
 
@@ -115,7 +115,7 @@ export default function PlantDetail() {
         }
     }
 
-    console.log(note)
+    // console.log(note)
     // console.log(alertTypes)
     console.log(alert)
 

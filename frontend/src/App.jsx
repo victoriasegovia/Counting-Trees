@@ -10,6 +10,7 @@ import AppLayout from "./pages/AppLayout";
 import InfoView from "./pages/InfoView";
 import ProfileView from "./pages/ProfileView";
 import PlantDetail from './pages/PlantDetail';
+import PlantsListView from './pages/PlantsListView';
 
 import './App.css';
 
@@ -49,6 +50,15 @@ function App() {
               element={
                 <AppLayout>
                   <NewPlantForm />
+                </AppLayout>
+              }
+            />
+
+            <Route
+              path="/plants"
+              element={
+                <AppLayout>
+                  <PlantsListView />
                 </AppLayout>
               }
             />
