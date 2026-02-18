@@ -2,10 +2,10 @@ import React from "react";
 import TopBar from "../components/TopBar";
 import BottomBar from "../components/BottomBar";
 
-export default function AppLayout({ user, setUser, children }) {
+export default function AppLayout({ children }) {
     return (
         <>
-            <TopBar user={user} setUser={setUser} />
+            <TopBar />
             <div className="view">
                 {children}
             </div>

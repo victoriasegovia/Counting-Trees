@@ -1,75 +1,60 @@
-import { API } from "./api.js"
+import axios from 'axios';
 
-const API_URL = "http://localhost:8080/api/v1/auth";
+export const API = axios.create({
+    baseURL: 'http://localhost:8080/api/v1/auth',
+    headers: { "Content-Type": "application/json" }
+});
 
-// LOG IN
+// ------------------------------ LOG IN
 export async function loginUser(email, password) {
     try {
-        const response = await fetch(`${API_URL}/authenticate`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-        });
-
-        if (!response.ok) {
-            throw new Error("Usuario o contraseña incorrectos");
-        }
-
-        const data = await response.json();
-        return data;
+        const response = await API.post("/authenticate", { email, password });
+        return response.data;
     } catch (error) {
-        console.error("Error login:", error);
-        throw error;
+        console.error("Error login:", error.response?.data || error.message);
+        throw new Error(
+            error.response?.data?.message || "Usuario o contraseña incorrectos"
+        );
     }
 }
 
-// REGISTER
+// ------------------------------ REGISTER
 export async function registerUser(firstName, lastName, email, password, role) {
     try {
-        const response = await fetch(`${API_URL}/register`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password,
-                role: role
-            }),
+        const response = await API.post("/register", {
+            firstName,
+            lastName,
+            email,
+            password,
+            role
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || "Error al registrar el usuario");
-        }
-
-        const data = await response.text();
-        console.log("STATUS:", response.status);
-        console.log("RESPONSE DATA:", data);
-
-        return data;
-
+        // Devuelve data directamente
+        return response.data;
     } catch (error) {
-        throw error;
+        console.error("Error register:", error.response?.data || error.message);
+        throw new Error(
+            error.response?.data?.message || "Error al registrar el usuario"
+        );
     }
 }
 
-export function getUsers() {
-    return API.get('/users')
-}
+// export function getUsers() {
+//     return API.get('/users')
+// }
 
-export function getUserById(id) {
-    return API.get('/users/' + id)
-}
+// export function getUserById(id) {
+//     return API.get('/users/' + id)
+// }
 
-export function postUser(user) {
-    return API.post('/users', user)
-}
+// export function postUser(user) {
+//     return API.post('/users', user)
+// }
 
-export function putUser(id, user) {
-    return API.put('/users/' + id, user)
-}
+// export function putUser(id, user) {
+//     return API.put('/users/' + id, user)
+// }
 
-export function deleteUser(id) {
-    return API.delete('/users/' + id)
-}
+// export function deleteUser(id) {
+//     return API.delete('/users/' + id)
+// }

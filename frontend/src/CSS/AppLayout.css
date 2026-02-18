@@ -141,6 +141,7 @@
 
 .center-button::before {
     content: "🌿";
+    /*🌿📍*/
     position: absolute;
     top: -40%;
     left: 50%;
@@ -160,7 +161,7 @@
 
     background-color: #ececec;
     border-radius: var(--border-radius);
-    overflow: hidden;
+    overflow: visible;
     z-index: 0;
 }
 
@@ -177,6 +178,27 @@
     font-size: 2rem;
     text-align: center;
     line-height: 1;
+}
+
+.test-font {
+    color: #092b20;
+}
+
+.tree-form {
+    height: 100%;
+    overflow-y: auto;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.map-container {
+    flex: 1;
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
 }
 
 @keyframes fadeIn {

@@ -171,28 +171,28 @@ public class DataSeeder implements CommandLineRunner {
                 List<Plant> plants = new ArrayList<>();
 
                 // 1. Ficus by Admin (Verified, Healthy)
-                plants.add(createPlant(100.00, 100.00, species.get("FICUS"), users.get("ADMIN"),
+                plants.add(createPlant(37.16920, -3.57447, species.get("FICUS"), users.get("ADMIN"),
                                 PlantVerificationStatus.VERIFIED, health.get("HEALTHY")));
 
                 // 2. Oak by Guardian (Pending, Needs Water)
-                plants.add(createPlant(100.05, 100.05, species.get("OAK"), users.get("GUARDIAN"),
+                plants.add(createPlant(37.16925, -3.57445, species.get("OAK"), users.get("GUARDIAN"),
                                 PlantVerificationStatus.PENDING, health.get("NEEDS_WATER")));
 
                 // 3. Pine by Botanist (Verified, Pest)
-                plants.add(createPlant(100.10, 100.10, species.get("PINE"), users.get("BOTANIST"),
+                plants.add(createPlant(37.16920, -3.57440, species.get("PINE"), users.get("BOTANIST"),
                                 PlantVerificationStatus.VERIFIED, health.get("PEST")));
 
                 // 4. Rose by Guardian (Pending, Withering) - Rose might be tricky in some
                 // climates!
-                plants.add(createPlant(100.15, 100.15, species.get("ROSE"), users.get("GUARDIAN"),
+                plants.add(createPlant(37.16915, -3.57442, species.get("ROSE"), users.get("GUARDIAN"),
                                 PlantVerificationStatus.PENDING, health.get("WITHERING")));
 
                 // 5. Maple by Admin (Verified, Recovering)
-                plants.add(createPlant(100.20, 100.20, species.get("MAPLE"), users.get("ADMIN"),
+                plants.add(createPlant(37.16922, -3.57450, species.get("MAPLE"), users.get("ADMIN"),
                                 PlantVerificationStatus.VERIFIED, health.get("RECOVERING")));
 
                 // 6. Another Ficus by Guardian (Rejected?, Healthy) - Maybe user made a mistake
-                plants.add(createPlant(100.25, 100.25, species.get("FICUS"), users.get("GUARDIAN"),
+                plants.add(createPlant(37.16918, -3.57455, species.get("FICUS"), users.get("GUARDIAN"),
                                 PlantVerificationStatus.REJECTED, health.get("HEALTHY")));
 
                 return plants;

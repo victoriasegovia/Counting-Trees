@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { useState, useContext } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import { loginUser, registerUser } from "../services/userService";
-import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
-function RegisterForm({ setUser }) {
+function RegisterForm() {
+
+  const { setUser } = useContext(AuthContext);
 
   const [isRegister, setIsRegister] = useState(false)
 
@@ -56,10 +58,15 @@ function RegisterForm({ setUser }) {
 
       } else {
         try {
-          const data = await registerUser( firstName, lastName, email, password, role );
+          const data = await registerUser(firstName, lastName, email, password, role);
+          console.log("Token from server:", data.token);
           localStorage.setItem("token", data.token);
-          setUser({ username: firstName, role: role, loggedIn: true });
-          navigate("/map");
+          localStorage.setItem("user", JSON.stringify({
+            username: data.firstName,
+            role: data.role
+          }));
+          setUser({ username: data.firstName, role: data.role, loggedIn: true });
+          navigate("/profile");
 
         } catch (err) {
           setError(err.message)
@@ -71,6 +78,10 @@ function RegisterForm({ setUser }) {
       try {
         const data = await loginUser(email, password);
         localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify({
+          username: data.firstName,
+          role: data.role
+        }));
         console.log(data);
 
         setUser({ username: data.firstName, role: data.role, loggedIn: true });
