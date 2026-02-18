@@ -1,42 +1,60 @@
-import { API } from "./api.js"
+import axios from 'axios';
 
-// LOG IN
+export const API = axios.create({
+    baseURL: 'http://localhost:8080/api/v1/auth',
+    headers: { "Content-Type": "application/json" }
+});
+
+// ------------------------------ LOG IN
 export async function loginUser(email, password) {
     try {
-        const response = await fetch(`${API}/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-        });
-
-        if (!response.ok) {
-            throw new Error("Usuario o contraseña incorrectos");
-        }
-
-        const data = await response.json();
-        return data;
+        const response = await API.post("/authenticate", { email, password });
+        return response.data;
     } catch (error) {
-        console.error("Error login:", error);
-        throw error;
+        console.error("Error login:", error.response?.data || error.message);
+        throw new Error(
+            error.response?.data?.message || "Usuario o contraseña incorrectos"
+        );
     }
 }
 
-export function getUsers() {
-    return API.get('/users')
+// ------------------------------ REGISTER
+export async function registerUser(firstName, lastName, email, password, role) {
+    try {
+        const response = await API.post("/register", {
+            firstName,
+            lastName,
+            email,
+            password,
+            role
+        });
+
+        // Devuelve data directamente
+        return response.data;
+    } catch (error) {
+        console.error("Error register:", error.response?.data || error.message);
+        throw new Error(
+            error.response?.data?.message || "Error al registrar el usuario"
+        );
+    }
 }
 
-export function getUserById(id) {
-    return API.get('/users/' + id)
-}
+// export function getUsers() {
+//     return API.get('/users')
+// }
 
-export function postUser(user) {
-    return API.post('/users', user)
-}
+// export function getUserById(id) {
+//     return API.get('/users/' + id)
+// }
 
-export function putUser(id, user) {
-    return API.put('/users/' + id, user)
-}
+// export function postUser(user) {
+//     return API.post('/users', user)
+// }
 
-export function deleteUser(id) {
-    return API.delete('/users/' + id)
-}
+// export function putUser(id, user) {
+//     return API.put('/users/' + id, user)
+// }
+
+// export function deleteUser(id) {
+//     return API.delete('/users/' + id)
+// }

@@ -18,12 +18,12 @@ export default function Landing() {
                         <span className='eyes' style={{
                             position: 'absolute',
                             top: '-30px',
-                            right: '-20px',
+                            right: '-5px',
                             fontSize: '3rem'
                         }} >👀</span>
-                        <Link to={"/map"}><button className='btn-observer'>CONTINUA COMO OBSERVADOR</button></Link> <br></br>
+                        <Link to={"/map"}><button className='btn-observer'>CONTINUA COMO OBSERVADOR</button></Link>
                     </div>
-                    <Link to={"/access"}><button className='btn-access'>LOG IN</button></Link> <br></br>
+                    <Link to={"/access"}><button className='btn-access'>LOG IN</button></Link>
                     <Link to={"/access"}><button className='btn-access'>REGÍSTRATE</button></Link>
                 </div >
 
