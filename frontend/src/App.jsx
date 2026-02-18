@@ -5,10 +5,11 @@ import Landing from './pages/Landing';
 import RegisterForm from './pages/RegisterForm';
 import MapView from './pages/MapView';
 import StatsView from './pages/StatsView';
-import NewTreeView from './pages/NewTreeView';
+import NewPlantForm from './pages/NewPlantForm';
 import AppLayout from "./pages/AppLayout";
 import InfoView from "./pages/InfoView";
 import ProfileView from "./pages/ProfileView";
+import PlantDetail from './pages/PlantDetail';
 
 import './App.css';
 
@@ -44,10 +45,19 @@ function App() {
             />
 
             <Route
-              path="/new-tree"
+              path="/new-plant"
               element={
                 <AppLayout>
-                  <NewTreeView />
+                  <NewPlantForm />
+                </AppLayout>
+              }
+            />
+
+            <Route
+              path="/plants/:id"
+              element={
+                <AppLayout>
+                  <PlantDetail />
                 </AppLayout>
               }
             />

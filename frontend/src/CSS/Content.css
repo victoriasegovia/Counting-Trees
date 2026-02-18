@@ -1,3 +1,39 @@
 p {
     color: black;
 }
+
+.alert-circle {
+    width: 15px;
+    height: 15px;
+    background-color: #ff9800;
+    border-radius: 50%;
+    color: rgba(255, 152, 0, 0.5);
+    border-radius: 50%;
+}
+
+.alert-pulse {
+    width: 15px;
+    height: 15px;
+    background-color: #ff9800;
+    border-radius: 50%;
+    color: rgba(255, 152, 0, 0.5);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite ease-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+
+    70% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}

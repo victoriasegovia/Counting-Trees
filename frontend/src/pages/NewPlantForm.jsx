@@ -6,7 +6,7 @@ import { DivIcon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "../CSS/AppLayout.css";
 
-export default function NewTreeView() {
+export default function NewPlantForm() {
 
     const [species, setSpecies] = useState([])
     const [position, setPosition] = useState(null)
@@ -69,7 +69,7 @@ export default function NewTreeView() {
 
     const handleSpecieChange = (e) => setSpecieId(Number(e.target.value))
 
-    async function handleSubmit(input) {
+    async function handleSubmit() {
         form.preventDefault();
         if (!position) {
             alert("Por favor, selecciona la ubicación en el mapa");

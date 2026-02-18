@@ -11,7 +11,7 @@ export default function TopBar() {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
 
     function logout() {
         localStorage.removeItem("token");

@@ -41,6 +41,7 @@ export default function MapView() {
             }
         };
         fetchPlants();
+        
     }, [])
 
     return (
@@ -49,16 +50,16 @@ export default function MapView() {
                 <MapContainer
                     center={periUrbanoGranada}
                     zoom={16}
-                    minZoom={15}
-                    maxZoom={18}
+                    minZoom={18}
+                    maxZoom={21}
                     style={{ width: "100%", height: "100%", borderRadius: "inherit" }}
                 >
                     <TileLayer
-                        // ONLINE WITH SATELITE
+                        // // ONLINE WITH SATELITE
                         // url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                         // attribution='Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics'
 
-                        // ONLINE STREET MAP STYLE
+                        // // ONLINE STREET MAP STYLE
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 
@@ -77,13 +78,13 @@ export default function MapView() {
                         >
                             <Popup>
                                 <div>
-                                    <a href={`/plant-detail/${plant.plantId}`}>Ver planta</a>
+                                    <a href={`/plants/${plant.plantId}`}>Ver planta</a>
                                 </div>
                             </Popup>
                         </Marker>
                     ))}
                     {position &&
-                        < Circle center={position} radius={10} color="green" />
+                        < Circle center={position} radius={5} color="green" />
                     }
                 </MapContainer>
             }

@@ -20,6 +20,21 @@ export async function getPlants() {
     }
 }
 
+export async function getPlantById(id) {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await API.get("/plants/" + id, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching plant:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Error al obtener el árbol");
+    }
+}
+
 export async function postPlant() {
     try {
         const token = localStorage.getItem("token");
