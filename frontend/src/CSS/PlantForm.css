@@ -1,0 +1,124 @@
+/* SECTION TITLE */
+.section-title {
+    font-family: 'Anton', sans-serif;
+    color: #092b20;
+    margin-bottom: 1rem;
+}
+
+/* FORM ELEMENTS */
+
+.tree-form select,
+.tree-form input {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700;
+    color: #092b20;
+    box-sizing: border-box;
+}
+
+/* COORDINATES ROW */
+
+.coordinates-row {
+    display: flex;
+    gap: 5px;
+}
+
+.coordinates-row input {
+    flex: 1;
+}
+
+/* MAP BUTTON */
+
+.map-button {
+    width: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: #092b20;
+    color: #aaf198;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.map-button:hover {
+    background-color: #084d27;
+}
+
+/* SAVE BUTTON */
+
+.save-button {
+    background-color: #092b20;
+    color: #aaf198;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 5px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    background-color: #084d27;
+}
+
+/* MAP VIEW LAYOUT */
+.map-view {
+    display: flex;
+    flex-direction: column;
+}
+
+/* CONTENEDOR MAPA */
+.map-wrapper {
+    flex: 1;
+}
+
+.map-fullscreen {
+    position: relative;
+}
+
+/* Asegura que el mapa ocupa su contenedor */
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+/* BOTONES ABAJO */
+.map-actions {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    background-color: #ececec;
+}
+
+/* CANCELAR */
+.cancel-location-btn {
+    flex: 1;
+    background-color: #ececec;
+    color: #092b20;
+    border: 2px solid #092b20;
+    padding: 0.8rem;
+    border-radius: 5px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+/* CONFIRMAR */
+.confirm-location-btn {
+    flex: 2;
+    background-color: #092b20;
+    color: #aaf198;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 5px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.confirm-location-btn:disabled {
+    opacity: 0.5;
+}

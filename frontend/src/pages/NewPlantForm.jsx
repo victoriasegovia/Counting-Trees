@@ -1,172 +1,142 @@
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import { useEffect, useState } from "react";
 import { getSpecies } from "../services/specieService";
 import { postPlant } from "../services/plantService";
-import { DivIcon } from "leaflet";
-import "leaflet/dist/leaflet.css";
+import MapPicker from "../components/MapPicker";
 import "../CSS/AppLayout.css";
+import "../CSS/PlantForm.css";
 
 export default function NewPlantForm() {
 
-    const [species, setSpecies] = useState([])
-    const [position, setPosition] = useState(null)
-    const [specieId, setSpecieId] = useState()
-    const [loading, setLoading] = useState(true)
-    const periUrbanoGranada = [37.16920, -3.57447]
-
-    const pointEmojiIcon = new DivIcon({
-        html: "📍",
-        className: "emoji-marker",
-        iconSize: [50, 50],
-        iconAnchor: [25, 25],
-    })
+    const [species, setSpecies] = useState([]);
+    const [showMap, setShowMap] = useState(false);
 
     const [formData, setFormData] = useState({
-        latitude: null,
-        longitude: null,
-        specie: null,
+        latitude: "",
+        longitude: "",
+        specie: "",
         plantedBy: null,
         plantVerificationStatus: "PENDING",
         imageBase64: "",
-    })
+    });
 
     useEffect(() => {
-        const fetchSpecies = async () => {
+        async function fetchSpecies() {
             try {
                 const data = await getSpecies();
                 setSpecies(data);
             } catch (err) {
                 console.log(err.message);
             }
-        };
-        fetchSpecies();
-        setLoading(false);
-    }, [])
-
-    useEffect(() => {
-        if (position) {
-            setFormData((prev) => ({
-                ...prev,
-                latitude: position[0],
-                longitude: position[1],
-            }));
         }
-    }, [position])
+        fetchSpecies();
+    }, []);
 
-    useEffect(() => {
-        setFormData((prev) => ({
-            ...prev,
-            specie: specieId,
-        }))
-    }, [specieId])
-
-    function handleChange(input) {
-        const { name, value } = input.target
-        setFormData({
-            ...formData, [name]: value
-        })
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
     }
 
-    const handleSpecieChange = (e) => setSpecieId(Number(e.target.value))
+    function handleLocationConfirm(lat, lng) {
+        setFormData(prev => ({
+            ...prev,
+            latitude: lat,
+            longitude: lng,
+        }));
+        setShowMap(false);
+    }
 
-    async function handleSubmit() {
-        form.preventDefault();
-        if (!position) {
-            alert("Por favor, selecciona la ubicación en el mapa");
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        if (!formData.latitude || !formData.longitude) {
+            alert("Selecciona la ubicación en el mapa");
             return;
         }
-        try {
-            await postPlant(formData)
-        } catch (err) {
 
+        try {
+            await postPlant({
+                ...formData,
+                specie: Number(formData.specie),
+            });
+
+            alert("Árbol guardado 🌿");
+
+        } catch (err) {
+            console.log(err);
         }
-        console.log("Datos del nuevo árbol:", treeData);
     }
 
-    function LocationMarker({ position, setPosition }) {
-        useMapEvents({
-            click(e) {
-                setPosition([e.latlng.lat, e.latlng.lng]);
-            },
-        });
-
-        return position === null ? null : (
-            <Marker position={position} icon={pointEmojiIcon} />
+    if (showMap) {
+        return (
+            <MapPicker
+                initialPosition={
+                    formData.latitude && formData.longitude
+                        ? [formData.latitude, formData.longitude]
+                        : null
+                }
+                onConfirm={handleLocationConfirm}
+                onCancel={() => setShowMap(false)}
+            />
         );
     }
 
-    console.log(formData)
-    console.log(position)
-
     return (
-        <>
-            <div>
-                <form onSubmit={handleSubmit} className="tree-form">
-                    <h1 className="test-font">Nuevo Árbol</h1>
+        <div className="view">
+            <form onSubmit={handleSubmit} className="tree-form">
 
-                    <select
-                        value={specieId}
-                        onChange={handleSpecieChange}
-                        required
-                        className="test-font"
-                    >
-                        <option value="" className="test-font">Selecciona la especie</option>
-                        {species.map((specie) => (
-                            <option value={specie.specieId} className="test-font">{specie.commonName}</option>
-                        ))}
-                    </select><br></br>
+                <h2 className="section-title">Nuevo Árbol</h2>
 
+                <select
+                    name="specie"
+                    value={formData.specie}
+                    onChange={handleChange}
+                    required
+                >
+                    <option value="">Selecciona la especie</option>
+                    {species.map(specie => (
+                        <option key={specie.specieId} value={specie.specieId}>
+                            {specie.commonName}
+                        </option>
+                    ))}
+                </select>
+
+                <div className="coordinates-row">
                     <input
                         type="number"
                         name="latitude"
                         placeholder="Latitud"
                         value={formData.latitude}
-                        onChange={handleChange}
-                        className="test-font"
-                    /><br></br>
+                        readOnly
+                    />
 
                     <input
                         type="number"
                         name="longitude"
                         placeholder="Longitud"
                         value={formData.longitude}
-                        onChange={handleChange}
-                        className="test-font"
-                    /><br></br>
+                        readOnly
+                    />
 
-                    <input
-                        type="text"
-                        name="imageBase64"
-                        placeholder="Foto del árbol (WIP)"
-                        value={formData.imageBase64}
-                        className="test-font"
-                    /><br></br>
-
-                    <button type="submit">
-                        Guardar Árbol
+                    <button
+                        type="button"
+                        className="map-button"
+                        onClick={() => setShowMap(true)}
+                    >
+                        📍
                     </button>
-                </form>
-
-                <div style={{ height: "400px", width: "100%" }} className="map-container">
-                    <p className="test-font">Toca en el mapa la localizacion del Árbol</p>
-                    <div id="map">
-                        <MapContainer
-                            center={periUrbanoGranada}
-                            zoom={16}
-                            minZoom={15}
-                            maxZoom={18}
-                            style={{ width: "100%", height: "100%", borderRadius: "inherit" }}
-                        >
-                            <TileLayer
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                attribution="&copy; OpenStreetMap contributors"
-                            />
-                            <LocationMarker position={position} setPosition={setPosition} />
-                        </MapContainer>
-                    </div>
                 </div>
-            </div >
-        </>
-    )
-}
 
+                <input
+                    type="text"
+                    placeholder="Foto del árbol (WIP)"
+                    disabled
+                />
+
+                <button type="submit" className="save-button">
+                    Guardar Árbol
+                </button>
+
+            </form>
+        </div>
+    );
+}
