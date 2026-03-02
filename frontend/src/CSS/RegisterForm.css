@@ -1,0 +1,102 @@
+.auth-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 3.5rem;
+    letter-spacing: 2px;
+    color: #aaf198;
+    margin-bottom: 2rem;
+}
+
+.auth-form {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    padding: 2rem;
+    border-radius: 5px;
+
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.auth-form input,
+.auth-form select {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 2px solid transparent;
+
+    background-color: #0f3a2b;
+    color: #aaf198;
+
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700;
+
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.auth-form input::placeholder {
+    color: #8cd6a9;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+    border-color: #5BBD84;
+    background-color: #1e5e3f;
+}
+
+/* ERROR */
+
+.error-message {
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    background-color: #5c1f1f;
+    color: #ffb3b3;
+    border-radius: 8px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700;
+    max-width: 380px;
+    text-align: center;
+}
+
+/* SWITCH TEXT */
+
+.auth-switch {
+    width: 100%;
+    margin-top: 1.5rem;
+    color: #aaf198;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.link-button {
+    background: none;
+    border: none;
+    margin-left: 0.5rem;
+    color: #5BBD84;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.link-button:hover {
+    text-decoration: underline;
+}
+
+/* BUTTON HOVER EFFECT */
+
+.btn-access,
+.btn-observer {
+    width: 100%;
+    border-radius: 8px;
+    padding: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+    border: none;
+}
+
+.btn-access:hover {
+    background-color: #2c6b4d;
+}
+
+.btn-observer:hover {
+    background-color: #7fd69d;
+}

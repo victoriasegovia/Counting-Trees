@@ -2,6 +2,8 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser, registerUser } from "../services/userService";
 import { AuthContext } from "../contexts/AuthContext";
+import "../CSS/Landing.css";
+import "../CSS/RegisterForm.css";
 
 function RegisterForm() {
 
@@ -94,12 +96,13 @@ function RegisterForm() {
   }
 
   return (
+    <div className="container-landing">
 
-    <div>
+      <h1 className="auth-title">
+        {isRegister ? "REGISTRO" : "LOG IN"}
+      </h1>
 
-      <h1>{isRegister ? "REGISTRO" : "LOG IN"}</h1>
-
-      <form onSubmit={handleSubmit}>
+      <form className="auth-form" onSubmit={handleSubmit}>
         {isRegister && (
           <>
             <input
@@ -111,8 +114,6 @@ function RegisterForm() {
               required
             />
 
-            <br />
-
             <input
               type="text"
               placeholder="Last Name"
@@ -122,16 +123,12 @@ function RegisterForm() {
               required
             />
 
-            <br />
-
             <select name="role" value={role} onChange={handleChange} required>
               <option value="BOTANIST">Botánico</option>
               <option value="GUARDIAN">Guardián</option>
             </select>
           </>
         )}
-
-        <br />
 
         <input
           type="email"
@@ -142,8 +139,6 @@ function RegisterForm() {
           required
         />
 
-        <br />
-
         <input
           type="password"
           placeholder="Password"
@@ -153,8 +148,6 @@ function RegisterForm() {
           required
         />
 
-        <br />
-
         {isRegister && (
           <input
             type="password"
@@ -163,11 +156,12 @@ function RegisterForm() {
             value={confirmPassword}
             onChange={handleChange}
             required
-          />)}
+          />
+        )}
 
-        <br />
-
-        <button type="submit">{isRegister ? "REGÍSTRATE" : "LOGIN"}</button>
+        <button type="submit" className="btn-access">
+          {isRegister ? "REGÍSTRATE" : "LOGIN"}
+        </button>
       </form>
 
       {error && (
@@ -176,21 +170,21 @@ function RegisterForm() {
         </div>
       )}
 
-      <br />
-
-      <p>
+      <p className="auth-switch">
         {isRegister ? "¿Ya tienes cuenta?" : "¿No tienes cuenta?"}
-        <button onClick={() => setIsRegister(!isRegister)}>
+        <button
+          className="link-button"
+          onClick={() => setIsRegister(!isRegister)}
+        >
           {isRegister ? "INICIA SESIÓN" : "REGÍSTRATE"}
         </button>
       </p>
 
-      <br />
-
-      <Link to={"/"}><button>VOLVER</button></Link>
+      <Link to={"/"}>
+        <button className="btn-observer">VOLVER</button>
+      </Link>
 
     </div>
-
   )
 }
 
