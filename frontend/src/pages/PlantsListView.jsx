@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getPlants } from "../services/plantService";
 import PlantCard from "../components/PlantCard";
+import "../CSS/PlantCard.css";
 
 export default function PlantsListView() {
 
@@ -21,11 +22,10 @@ export default function PlantsListView() {
     }, [])
 
     return (
-        <>
-            <h2>Lista</h2>
+        <div className="plant-list">
             {plants.map((plant) => (
                 <PlantCard key={plant.plantId} plant={plant} />
             ))}
-        </>
+        </div>
     )
 }

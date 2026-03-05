@@ -165,6 +165,15 @@
     z-index: 0;
 }
 
+.view-content {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #ececec; /* asegura fondo sólido */
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: inherit;   /* opcional, si quieres esquinas redondeadas */
+}
+
 .error-message {
     color: #ff4d4f;
     font-weight: bold;

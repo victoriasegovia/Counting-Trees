@@ -7,7 +7,9 @@ export default function AppLayout({ children }) {
         <>
             <TopBar />
             <div className="view">
-                {children}
+                <div className="view-content">
+                    {children}
+                </div>
             </div>
             <BottomBar />
         </>

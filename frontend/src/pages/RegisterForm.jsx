@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser, registerUser } from "../services/userService";
 import { AuthContext } from "../contexts/AuthContext";
-import "../CSS/Landing.css";
 import "../CSS/RegisterForm.css";
 
 function RegisterForm() {
