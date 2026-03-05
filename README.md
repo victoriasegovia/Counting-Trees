@@ -62,15 +62,7 @@ https://www.figma.com/proto/1SgDBbxGB57nwyR4tS7f6I/Counting-Trees?node-id=0-1&t=
 
 
 ## Next Steps
-- Time to start with front and React.
-  - first step would be the landing...
-  - ...then then login form.
-- Erase photo class.
-- Swagger not really working... moving on for now.
-------
-- Revisar validaciones de los services
-- Tests automáticos
-- ...
+- Planta detail view
 
 ## In Next Releases...
 - Exports
